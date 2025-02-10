@@ -68,7 +68,7 @@ export default function AppointmentForm() {
     // Handle form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form data:', formData);
+
         // Validate phone number before submission
         if (!isValidPhoneNumber(formData.phone)) {
             setAlert({
