@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import HomePage from '@/pages/index'
+import { screen } from '@testing-library/dom';
+import { render } from '../../utils/render-test';
+import HomePage from '@/pages/index';
 
-// First test
-it('Should render home page', () => {
-    render(<HomePage />)
-    expect(screen.getByText(/Get started by/i)).toBeInTheDocument()
+test('Should render home page', () => {
+    render(<HomePage />);
+    const headingElement = screen.getByText(/Elegansters barber appointment/i);
+    expect(headingElement).toBeInTheDocument();
 });
