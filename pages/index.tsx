@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import AppointmentForm from '@/components/AppointmentForm';
+import Calendar from '@/components/Calendar';
 
 export default function Home() {
     return (
@@ -15,6 +16,9 @@ export default function Home() {
             <h1>Elegansters barber appointment</h1>
 
             <AppointmentForm />
+            <div className='container-calendar'>
+                <Calendar />
+            </div>
         </>
     );
 }

@@ -1,6 +1,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+    --fc-border-color: black;
+    --fc-daygrid-event-dot-width: 5px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,13 +32,25 @@ body {
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.fc-toolbar {
+  text-transform: capitalize; 
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.fc .fc-button{
+  background: #000;
+  color: white;
+  border: 1px solid #fff;
+}
+.fc .fc-button:hover {
+  background-color: #ffffff ; 
+  color: #000000 ;            
+  border: 1px solid #000000 ;  
+}
+.fc-daygrid-day:hover{
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.fc-daygrid-day.fc-day-today,
+.fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
+  background-color: #525050;
 }
