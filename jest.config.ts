@@ -10,6 +10,12 @@ const createJestConfig = nextJest({
 const config: Config = {
   coverageProvider: 'v8',
   testEnvironment: 'jsdom',
+  "transformIgnorePatterns": [
+    "/node_modules/(?!@fullcalendar/*).+\\.[t|j]sx?$"
+  ],
+  testEnvironmentOptions: {
+    customExportConditions: []
+  },
   // Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   preset: "ts-jest"

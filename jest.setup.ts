@@ -1,7 +1,9 @@
 import '@testing-library/jest-dom'
+import cloneDeep from 'lodash.clonedeep';
+
 global.structuredClone =
-    global.structuredClone || ((obj) => JSON.parse(JSON.stringify(obj)));
- 
+    global.structuredClone || ((obj) => cloneDeep(obj));
+
 global.matchMedia = global.matchMedia || function () {
         return {
             matches: false,
