@@ -1,4 +1,4 @@
-import { getDayName } from '@/helpers/dateHelpers';
+import { getDayName } from '@/utils/dateHelpers';
 import { Box, Button, Text, HStack } from '@chakra-ui/react';
 import styles from '@/styles/Calendar.module.css';
 

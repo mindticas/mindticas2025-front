@@ -8,7 +8,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import { useState } from 'react';
 import AvailableSchedule from './AvailableSchedule';
-import { addDays } from '@/helpers/dateHelpers';
+import { addDays } from '@/utils/dateHelpers';
 
 export default function Calendar() {
     // State of the selected day
@@ -28,6 +28,7 @@ export default function Calendar() {
                 mb={5}
                 p={4}
                 className={styles.calendarWrapper}
+                data-testid='full-calendar'
             >
                 <Text
                     fontSize='2xl'
@@ -41,7 +42,7 @@ export default function Calendar() {
                     plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
                     initialView='customWeek'
                     initialDate={new Date()}
-                    height='400px'
+                    height='300px'
                     contentHeight={300}
                     locale={'es'}
                     headerToolbar={{

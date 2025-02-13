@@ -14,11 +14,8 @@ export default function Home() {
                 />
             </Head>
             <h1>Elegansters barber appointment</h1>
-
+            <Calendar />
             <AppointmentForm />
-            <div className='container-calendar'>
-                <Calendar />
-            </div>
         </>
     );
 }
