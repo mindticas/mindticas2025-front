@@ -1408,5 +1408,444 @@ exports[`HomePage Snapshot should match the snapshot 1`] = `
       </fieldset>
     </div>
   </form>
+  <div
+    class="container-calendar"
+  >
+    <div
+      class="calendarWrapper css-1gujiu5"
+    >
+      <p
+        class="css-4d6tjr"
+      >
+        Calendario
+      </p>
+      <div
+        class="fc fc-media-screen fc-direction-ltr fc-theme-standard fc-liquid-hack"
+        style="height: 400px;"
+      >
+        <div
+          class="fc-header-toolbar fc-toolbar fc-toolbar-ltr"
+        >
+          <div
+            class="fc-toolbar-chunk"
+          >
+            <h2
+              class="fc-toolbar-title"
+              id="fc-dom-1"
+            >
+              12 – 18 feb 2025
+            </h2>
+          </div>
+          <div
+            class="fc-toolbar-chunk"
+          />
+          <div
+            class="fc-toolbar-chunk"
+          >
+            <div
+              class="fc-button-group"
+            >
+              <button
+                aria-pressed="false"
+                class="fc-prev-button fc-button fc-button-primary"
+                title="Previous "
+                type="button"
+              >
+                <span
+                  class="fc-icon fc-icon-chevron-left"
+                  role="img"
+                />
+              </button>
+              <button
+                aria-pressed="false"
+                class="fc-next-button fc-button fc-button-primary"
+                title="Next "
+                type="button"
+              >
+                <span
+                  class="fc-icon fc-icon-chevron-right"
+                  role="img"
+                />
+              </button>
+            </div>
+            <button
+              aria-pressed="false"
+              class="fc-today-button fc-button fc-button-primary"
+              disabled=""
+              title="This "
+              type="button"
+            >
+              Hoy
+            </button>
+          </div>
+        </div>
+        <div
+          aria-labelledby="fc-dom-1"
+          class="fc-view-harness fc-view-harness-active"
+        >
+          <div
+            class="fc-customWeek-view fc-view fc-daygrid"
+          >
+            <table
+              class="fc-scrollgrid  fc-scrollgrid-liquid"
+              role="grid"
+            >
+              <tbody
+                role="rowgroup"
+              >
+                <tr
+                  class="fc-scrollgrid-section fc-scrollgrid-section-header "
+                  role="presentation"
+                >
+                  <th
+                    role="presentation"
+                  >
+                    <div
+                      class="fc-scroller-harness"
+                    >
+                      <div
+                        class="fc-scroller"
+                        style="overflow-x: hidden; overflow-y: hidden;"
+                      >
+                        <table
+                          class="fc-col-header "
+                          role="presentation"
+                          style="width: 0px;"
+                        >
+                          <colgroup />
+                          <thead
+                            role="presentation"
+                          >
+                            <tr
+                              role="row"
+                            >
+                              <th
+                                class="fc-col-header-cell fc-day fc-day-wed fc-day-today"
+                                data-date="2025-02-12"
+                                role="columnheader"
+                              >
+                                <div
+                                  class="fc-scrollgrid-sync-inner"
+                                >
+                                  <a
+                                    aria-label="12 de febrero de 2025"
+                                    class="fc-col-header-cell-cushion"
+                                  >
+                                    mié 12/2
+                                  </a>
+                                </div>
+                              </th>
+                              <th
+                                class="fc-col-header-cell fc-day fc-day-thu fc-day-future"
+                                data-date="2025-02-13"
+                                role="columnheader"
+                              >
+                                <div
+                                  class="fc-scrollgrid-sync-inner"
+                                >
+                                  <a
+                                    aria-label="13 de febrero de 2025"
+                                    class="fc-col-header-cell-cushion"
+                                  >
+                                    jue 13/2
+                                  </a>
+                                </div>
+                              </th>
+                              <th
+                                class="fc-col-header-cell fc-day fc-day-fri fc-day-future"
+                                data-date="2025-02-14"
+                                role="columnheader"
+                              >
+                                <div
+                                  class="fc-scrollgrid-sync-inner"
+                                >
+                                  <a
+                                    aria-label="14 de febrero de 2025"
+                                    class="fc-col-header-cell-cushion"
+                                  >
+                                    vie 14/2
+                                  </a>
+                                </div>
+                              </th>
+                              <th
+                                class="fc-col-header-cell fc-day fc-day-sat fc-day-future"
+                                data-date="2025-02-15"
+                                role="columnheader"
+                              >
+                                <div
+                                  class="fc-scrollgrid-sync-inner"
+                                >
+                                  <a
+                                    aria-label="15 de febrero de 2025"
+                                    class="fc-col-header-cell-cushion"
+                                  >
+                                    sáb 15/2
+                                  </a>
+                                </div>
+                              </th>
+                              <th
+                                class="fc-col-header-cell fc-day fc-day-sun fc-day-future"
+                                data-date="2025-02-16"
+                                role="columnheader"
+                              >
+                                <div
+                                  class="fc-scrollgrid-sync-inner"
+                                >
+                                  <a
+                                    aria-label="16 de febrero de 2025"
+                                    class="fc-col-header-cell-cushion"
+                                  >
+                                    dom 16/2
+                                  </a>
+                                </div>
+                              </th>
+                              <th
+                                class="fc-col-header-cell fc-day fc-day-mon fc-day-future"
+                                data-date="2025-02-17"
+                                role="columnheader"
+                              >
+                                <div
+                                  class="fc-scrollgrid-sync-inner"
+                                >
+                                  <a
+                                    aria-label="17 de febrero de 2025"
+                                    class="fc-col-header-cell-cushion"
+                                  >
+                                    lun 17/2
+                                  </a>
+                                </div>
+                              </th>
+                              <th
+                                class="fc-col-header-cell fc-day fc-day-tue fc-day-future"
+                                data-date="2025-02-18"
+                                role="columnheader"
+                              >
+                                <div
+                                  class="fc-scrollgrid-sync-inner"
+                                >
+                                  <a
+                                    aria-label="18 de febrero de 2025"
+                                    class="fc-col-header-cell-cushion"
+                                  >
+                                    mar 18/2
+                                  </a>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+                <tr
+                  class="fc-scrollgrid-section fc-scrollgrid-section-body  fc-scrollgrid-section-liquid"
+                  role="presentation"
+                >
+                  <td
+                    role="presentation"
+                  >
+                    <div
+                      class="fc-scroller-harness fc-scroller-harness-liquid"
+                    >
+                      <div
+                        class="fc-scroller fc-scroller-liquid-absolute"
+                        style="overflow-x: hidden; overflow-y: auto;"
+                      >
+                        <div
+                          class="fc-daygrid-body fc-daygrid-body-unbalanced "
+                          style="width: 0px;"
+                        >
+                          <table
+                            class="fc-scrollgrid-sync-table"
+                            role="presentation"
+                            style="width: 0px; height: 0px;"
+                          >
+                            <colgroup />
+                            <tbody
+                              role="presentation"
+                            >
+                              <tr
+                                role="row"
+                              >
+                                <td
+                                  class="fc-day fc-day-wed fc-day-today fc-daygrid-day"
+                                  data-date="2025-02-12"
+                                  role="gridcell"
+                                >
+                                  <div
+                                    class="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
+                                  >
+                                    <div
+                                      class="fc-daygrid-day-events"
+                                    >
+                                      <div
+                                        class="fc-daygrid-day-bottom"
+                                        style="margin-top: 0px;"
+                                      />
+                                    </div>
+                                    <div
+                                      class="fc-daygrid-day-bg"
+                                    />
+                                  </div>
+                                </td>
+                                <td
+                                  class="fc-day fc-day-thu fc-day-future fc-daygrid-day"
+                                  data-date="2025-02-13"
+                                  role="gridcell"
+                                >
+                                  <div
+                                    class="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
+                                  >
+                                    <div
+                                      class="fc-daygrid-day-events"
+                                    >
+                                      <div
+                                        class="fc-daygrid-day-bottom"
+                                        style="margin-top: 0px;"
+                                      />
+                                    </div>
+                                    <div
+                                      class="fc-daygrid-day-bg"
+                                    />
+                                  </div>
+                                </td>
+                                <td
+                                  class="fc-day fc-day-fri fc-day-future fc-daygrid-day"
+                                  data-date="2025-02-14"
+                                  role="gridcell"
+                                >
+                                  <div
+                                    class="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
+                                  >
+                                    <div
+                                      class="fc-daygrid-day-events"
+                                    >
+                                      <div
+                                        class="fc-daygrid-day-bottom"
+                                        style="margin-top: 0px;"
+                                      />
+                                    </div>
+                                    <div
+                                      class="fc-daygrid-day-bg"
+                                    />
+                                  </div>
+                                </td>
+                                <td
+                                  class="fc-day fc-day-sat fc-day-future fc-daygrid-day"
+                                  data-date="2025-02-15"
+                                  role="gridcell"
+                                >
+                                  <div
+                                    class="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
+                                  >
+                                    <div
+                                      class="fc-daygrid-day-events"
+                                    >
+                                      <div
+                                        class="fc-daygrid-day-bottom"
+                                        style="margin-top: 0px;"
+                                      />
+                                    </div>
+                                    <div
+                                      class="fc-daygrid-day-bg"
+                                    />
+                                  </div>
+                                </td>
+                                <td
+                                  class="fc-day fc-day-sun fc-day-future fc-daygrid-day"
+                                  data-date="2025-02-16"
+                                  role="gridcell"
+                                >
+                                  <div
+                                    class="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
+                                  >
+                                    <div
+                                      class="fc-daygrid-day-events"
+                                    >
+                                      <div
+                                        class="fc-daygrid-day-bottom"
+                                        style="margin-top: 0px;"
+                                      />
+                                    </div>
+                                    <div
+                                      class="fc-daygrid-day-bg"
+                                    />
+                                  </div>
+                                </td>
+                                <td
+                                  class="fc-day fc-day-mon fc-day-future fc-daygrid-day"
+                                  data-date="2025-02-17"
+                                  role="gridcell"
+                                >
+                                  <div
+                                    class="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
+                                  >
+                                    <div
+                                      class="fc-daygrid-day-events"
+                                    >
+                                      <div
+                                        class="fc-daygrid-day-bottom"
+                                        style="margin-top: 0px;"
+                                      />
+                                    </div>
+                                    <div
+                                      class="fc-daygrid-day-bg"
+                                    />
+                                  </div>
+                                </td>
+                                <td
+                                  class="fc-day fc-day-tue fc-day-future fc-daygrid-day"
+                                  data-date="2025-02-18"
+                                  role="gridcell"
+                                >
+                                  <div
+                                    class="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
+                                  >
+                                    <div
+                                      class="fc-daygrid-day-events"
+                                    >
+                                      <div
+                                        class="fc-daygrid-day-bottom"
+                                        style="margin-top: 0px;"
+                                      />
+                                    </div>
+                                    <div
+                                      class="fc-daygrid-day-bg"
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="css-0"
+    >
+      <div
+        class="css-1nlbd0i"
+      >
+        <div
+          class="chakra-stack css-1igwmid"
+        >
+          <p
+            class="css-1mcx25h"
+          >
+            Selecciona una fecha
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </DocumentFragment>
 `;
