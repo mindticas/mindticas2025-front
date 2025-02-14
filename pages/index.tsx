@@ -1,8 +1,12 @@
 import Head from 'next/head';
 import AppointmentForm from '@/components/AppointmentForm';
 import Calendar from '@/components/Calendar';
+import { Flex, Text } from '@chakra-ui/react';
 
 export default function Home() {
+    const handleSelectDateTime = (dateTime: Date) => {
+        console.log(dateTime);
+    };
     return (
         <>
             <Head>
@@ -13,9 +17,17 @@ export default function Home() {
                     content='Elegansters barber appointment'
                 />
             </Head>
-            <h1>Elegansters barber appointment</h1>
-            <Calendar />
-            <AppointmentForm />
+            <Text textAlign='center' fontSize='2xl' m={4}>
+                Elegansters barber appointment
+            </Text>
+            <Flex
+                justifyContent='center'
+                alignItems='center'
+                flexDirection='column'
+            >
+                <Calendar onSelectDateTime={handleSelectDateTime} />
+                <AppointmentForm />
+            </Flex>
         </>
     );
 }
