@@ -11,138 +11,136 @@ exports[`Calendar Snapshot should match the snapshot 1`] = `
     class="css-1gcrimv"
   >
     <div
-      class="css-59mu8m"
+      class="calendar-box css-vk4h8o"
     >
       <h2
-        class="chakra-heading css-pfbr1a"
+        class="chakra-heading css-1bzk9nh"
       >
-        Select a Date and Time
+        Selecciona el día
       </h2>
       <div
-        class="css-1tt5w0v"
+        class="css-56tv3v"
       >
         <div
           class="css-1121gur"
         >
-          Sun
+          Do
         </div>
         <div
           class="css-1121gur"
         >
-          Mon
+          Lu
         </div>
         <div
           class="css-1121gur"
         >
-          Tue
+          Ma
         </div>
         <div
           class="css-1121gur"
         >
-          Wed
+          Mi
         </div>
         <div
           class="css-1121gur"
         >
-          Thu
+          Ju
         </div>
         <div
           class="css-1121gur"
         >
-          Fri
+          Vi
         </div>
         <div
           class="css-1121gur"
         >
-          Sat
+          Sa
         </div>
       </div>
       <div
-        class="css-14t91g7"
+        class="css-16nmiu8"
       >
         <button
           class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
-          9
+          16 
         </button>
         <button
           class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
-          10
+          17 
         </button>
         <button
           class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
-          11
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          12
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          13
+          18 
         </button>
         <button
           class="chakra-button css-r87ip0"
           type="button"
         >
-          14
+          19 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          15
+          20 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          type="button"
+        >
+          21 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          type="button"
+        >
+          22 
         </button>
         <button
           class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
-          16
+          23 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          17
+          24 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          18
+          25 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          19
+          26 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          20
+          27 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          21
+          28 
         </button>
       </div>
     </div>
