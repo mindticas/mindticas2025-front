@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomePage Snapshot should match the snapshot 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="chakra-select__root css-19aax7y"
+    data-part="root"
+    data-scope="select"
+    dir="ltr"
+    id="select::r0:"
+  >
+    <select
+      aria-hidden="true"
+      aria-labelledby="select::r0::label"
+      id="select::r0::select"
+      style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
+      tabindex="-1"
+    >
+      <option
+        value="barba"
+      />
+      <option
+        value="pelo"
+      />
+      <option
+        value="barba y pelo"
+      />
+    </select>
+    <label
+      class="chakra-select__label css-2oazdk"
+      data-part="label"
+      data-scope="select"
+      dir="ltr"
+      for="select::r0::select"
+      id="select::r0::label"
+    >
+      Servicio a realizar
+    </label>
+    <div
+      class="chakra-select__control css-17j1053"
+      data-part="control"
+      data-scope="select"
+      data-state="closed"
+      dir="ltr"
+      id="select::r0::control"
+    >
+      <button
+        aria-controls="select::r0::content"
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        aria-labelledby="select::r0::label"
+        class="chakra-select__trigger css-1qa70k0"
+        data-part="trigger"
+        data-scope="select"
+        data-state="closed"
+        dir="ltr"
+        id="select::r0::trigger"
+        role="combobox"
+        type="button"
+      >
+        <span
+          class="chakra-select__valueText css-wdekkk"
+          data-part="value-text"
+          data-scope="select"
+          dir="ltr"
+        >
+          Selecciona un servicio
+        </span>
+      </button>
+      <div
+        class="chakra-select__indicatorGroup css-1xvjckd"
+      >
+        <div
+          aria-hidden="true"
+          class="chakra-select__indicator css-1eejzq5"
+          data-part="indicator"
+          data-scope="select"
+          data-state="closed"
+          dir="ltr"
+        >
+          <svg
+            class="css-s3mb0o"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="m6 9 6 6 6-6"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
