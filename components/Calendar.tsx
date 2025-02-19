@@ -10,11 +10,7 @@ import {
     Heading,
     useBreakpointValue,
 } from '@chakra-ui/react';
-
-// Props for the Calendar component
-type CalendarProps = {
-    onSelectDateTime: (date: Date) => void; // Function called when a date and time are selected
-};
+import { useBookingContext } from '@/context/BookingContext';
 
 // Available time slots
 const timeSlots = ['10:00', '11:00', '12:00', '13:00', '14:00', '17:00'];
@@ -22,7 +18,9 @@ const timeSlots = ['10:00', '11:00', '12:00', '13:00', '14:00', '17:00'];
 // Function to check if a date is Sunday
 const isSunday = (date: Date) => date.getDay() === 0;
 
-export default function Calendar({ onSelectDateTime }: CalendarProps) {
+export default function Calendar() {
+    const { setDateTime } = useBookingContext();
+
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
 
@@ -62,7 +60,7 @@ export default function Calendar({ onSelectDateTime }: CalendarProps) {
                 Number.parseInt(hours, 10),
                 Number.parseInt(minutes, 10),
             ); // Combine date and time
-            onSelectDateTime(dateTime); // Call the prop function with the selected date and time
+            setDateTime(dateTime); // Call the prop function with the selected date and time
         }
     };
 
@@ -95,7 +93,7 @@ export default function Calendar({ onSelectDateTime }: CalendarProps) {
             <Box
                 className='calendar-box'
                 bg='white'
-                p={isSmallScreen ? 3 : 6}
+                p={isSmallScreen ? 4 : 6}
                 borderRadius='lg'
                 boxShadow='md'
                 borderWidth='1px'
@@ -104,32 +102,38 @@ export default function Calendar({ onSelectDateTime }: CalendarProps) {
                 {/* Calendar title */}
                 <Heading
                     as='h2'
-                    fontSize='2xl'
-                    fontWeight='semibold'
+                    fontSize='lg'
+                    fontWeight='bold'
                     mb={4}
                     color='black'
                 >
-                    Select a Day
+                    Selecciona el día
                 </Heading>
 
                 {/* Days of the week */}
-                <Grid templateColumns='repeat(7, 1fr)' gap={2} mb={2}>
-                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
-                        (day) => (
-                            <GridItem
-                                key={day}
-                                textAlign='center'
-                                fontWeight='medium'
-                                color='gray.500'
-                            >
-                                {day}
-                            </GridItem>
-                        ),
-                    )}
+                <Grid
+                    templateColumns='repeat(7, 1fr)'
+                    gap={isSmallScreen ? 1 : 2}
+                    mb={2}
+                >
+                    {['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'].map((day) => (
+                        <GridItem
+                            key={day}
+                            textAlign='center'
+                            fontWeight='medium'
+                            color='gray.500'
+                        >
+                            {day}
+                        </GridItem>
+                    ))}
                 </Grid>
 
                 {/* Dates of the week */}
-                <Grid templateColumns='repeat(7, 1fr)' gap={2} mb={4}>
+                <Grid
+                    templateColumns='repeat(7, 1fr)'
+                    gap={isSmallScreen ? 1 : 3}
+                    mb={4}
+                >
                     {weekDates.map((date) => (
                         <Button
                             key={date.toISOString()}
@@ -177,7 +181,7 @@ export default function Calendar({ onSelectDateTime }: CalendarProps) {
                             mb={2}
                             color='black'
                         >
-                            Select a Time
+                            Selecciona la hora
                         </Heading>
                         <Grid templateColumns='repeat(3, 1fr)' gap={2}>
                             {timeSlots.map((time) => (

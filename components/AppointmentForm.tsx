@@ -9,13 +9,29 @@ import {
     Stack,
 } from '@chakra-ui/react';
 import { Field } from '@/components/ui/field';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PhoneInput, { Value } from 'react-phone-number-input';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { useBookingContext } from '@/context/BookingContext';
 
 export default function AppointmentForm() {
+    const { service, personData, dateTime } = useBookingContext();
+
+    const sendData = async () => {
+        const data = {
+            name: `${personData.name} ${personData.lastName}`,
+            phone: personData.phone,
+            service,
+            dateTime,
+        };
+        return data;
+    };
+
+    // Global state
+    const { setPersonData } = useBookingContext();
+
     // State to store form values
     const [formData, setFormData] = useState({
         name: '',
@@ -89,6 +105,13 @@ export default function AppointmentForm() {
                 setAlert({
                     type: 'success',
                 });
+
+                setPersonData({
+                    name: formData.name,
+                    lastName: formData.lastname,
+                    phone: formData.phone,
+                });
+
                 setFormData({ name: '', lastname: '', phone: '' });
                 setIsPhoneValid(true);
             } else {
@@ -99,13 +122,33 @@ export default function AppointmentForm() {
         }, 2000);
     };
 
+    useEffect(() => {
+        if (personData.name && personData.lastName && personData.phone) {
+            sendData();
+        }
+    }, [personData]);
+
     return (
-        <form onSubmit={handleSubmit}>
-            <Flex p='4' justify='center'>
-                <Fieldset.Root size='lg' maxW='md'>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+            <Flex p='6' justify='center'>
+                <Fieldset.Root
+                    borderRadius='lg'
+                    boxShadow='md'
+                    borderWidth='1px'
+                    borderColor='gray.200'
+                    size='lg'
+                    maxW='sm'
+                    p={6}
+                >
                     <Stack>
-                        <Fieldset.Legend>Datos del contacto </Fieldset.Legend>
-                        <Fieldset.HelperText pb={3}>
+                        <Fieldset.Legend
+                            fontSize='lg'
+                            fontWeight='600'
+                            color='gray.900'
+                        >
+                            Datos del contacto
+                        </Fieldset.Legend>
+                        <Fieldset.HelperText color='gray.600' pb={3}>
                             Ingrese los datos del contacto para agendar una cita
                         </Fieldset.HelperText>
                     </Stack>
@@ -134,6 +177,7 @@ export default function AppointmentForm() {
                         </Field>
                         <Field required label='Número de teléfono'>
                             <PhoneInput
+                                className='PhoneInputInput'
                                 international
                                 defaultCountry='MX'
                                 placeholder='Ingresa tu número de teléfono'
@@ -156,7 +200,14 @@ export default function AppointmentForm() {
                             )}
                         </Field>
                     </Fieldset.Content>
-                    <Button type='submit' w='full' mt={6} disabled={isLoading}>
+                    <Button
+                        bg='black'
+                        color='white'
+                        type='submit'
+                        w='full'
+                        mt={6}
+                        disabled={isLoading}
+                    >
                         {isLoading ? <Spinner size='sm' mr={2} /> : 'Agendar'}
                     </Button>
                     {alert.type && (

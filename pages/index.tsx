@@ -2,11 +2,12 @@ import Head from 'next/head';
 import AppointmentForm from '@/components/AppointmentForm';
 import Calendar from '@/components/Calendar';
 import { Flex, Text } from '@chakra-ui/react';
+import ServiceMenu from '@/components/ServiceMenu';
+import { useBookingContext } from '@/context/BookingContext';
 
 export default function Home() {
-    const handleSelectDateTime = (dateTime: Date) => {
-        console.log(dateTime);
-    };
+    const { service, personData, dateTime } = useBookingContext();
+
     return (
         <>
             <Head>
@@ -20,13 +21,16 @@ export default function Home() {
             <Text textAlign='center' fontSize='2xl' m={4}>
                 Elegansters barber appointment
             </Text>
+
             <Flex
+                gap='5'
                 justifyContent='center'
                 alignItems='center'
                 flexDirection='column'
             >
-                <Calendar onSelectDateTime={handleSelectDateTime} />
-                <AppointmentForm />
+                <ServiceMenu />
+                <Calendar />
+                {dateTime && service && <AppointmentForm />}
             </Flex>
         </>
     );
