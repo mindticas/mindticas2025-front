@@ -32,7 +32,7 @@ exports[`HomePage Snapshot should match the snapshot 1`] = `
       />
     </select>
     <label
-      class="chakra-select__label css-2oazdk"
+      class="chakra-select__label css-t80ohu"
       data-part="label"
       data-scope="select"
       dir="ltr"
@@ -42,7 +42,7 @@ exports[`HomePage Snapshot should match the snapshot 1`] = `
       Servicio a realizar
     </label>
     <div
-      class="chakra-select__control css-17j1053"
+      class="chakra-select__control css-5ac8g9"
       data-part="control"
       data-scope="select"
       data-state="closed"

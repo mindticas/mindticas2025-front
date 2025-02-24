@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HomePage Snapshot should match the snapshot 1`] = `
+exports[`AppointmentForm Snapshot should match the snapshot 1`] = `
 <DocumentFragment>
   <script
     nonce=""
@@ -103,7 +103,7 @@ exports[`HomePage Snapshot should match the snapshot 1`] = `
               data-required=""
               data-scope="field"
               id=":r2:"
-              name="lastname"
+              name="lastName"
               placeholder="Torres"
               required=""
               type="text"

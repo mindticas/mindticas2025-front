@@ -1,4 +1,3 @@
-import HomePage from '@/pages/index';
 import { render } from '../../utils/render-test';
 import ServiceMenu from '@/components/ServiceMenu';
 

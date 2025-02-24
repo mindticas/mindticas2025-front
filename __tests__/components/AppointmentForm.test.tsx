@@ -1,10 +1,13 @@
-import HomePage from '@/pages/index';
 import { render } from '../../utils/render-test';
 import AppointmentForm from '@/components/AppointmentForm';
 
-describe('HomePage Snapshot', () => {
+describe('AppointmentForm Snapshot', () => {
     it('should match the snapshot', () => {
-        const { asFragment } = render(<AppointmentForm />);
+        const mockOnSuccess = jest.fn();
+        const mockOnError = jest.fn();
+        const { asFragment } = render(
+            <AppointmentForm onSuccess={mockOnSuccess} onError={mockOnError} />,
+        );
         expect(asFragment()).toMatchSnapshot();
     });
 });
