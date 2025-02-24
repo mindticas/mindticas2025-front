@@ -1,23 +1,28 @@
-import React, { createContext, useState, useContext } from 'react';
+'use client';
 
-// Define el tipo de datos que se almacenarán en el contexto
+import React, { createContext, useState, useContext, useEffect } from 'react';
+
+// define the context type
 type BookingContextType = {
     service: string;
+    isSuccessfullyBooked: boolean;
+    setIsSuccessfullyBooked: (isSuccessfullyBooked: boolean) => void;
     setService: (service: string) => void;
-    dateTime: Date | null;
-    setDateTime: (dateTime: Date | null) => void;
+    dateTime: string | null;
+    setDateTime: (dateTime: string | null) => void;
     personData: { name: string; lastName: string; phone: string };
     setPersonData: (personData: {
         name: string;
         lastName: string;
         phone: string;
     }) => void;
+    resetBooking: () => void;
 };
 
-// Crea el contexto
+// Create the context
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
-// Hook personalizado para usar el contexto
+// Hook to use the context
 export const useBookingContext = () => {
     const context = useContext(BookingContext);
     if (!context) {
@@ -28,12 +33,14 @@ export const useBookingContext = () => {
     return context;
 };
 
-// Proveedor del contexto
+// context provider
 export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const [service, setService] = useState<string>('');
-    const [dateTime, setDateTime] = useState<Date | null>(null);
+    const [dateTime, setDateTime] = useState<string | null>(null);
+    const [isSuccessfullyBooked, setIsSuccessfullyBooked] =
+        useState<boolean>(false);
     const [personData, setPersonData] = useState<{
         name: string;
         lastName: string;
@@ -44,6 +51,20 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
         phone: '',
     });
 
+    // function to reset the booking
+    const resetBooking = () => {
+        setService('');
+        setIsSuccessfullyBooked(false);
+        setDateTime(null);
+    };
+
+    // Reset the service when booking is successful
+    useEffect(() => {
+        if (isSuccessfullyBooked) {
+            resetBooking();
+        }
+    }, [isSuccessfullyBooked, resetBooking]);
+
     return (
         <BookingContext.Provider
             value={{
@@ -53,6 +74,9 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
                 setDateTime,
                 personData,
                 setPersonData,
+                resetBooking,
+                isSuccessfullyBooked,
+                setIsSuccessfullyBooked,
             }}
         >
             {children}

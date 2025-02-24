@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -11,6 +11,7 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { useBookingContext } from '@/context/BookingContext';
+import { DateTime } from 'luxon';
 
 // Available time slots
 const timeSlots = ['10:00', '11:00', '12:00', '13:00', '14:00', '17:00'];
@@ -19,7 +20,7 @@ const timeSlots = ['10:00', '11:00', '12:00', '13:00', '14:00', '17:00'];
 const isSunday = (date: Date) => date.getDay() === 0;
 
 export default function Calendar() {
-    const { setDateTime } = useBookingContext();
+    const { setDateTime, dateTime } = useBookingContext();
 
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
@@ -27,6 +28,14 @@ export default function Calendar() {
     // State for selected date and time
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
+
+    // Reset selection when dateTime is reset to null, when execute resetBooking function in BookingContext
+    useEffect(() => {
+        if (!dateTime) {
+            setSelectedDate(null);
+            setSelectedTime(null);
+        }
+    }, [dateTime]);
 
     // Generate dates for the current week (13 days: 7 days before, today, and 5 days after)
     const weekDates = useMemo(() => {
@@ -55,12 +64,21 @@ export default function Calendar() {
         setSelectedTime(time);
         if (selectedDate) {
             const [hours, minutes] = time.split(':');
-            const dateTime = new Date(selectedDate);
-            dateTime.setHours(
-                Number.parseInt(hours, 10),
-                Number.parseInt(minutes, 10),
-            ); // Combine date and time
-            setDateTime(dateTime); // Call the prop function with the selected date and time
+            // Combine date and time in format 'YYYY-MM-DDTHH:MM:SS' with luxon
+            const dateTime = DateTime.fromObject(
+                {
+                    year: selectedDate.getFullYear(),
+                    month: selectedDate.getMonth() + 1,
+                    day: selectedDate.getDate(),
+                    hour: parseInt(hours, 10),
+                    minute: parseInt(minutes, 10),
+                },
+                { zone: 'America/Mexico_City' },
+            );
+
+            const isoString = dateTime.toISO();
+            // Set the selected date and time in the BookingContext
+            setDateTime(isoString);
         }
     };
 

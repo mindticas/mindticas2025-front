@@ -4,6 +4,6 @@ import HomePage from '@/pages/index';
 
 test('Should render home page', () => {
     render(<HomePage />);
-    const headingElement = screen.getByText(/Elegansters barber appointment/i);
+    const headingElement = screen.getByText(/RESERVA TU CITA/i);
     expect(headingElement).toBeInTheDocument();
 });

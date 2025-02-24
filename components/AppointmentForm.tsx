@@ -1,6 +1,5 @@
 'use client';
 import {
-    Alert,
     Button,
     Fieldset,
     Flex,
@@ -9,15 +8,29 @@ import {
     Stack,
 } from '@chakra-ui/react';
 import { Field } from '@/components/ui/field';
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import PhoneInput, { Value } from 'react-phone-number-input';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useBookingContext } from '@/context/BookingContext';
+import { toaster } from './ui/toaster';
 
-export default function AppointmentForm() {
-    const { service, personData, dateTime } = useBookingContext();
+interface AppointmentFormProps {
+    onSuccess: () => void;
+    onError: () => void;
+}
+
+export default function AppointmentForm({
+    onSuccess,
+    onError,
+}: AppointmentFormProps) {
+    const {
+        service,
+        personData,
+        setPersonData,
+        dateTime,
+        setIsSuccessfullyBooked,
+    } = useBookingContext();
 
     const sendData = async () => {
         const data = {
@@ -29,34 +42,17 @@ export default function AppointmentForm() {
         return data;
     };
 
-    // Global state
-    const { setPersonData } = useBookingContext();
-
-    // State to store form values
-    const [formData, setFormData] = useState({
-        name: '',
-        lastname: '',
-        phone: '',
-    });
-
-    // State for form messages
-    const [alert, setAlert] = useState<{
-        type: 'success' | 'error' | '';
-    }>({
-        type: '',
-    });
-
-    // state for loading state
+    // State for loading state
     const [isLoading, setIsLoading] = useState(false);
     // State for phone number validation
     const [isPhoneValid, setIsPhoneValid] = useState(true);
 
     // Handle phone number change
     const handlePhoneChange = (phone: Value) => {
-        setFormData((prev) => ({
-            ...prev,
-            phone: phone || '',
-        }));
+        setPersonData({
+            ...personData,
+            phone: phone ? phone.toString() : '',
+        });
 
         // Validate phone number
         if (phone) {
@@ -64,21 +60,12 @@ export default function AppointmentForm() {
         } else {
             setIsPhoneValid(true); // Reset validation if empty
         }
-
-        // Clear alert when user modifies input
-        setAlert({ type: '' });
     };
 
     // Handle input changes and update state
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-
-        // Clear alert when user modifies input
-        setAlert({ type: '' });
+        setPersonData({ ...personData, [name]: value });
     };
 
     // Handle form submission
@@ -86,10 +73,18 @@ export default function AppointmentForm() {
         e.preventDefault();
 
         // Validate phone number before submission
-        if (!isValidPhoneNumber(formData.phone)) {
-            setAlert({
+        if (!personData.phone || !isValidPhoneNumber(personData.phone)) {
+            toaster.create({
                 type: 'error',
+                duration: 5000,
+                title: 'Número de teléfono inválido o vacío',
             });
+            return;
+        }
+
+        // Validate form fields before submission
+        if (!personData.name || !personData.lastName) {
+            onError();
             return;
         }
 
@@ -102,31 +97,19 @@ export default function AppointmentForm() {
             const isSuccessful = Math.random() > 0.3; // 70% success rate
 
             if (isSuccessful) {
-                setAlert({
-                    type: 'success',
-                });
+                onSuccess();
 
-                setPersonData({
-                    name: formData.name,
-                    lastName: formData.lastname,
-                    phone: formData.phone,
-                });
-
-                setFormData({ name: '', lastname: '', phone: '' });
+                sendData();
                 setIsPhoneValid(true);
+                setIsSuccessfullyBooked(true);
+
+                // Reset personData
+                setPersonData({ name: '', lastName: '', phone: '' });
             } else {
-                setAlert({
-                    type: 'error',
-                });
+                onError();
             }
         }, 2000);
     };
-
-    useEffect(() => {
-        if (personData.name && personData.lastName && personData.phone) {
-            sendData();
-        }
-    }, [personData]);
 
     return (
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
@@ -160,7 +143,7 @@ export default function AppointmentForm() {
                                 type='text'
                                 name='name'
                                 placeholder='Juan'
-                                value={formData.name}
+                                value={personData.name}
                                 onChange={handleChange}
                             />
                         </Field>
@@ -168,10 +151,10 @@ export default function AppointmentForm() {
                             <Input
                                 size='lg'
                                 p={1}
-                                name='lastname'
+                                name='lastName'
                                 type='text'
                                 placeholder='Torres'
-                                value={formData.lastname}
+                                value={personData.lastName}
                                 onChange={handleChange}
                             />
                         </Field>
@@ -181,7 +164,7 @@ export default function AppointmentForm() {
                                 international
                                 defaultCountry='MX'
                                 placeholder='Ingresa tu número de teléfono'
-                                value={formData.phone}
+                                value={personData.phone}
                                 onChange={handlePhoneChange}
                                 style={{
                                     padding: '8px',
@@ -210,23 +193,6 @@ export default function AppointmentForm() {
                     >
                         {isLoading ? <Spinner size='sm' mr={2} /> : 'Agendar'}
                     </Button>
-                    {alert.type && (
-                        <Alert.Root
-                            p={3}
-                            status={alert.type}
-                            mt={4}
-                            borderRadius='md'
-                        >
-                            <Alert.Indicator />
-                            <Stack>
-                                <Alert.Title>
-                                    {alert.type === 'error'
-                                        ? 'Ocurrió un error al agendar la cita, revisa los datos e intenta de nuevo'
-                                        : 'Cita reservada con éxito, se enviará un mensaje de confirmación por WhatsApp'}
-                                </Alert.Title>
-                            </Stack>
-                        </Alert.Root>
-                    )}
                 </Fieldset.Root>
             </Flex>
         </form>
