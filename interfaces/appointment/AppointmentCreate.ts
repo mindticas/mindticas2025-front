@@ -1,6 +1,6 @@
 export interface CreateAppointment {
     name: string;
     phone: string;
-    scheduledStart: string | null;
+    scheduled_start: string;
     treatment_ids: number[];
  }

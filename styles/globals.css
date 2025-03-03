@@ -37,3 +37,7 @@ cursor: pointer;
 .css-1006k0u {
   gap: 20px;
 }
+
+[data-state="unchecked"] [data-part="item-indicator"] {
+  display: none !important;
+}

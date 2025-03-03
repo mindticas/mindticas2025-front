@@ -2,6 +2,6 @@ import { CreateAppointment } from "./AppointmentCreate";
 
 export interface Appointment extends CreateAppointment {
     id: number;         
-    createdAt: string;  
-    updatedAt: string;  
+    created_at: string;  
+    updated_at: string;  
   }

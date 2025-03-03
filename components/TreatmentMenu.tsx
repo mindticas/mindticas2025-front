@@ -51,7 +51,6 @@ export default function TreatmentMenu() {
         <>
             <div>{error && <p style={{ color: 'red' }}>{error}</p>}</div>
             <SelectRoot
-                value={[treatment.toString()]}
                 onValueChange={(e) => handleTreatmentSelect(e.value.toString())}
                 size='lg'
                 maxW='sm'
@@ -66,17 +65,23 @@ export default function TreatmentMenu() {
                     <SelectValueText />
                 </SelectTrigger>
                 <SelectContent backgroundColor='white'>
-                    {treatments.map((treatment) => (
+                    {treatments.map((treatmentItem) => (
                         <SelectItem
                             cursor='pointer'
                             _hover={{ backgroundColor: 'gray.100' }}
                             backgroundColor='white'
-                            item={treatment.id.toString()}
-                            key={treatment.id}
+                            item={treatmentItem.id.toString()}
+                            key={treatmentItem.id}
                             p={2}
+                            data-state={
+                                treatment === treatmentItem.id
+                                    ? 'checked'
+                                    : 'unchecked'
+                            }
+                            // disable the treatment if the booking is already made
                         >
-                            {treatment.name}
-                            <Text fontWeight='bold'>{`$${treatment.price} `}</Text>
+                            {treatmentItem.name}
+                            <Text fontWeight='bold'>{`$${treatmentItem.price} `}</Text>
                         </SelectItem>
                     ))}
                 </SelectContent>

@@ -18,3 +18,14 @@ export const createAppointment = async(newAppointment: CreateAppointment): Promi
 }   catch(error){
     throw error;
 }}
+
+export const getAppointments = async(): Promise<Appointment[]> => {
+    try {
+        const response = await fetch(`${API_URL}/appointment`);
+        if (!response.ok) {
+            throw new Error('Error to get appointments');
+        }
+        return await response.json() 
+}   catch(error){
+    throw error;
+}}
