@@ -4,10 +4,10 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // define the context type
 type BookingContextType = {
-    service: string;
+    treatment: number;
+    setTreatment: (treatment: number) => void;
     isSuccessfullyBooked: boolean;
     setIsSuccessfullyBooked: (isSuccessfullyBooked: boolean) => void;
-    setService: (service: string) => void;
     dateTime: string | null;
     setDateTime: (dateTime: string | null) => void;
     personData: { name: string; lastName: string; phone: string };
@@ -37,7 +37,7 @@ export const useBookingContext = () => {
 export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const [service, setService] = useState<string>('');
+    const [treatment, setTreatment] = useState<number>(0);
     const [dateTime, setDateTime] = useState<string | null>(null);
     const [isSuccessfullyBooked, setIsSuccessfullyBooked] =
         useState<boolean>(false);
@@ -53,12 +53,12 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
 
     // function to reset the booking
     const resetBooking = () => {
-        setService('');
+        setTreatment(0);
         setIsSuccessfullyBooked(false);
         setDateTime(null);
     };
 
-    // Reset the service when booking is successful
+    // Reset the treatment when booking is successful
     useEffect(() => {
         if (isSuccessfullyBooked) {
             resetBooking();
@@ -68,8 +68,8 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     return (
         <BookingContext.Provider
             value={{
-                service,
-                setService,
+                treatment,
+                setTreatment,
                 dateTime,
                 setDateTime,
                 personData,

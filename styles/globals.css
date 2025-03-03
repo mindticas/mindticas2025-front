@@ -30,3 +30,10 @@ body {
 .chakra-select__indicatorGroup{
   padding: 10px;
 }
+.chakra-select__trigger{
+padding: 10px;
+cursor: pointer;
+}
+.css-1006k0u {
+  gap: 20px;
+}

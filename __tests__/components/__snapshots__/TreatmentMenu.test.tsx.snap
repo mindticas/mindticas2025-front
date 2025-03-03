@@ -14,23 +14,6 @@ exports[`HomePage Snapshot should match the snapshot 1`] = `
     dir="ltr"
     id="select::r0:"
   >
-    <select
-      aria-hidden="true"
-      aria-labelledby="select::r0::label"
-      id="select::r0::select"
-      style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
-      tabindex="-1"
-    >
-      <option
-        value="barba"
-      />
-      <option
-        value="pelo"
-      />
-      <option
-        value="barba y pelo"
-      />
-    </select>
     <label
       class="chakra-select__label css-t80ohu"
       data-part="label"
@@ -63,14 +46,13 @@ exports[`HomePage Snapshot should match the snapshot 1`] = `
         role="combobox"
         type="button"
       >
+        Servicio a realizar
         <span
-          class="chakra-select__valueText css-wdekkk"
+          class="chakra-select__valueText css-176t9sc"
           data-part="value-text"
           data-scope="select"
           dir="ltr"
-        >
-          Selecciona un servicio
-        </span>
+        />
       </button>
       <div
         class="chakra-select__indicatorGroup css-1xvjckd"

@@ -1,9 +1,9 @@
+import TreatmentMenu from '@/components/TreatmentMenu';
 import { render } from '../../utils/render-test';
-import ServiceMenu from '@/components/ServiceMenu';
 
 describe('HomePage Snapshot', () => {
     it('should match the snapshot', () => {
-        const { asFragment } = render(<ServiceMenu />);
+        const { asFragment } = render(<TreatmentMenu />);
         expect(asFragment()).toMatchSnapshot();
     });
 });

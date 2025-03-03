@@ -4,15 +4,15 @@ import Head from 'next/head';
 import AppointmentForm from '@/components/AppointmentForm';
 import Calendar from '@/components/Calendar';
 import { Box, Flex, Text } from '@chakra-ui/react';
-import ServiceMenu from '@/components/ServiceMenu';
 import { useBookingContext } from '@/context/BookingContext';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { Toaster, toaster } from '@/components/ui/toaster';
 import { useEffect, useRef } from 'react';
+import TreatmentMenu from '@/components/TreatmentMenu';
 
 export default function Home() {
-    const { service, dateTime } = useBookingContext();
+    const { treatment, dateTime } = useBookingContext();
     const formRef = useRef<HTMLDivElement>(null);
 
     // toast success message
@@ -33,15 +33,15 @@ export default function Home() {
         });
     };
 
-    // Scroll to form when service and date are selected
+    // Scroll to form when treatment and date are selected
     useEffect(() => {
-        if (service && dateTime && formRef.current) {
+        if (treatment && dateTime && formRef.current) {
             formRef.current.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start',
             });
         }
-    }, [service, dateTime]);
+    }, [treatment, dateTime]);
 
     return (
         <>
@@ -72,9 +72,9 @@ export default function Home() {
                         alignItems='center'
                         flexDirection='column'
                     >
-                        <ServiceMenu />
+                        <TreatmentMenu />
                         <Calendar />
-                        {dateTime && service && (
+                        {dateTime && treatment && (
                             <div ref={formRef}>
                                 <AppointmentForm
                                     onSuccess={handleSuccess}

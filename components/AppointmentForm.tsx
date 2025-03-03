@@ -14,6 +14,7 @@ import { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useBookingContext } from '@/context/BookingContext';
 import { toaster } from './ui/toaster';
+import { createAppointment } from '@/services/AppointmentService';
 
 interface AppointmentFormProps {
     onSuccess: () => void;
@@ -25,22 +26,12 @@ export default function AppointmentForm({
     onError,
 }: AppointmentFormProps) {
     const {
-        service,
+        treatment,
         personData,
         setPersonData,
         dateTime,
         setIsSuccessfullyBooked,
     } = useBookingContext();
-
-    const sendData = async () => {
-        const data = {
-            name: `${personData.name} ${personData.lastName}`,
-            phone: personData.phone,
-            service,
-            dateTime,
-        };
-        return data;
-    };
 
     // State for loading state
     const [isLoading, setIsLoading] = useState(false);
@@ -68,8 +59,16 @@ export default function AppointmentForm({
         setPersonData({ ...personData, [name]: value });
     };
 
+    // Function to remove country code (+52) and keep only 10 digits
+    const formatPhoneNumber = (phone: string) => {
+        if (phone.startsWith('+52')) {
+            return phone.slice(3); // Remove +52
+        }
+        return phone; // If no country code, return as is
+    };
+
     // Handle form submission
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Validate phone number before submission
@@ -91,24 +90,29 @@ export default function AppointmentForm({
         // Set loading state spinner
         setIsLoading(true);
 
-        // Simulate API call (2s delay)
-        setTimeout(() => {
+        try {
+            // Format phone number to remove country code
+            const formattedPhone = formatPhoneNumber(personData.phone);
+            // Create object with appointment data
+            const newAppointment = {
+                name: `${personData.name} ${personData.lastName}`,
+                phone: formattedPhone,
+                treatment_ids: [treatment],
+                scheduledStart: dateTime,
+            };
+
+            // create appointment in the backend
+            await createAppointment(newAppointment);
+
+            // if appointment is created successfully, show success message
             setIsLoading(false);
-            const isSuccessful = Math.random() > 0.3; // 70% success rate
-
-            if (isSuccessful) {
-                onSuccess();
-
-                sendData();
-                setIsPhoneValid(true);
-                setIsSuccessfullyBooked(true);
-
-                // Reset personData
-                setPersonData({ name: '', lastName: '', phone: '' });
-            } else {
-                onError();
-            }
-        }, 2000);
+            onSuccess();
+            setIsSuccessfullyBooked(true);
+            setPersonData({ name: '', lastName: '', phone: '' });
+        } catch (error) {
+            setIsLoading(false);
+            onError();
+        }
     };
 
     return (
@@ -161,7 +165,7 @@ export default function AppointmentForm({
                         <Field required label='Número de teléfono'>
                             <PhoneInput
                                 className='PhoneInputInput'
-                                international
+                                countries={['MX']}
                                 defaultCountry='MX'
                                 placeholder='Ingresa tu número de teléfono'
                                 value={personData.phone}
