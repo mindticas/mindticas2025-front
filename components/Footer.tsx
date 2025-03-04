@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Box, Flex, Text, Container, Icon } from '@chakra-ui/react';
 import { MapPin, Phone } from 'lucide-react';
 
@@ -7,12 +6,13 @@ export default function Footer() {
     return (
         <footer>
             <Box as='footer' bg='black' color='white' py={8} mt={6}>
-                <Container maxW='container.lg' px={4}>
+                <Container maxW='container.2xl' px={4}>
                     <Flex
                         direction={{ base: 'column', md: 'row' }}
                         justify='space-between'
                         align='center'
-                        gap={3}
+                        gap={5}
+                        px={4}
                     >
                         <Flex
                             direction='column'

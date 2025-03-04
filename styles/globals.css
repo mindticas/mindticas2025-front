@@ -41,3 +41,6 @@ cursor: pointer;
 [data-state="unchecked"] [data-part="item-indicator"] {
   display: none !important;
 }
+.css-t10ba0,.css-1r6tcn5  {
+  max-width: none;
+}

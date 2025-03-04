@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import {
+    Badge,
     Box,
     Button,
     Flex,
@@ -13,6 +14,8 @@ import {
 import { useBookingContext } from '@/context/BookingContext';
 import { DateTime } from 'luxon';
 import { getAppointments } from '@/services/AppointmentService';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 // Available time slots
 const timeSlots = [
@@ -39,6 +42,10 @@ export default function Calendar() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [bookedTimes, setBookedTimes] = useState<string[]>([]);
+
+    // Function to get the current month in Spanish
+
+    const obtenerMes = () => format(new Date(), 'MMMM', { locale: es });
 
     // fetch booked appointments
     useEffect(() => {
@@ -174,15 +181,23 @@ export default function Calendar() {
                     borderColor='gray.200'
                 >
                     {/* Calendar title */}
-                    <Heading
-                        as='h2'
-                        fontSize='lg'
-                        fontWeight='bold'
-                        mb={4}
-                        color='black'
-                    >
-                        Selecciona el día
-                    </Heading>
+                    <Flex justifyContent='space-between' mb={4} px={2}>
+                        <Heading
+                            as='h2'
+                            fontSize='lg'
+                            fontWeight='bold'
+                            color='black'
+                        >
+                            Selecciona el día
+                        </Heading>
+                        <Badge
+                            style={{ textTransform: 'capitalize' }}
+                            variant='solid'
+                            p={2}
+                        >
+                            {obtenerMes()}
+                        </Badge>
+                    </Flex>
 
                     {/* Days of the week */}
                     <Grid

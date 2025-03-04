@@ -24,7 +24,6 @@ export default function TreatmentMenu() {
             try {
                 const data = await getTreatments();
                 setTreatments(data);
-                setError(null);
             } catch (error) {
                 setError(
                     'No se pudieron cargar los tratamientos. Inténtalo de nuevo más tarde.',
@@ -42,9 +41,7 @@ export default function TreatmentMenu() {
 
     const getSelectedTreatmentName = () => {
         const selectedTreatment = treatments.find((t) => t.id === treatment);
-        return selectedTreatment
-            ? selectedTreatment.name
-            : 'Servicio a realizar';
+        return selectedTreatment?.name ?? 'Servicio a realizar';
     };
 
     return (
@@ -65,23 +62,21 @@ export default function TreatmentMenu() {
                     <SelectValueText />
                 </SelectTrigger>
                 <SelectContent backgroundColor='white'>
-                    {treatments.map((treatmentItem) => (
+                    {treatments.map(({ id, price, name }) => (
                         <SelectItem
                             cursor='pointer'
                             _hover={{ backgroundColor: 'gray.100' }}
                             backgroundColor='white'
-                            item={treatmentItem.id.toString()}
-                            key={treatmentItem.id}
+                            item={id.toString()}
+                            key={id}
                             p={2}
                             data-state={
-                                treatment === treatmentItem.id
-                                    ? 'checked'
-                                    : 'unchecked'
+                                treatment === id ? 'checked' : 'unchecked'
                             }
                             // disable the treatment if the booking is already made
                         >
-                            {treatmentItem.name}
-                            <Text fontWeight='bold'>{`$${treatmentItem.price} `}</Text>
+                            {name}
+                            <Text fontWeight='bold'>{`$${price} `}</Text>
                         </SelectItem>
                     ))}
                 </SelectContent>

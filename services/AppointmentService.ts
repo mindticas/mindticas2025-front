@@ -1,8 +1,8 @@
-import { CreateAppointment } from "@/interfaces/appointment/AppointmentCreate";
+import { AppointmentCreate } from "@/interfaces/appointment/AppointmentCreate";
 import { API_URL } from "./apiConfig";
 import { Appointment } from "@/interfaces/appointment/Appointment";
 
-export const createAppointment = async(newAppointment: CreateAppointment): Promise<Appointment> => {
+export const createAppointment = async(newAppointment: AppointmentCreate): Promise<Appointment> => {
     try {
         const response = await fetch(`${API_URL}/appointment`, {
             method: 'POST',

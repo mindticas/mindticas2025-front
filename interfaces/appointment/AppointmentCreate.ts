@@ -1,4 +1,4 @@
-export interface CreateAppointment {
+export interface AppointmentCreate {
     name: string;
     phone: string;
     scheduled_start: string;
