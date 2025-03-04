@@ -7,142 +7,139 @@ exports[`Calendar Snapshot should match the snapshot 1`] = `
   >
     ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
   </script>
+  <div />
   <div
     class="css-1gcrimv"
   >
     <div
-      class="css-59mu8m"
+      class="calendar-box css-vk4h8o"
     >
       <h2
-        class="chakra-heading css-pfbr1a"
+        class="chakra-heading css-1bzk9nh"
       >
-        Select a Date and Time
+        Selecciona el día
       </h2>
       <div
-        class="css-1tt5w0v"
+        class="css-56tv3v"
       >
         <div
           class="css-1121gur"
         >
-          Sun
+          Do
         </div>
         <div
           class="css-1121gur"
         >
-          Mon
+          Lu
         </div>
         <div
           class="css-1121gur"
         >
-          Tue
+          Ma
         </div>
         <div
           class="css-1121gur"
         >
-          Wed
+          Mi
         </div>
         <div
           class="css-1121gur"
         >
-          Thu
+          Ju
         </div>
         <div
           class="css-1121gur"
         >
-          Fri
+          Vi
         </div>
         <div
           class="css-1121gur"
         >
-          Sat
+          Sa
         </div>
       </div>
       <div
-        class="css-14t91g7"
+        class="css-16nmiu8"
       >
         <button
           class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
-          9
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          10
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          11
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          12
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          13
+          2 
         </button>
         <button
           class="chakra-button css-r87ip0"
           type="button"
         >
-          14
+          3 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          15
+          4 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          type="button"
+        >
+          5 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          type="button"
+        >
+          6 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          type="button"
+        >
+          7 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          type="button"
+        >
+          8 
         </button>
         <button
           class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
-          16
+          9 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          17
+          10 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          18
+          11 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          19
+          12 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          20
+          13 
         </button>
         <button
           class="chakra-button css-1732jk6"
           type="button"
         >
-          21
+          14 
         </button>
       </div>
     </div>

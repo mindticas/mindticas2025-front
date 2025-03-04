@@ -1,6 +1,5 @@
 'use client';
 import {
-    Alert,
     Button,
     Fieldset,
     Flex,
@@ -10,37 +9,41 @@ import {
 } from '@chakra-ui/react';
 import { Field } from '@/components/ui/field';
 import React, { useState } from 'react';
-
 import PhoneInput, { Value } from 'react-phone-number-input';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { useBookingContext } from '@/context/BookingContext';
+import { toaster } from './ui/toaster';
+import { createAppointment } from '@/services/AppointmentService';
 
-export default function AppointmentForm() {
-    // State to store form values
-    const [formData, setFormData] = useState({
-        name: '',
-        lastname: '',
-        phone: '',
-    });
+interface AppointmentFormProps {
+    onSuccess: () => void;
+    onError: () => void;
+}
 
-    // State for form messages
-    const [alert, setAlert] = useState<{
-        type: 'success' | 'error' | '';
-    }>({
-        type: '',
-    });
+export default function AppointmentForm({
+    onSuccess,
+    onError,
+}: AppointmentFormProps) {
+    const {
+        treatment,
+        personData,
+        setPersonData,
+        dateTime,
+        setIsSuccessfullyBooked,
+    } = useBookingContext();
 
-    // state for loading state
+    // State for loading state
     const [isLoading, setIsLoading] = useState(false);
     // State for phone number validation
     const [isPhoneValid, setIsPhoneValid] = useState(true);
 
     // Handle phone number change
     const handlePhoneChange = (phone: Value) => {
-        setFormData((prev) => ({
-            ...prev,
-            phone: phone || '',
-        }));
+        setPersonData({
+            ...personData,
+            phone: phone ? phone.toString() : '',
+        });
 
         // Validate phone number
         if (phone) {
@@ -48,64 +51,91 @@ export default function AppointmentForm() {
         } else {
             setIsPhoneValid(true); // Reset validation if empty
         }
-
-        // Clear alert when user modifies input
-        setAlert({ type: '' });
     };
 
     // Handle input changes and update state
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setPersonData({ ...personData, [name]: value });
+    };
 
-        // Clear alert when user modifies input
-        setAlert({ type: '' });
+    // Function to remove country code (+52) and keep only 10 digits
+    const formatPhoneNumber = (phone: string) => {
+        if (phone.startsWith('+52')) {
+            return phone.slice(3); // Remove +52
+        }
+        return phone; // If no country code, return as is
     };
 
     // Handle form submission
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Validate phone number before submission
-        if (!isValidPhoneNumber(formData.phone)) {
-            setAlert({
+        if (!personData.phone || !isValidPhoneNumber(personData.phone)) {
+            toaster.create({
                 type: 'error',
+                duration: 5000,
+                title: 'Número de teléfono inválido o vacío',
             });
+            return;
+        }
+
+        // Validate form fields before submission
+        if (!personData.name || !personData.lastName) {
+            onError();
             return;
         }
 
         // Set loading state spinner
         setIsLoading(true);
 
-        // Simulate API call (2s delay)
-        setTimeout(() => {
-            setIsLoading(false);
-            const isSuccessful = Math.random() > 0.3; // 70% success rate
+        try {
+            // Format phone number to remove country code
+            const formattedPhone = formatPhoneNumber(personData.phone);
+            // Create object with appointment data
+            const newAppointment = {
+                name: `${personData.name} ${personData.lastName}`,
+                phone: formattedPhone,
+                treatment_ids: [treatment!],
+                scheduled_start: dateTime!,
+            };
 
-            if (isSuccessful) {
-                setAlert({
-                    type: 'success',
-                });
-                setFormData({ name: '', lastname: '', phone: '' });
-                setIsPhoneValid(true);
-            } else {
-                setAlert({
-                    type: 'error',
-                });
-            }
-        }, 2000);
+            // create appointment in the backend
+            await createAppointment(newAppointment);
+
+            // if appointment is created successfully, show success message
+            setIsLoading(false);
+            onSuccess();
+            setIsSuccessfullyBooked(true);
+            setPersonData({ name: '', lastName: '', phone: '' });
+        } catch (error) {
+            setIsLoading(false);
+            onError();
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <Flex p='4' justify='center'>
-                <Fieldset.Root size='lg' maxW='md'>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+            <Flex p='6' justify='center'>
+                <Fieldset.Root
+                    borderRadius='lg'
+                    boxShadow='md'
+                    borderWidth='1px'
+                    borderColor='gray.200'
+                    size='lg'
+                    maxW='sm'
+                    p={6}
+                >
                     <Stack>
-                        <Fieldset.Legend>Datos del contacto </Fieldset.Legend>
-                        <Fieldset.HelperText pb={3}>
+                        <Fieldset.Legend
+                            fontSize='lg'
+                            fontWeight='600'
+                            color='gray.900'
+                        >
+                            Datos del contacto
+                        </Fieldset.Legend>
+                        <Fieldset.HelperText color='gray.600' pb={3}>
                             Ingrese los datos del contacto para agendar una cita
                         </Fieldset.HelperText>
                     </Stack>
@@ -117,7 +147,7 @@ export default function AppointmentForm() {
                                 type='text'
                                 name='name'
                                 placeholder='Juan'
-                                value={formData.name}
+                                value={personData.name}
                                 onChange={handleChange}
                             />
                         </Field>
@@ -125,19 +155,20 @@ export default function AppointmentForm() {
                             <Input
                                 size='lg'
                                 p={1}
-                                name='lastname'
+                                name='lastName'
                                 type='text'
                                 placeholder='Torres'
-                                value={formData.lastname}
+                                value={personData.lastName}
                                 onChange={handleChange}
                             />
                         </Field>
                         <Field required label='Número de teléfono'>
                             <PhoneInput
-                                international
+                                className='PhoneInputInput'
+                                countries={['MX']}
                                 defaultCountry='MX'
                                 placeholder='Ingresa tu número de teléfono'
-                                value={formData.phone}
+                                value={personData.phone}
                                 onChange={handlePhoneChange}
                                 style={{
                                     padding: '8px',
@@ -156,26 +187,16 @@ export default function AppointmentForm() {
                             )}
                         </Field>
                     </Fieldset.Content>
-                    <Button type='submit' w='full' mt={6} disabled={isLoading}>
+                    <Button
+                        bg='black'
+                        color='white'
+                        type='submit'
+                        w='full'
+                        mt={6}
+                        disabled={isLoading}
+                    >
                         {isLoading ? <Spinner size='sm' mr={2} /> : 'Agendar'}
                     </Button>
-                    {alert.type && (
-                        <Alert.Root
-                            p={3}
-                            status={alert.type}
-                            mt={4}
-                            borderRadius='md'
-                        >
-                            <Alert.Indicator />
-                            <Stack>
-                                <Alert.Title>
-                                    {alert.type === 'error'
-                                        ? 'Ocurrió un error al agendar la cita, revisa los datos e intenta de nuevo'
-                                        : 'Cita reservada con éxito, se enviará un mensaje de confirmación por WhatsApp'}
-                                </Alert.Title>
-                            </Stack>
-                        </Alert.Root>
-                    )}
                 </Fieldset.Root>
             </Flex>
         </form>
