@@ -45,8 +45,8 @@ export default function Calendar() {
 
     // Function to get the current month in Spanish
     const getMonth = () => {
-        const fecha = selectedDate || new Date();
-        return format(fecha, 'MMMM', { locale: es });
+        const date = selectedDate || new Date();
+        return format(date, 'MMMM', { locale: es });
     };
     // fetch booked appointments
     useEffect(() => {
