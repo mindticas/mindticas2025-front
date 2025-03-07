@@ -44,21 +44,19 @@ export default function Calendar() {
     const [bookedTimes, setBookedTimes] = useState<string[]>([]);
 
     // Function to get the current month in Spanish
-
-    const obtenerMes = () => format(new Date(), 'MMMM', { locale: es });
-
+    const obtenerMes = () => {
+        const fecha = selectedDate || new Date();
+        return format(fecha, 'MMMM', { locale: es });
+    };
     // fetch booked appointments
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
                 const data = await getAppointments();
-
                 const bookedTimes = data.map((appointment) => {
                     return appointment.scheduled_start;
                 });
-
                 setBookedTimes(bookedTimes);
-                setError(null);
             } catch (error) {
                 setError(
                     'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
