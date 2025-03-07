@@ -44,7 +44,7 @@ export default function Calendar() {
     const [bookedTimes, setBookedTimes] = useState<string[]>([]);
 
     // Function to get the current month in Spanish
-    const obtenerMes = () => {
+    const getMonth = () => {
         const fecha = selectedDate || new Date();
         return format(fecha, 'MMMM', { locale: es });
     };
@@ -192,8 +192,10 @@ export default function Calendar() {
                             style={{ textTransform: 'capitalize' }}
                             variant='solid'
                             p={2}
+                            backgroundColor='black'
+                            color='white'
                         >
-                            {obtenerMes()}
+                            {getMonth()}
                         </Badge>
                     </Flex>
 
