@@ -15,7 +15,8 @@ import { Treatment } from '@/interfaces/treatment/Treatment';
 import { SelectRoot, Text, createListCollection } from '@chakra-ui/react';
 
 export default function TreatmentMenu() {
-    const { treatment, setTreatment } = useBookingContext();
+    const { treatment, setTreatment, treatmentDuration, setTreatmentDuration } =
+        useBookingContext();
     const [treatments, setTreatments] = useState<Treatment[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -24,15 +25,33 @@ export default function TreatmentMenu() {
             try {
                 const data = await getTreatments();
                 setTreatments(data);
+                const durationData = treatments.find((t) => t.id === treatment);
+                console.log(durationData);
             } catch (error) {
                 setError(
                     'No se pudieron cargar los tratamientos. Inténtalo de nuevo más tarde.',
                 );
             }
         };
-
         fetchTreatments();
     }, []);
+
+    // get treatment duration when treatment changes
+    useEffect(() => {
+        getTreatmentDuration();
+        console.log(treatment);
+    }, [treatment]);
+
+    // get treatment duration
+    const getTreatmentDuration = () => {
+        const durationData = treatments.find((t) => t.id === treatment);
+        console.log(durationData);
+        if (durationData) {
+            setTreatmentDuration(durationData.duration);
+        } else {
+            setTreatmentDuration(0);
+        }
+    };
 
     const handleTreatmentSelect = (selectedValue: string) => {
         const treatmentId = parseInt(selectedValue);

@@ -17,6 +17,8 @@ type BookingContextType = {
         phone: string;
     }) => void;
     resetBooking: () => void;
+    treatmentDuration: number;
+    setTreatmentDuration: (duration: number) => void;
 };
 
 // Create the context
@@ -50,6 +52,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
         lastName: '',
         phone: '',
     });
+    const [treatmentDuration, setTreatmentDuration] = useState<number>(0);
 
     // function to reset the booking
     const resetBooking = () => {
@@ -77,6 +80,8 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
                 resetBooking,
                 isSuccessfullyBooked,
                 setIsSuccessfullyBooked,
+                treatmentDuration,
+                setTreatmentDuration,
             }}
         >
             {children}
