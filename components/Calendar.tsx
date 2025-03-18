@@ -9,7 +9,6 @@ import {
     Grid,
     GridItem,
     Heading,
-    Spinner,
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { useBookingContext } from '@/context/BookingContext';
@@ -34,8 +33,7 @@ const timeSlots = [
 const isSunday = (date: Date) => date.getDay() === 0;
 
 export default function Calendar() {
-    const { setDateTime, dateTime, treatment, treatmentDuration } =
-        useBookingContext();
+    const { setDateTime, dateTime, treatment } = useBookingContext();
     const [error, setError] = useState<string | null>(null);
     const boxRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -60,9 +58,21 @@ export default function Calendar() {
             setIsLoading(true);
             try {
                 const data = await getAppointments();
-                const bookedTimes = data.map((appointment) => {
-                    return appointment.scheduled_start;
-                });
+                const bookedTimes = data
+                    .flatMap((appointment) => {
+                        const startTime = DateTime.fromISO(
+                            appointment.scheduled_start,
+                            { zone: 'utc' },
+                        );
+                        if (appointment.duration === 120) {
+                            const nextSlot = startTime
+                                .plus({ hours: 1 })
+                                .toISO();
+                            return [appointment.scheduled_start, nextSlot];
+                        }
+                        return appointment.scheduled_start;
+                    })
+                    .filter(Boolean) as string[];
                 setBookedTimes(bookedTimes);
             } catch (error) {
                 setError(
@@ -120,7 +130,6 @@ export default function Calendar() {
                 },
                 { zone: 'utc' },
             );
-
             const isoString = dateTime.toISO();
             // Set the selected date and time in the BookingContext
             setDateTime(isoString);
@@ -159,6 +168,7 @@ export default function Calendar() {
         return timeDate < new Date(); // Compare with the current time
     };
 
+    // Load all reserved times
     const bookedTimesForDate = useMemo(() => {
         if (!selectedDate) return [];
         // Format the selected date in ISO format (without time)
@@ -169,13 +179,13 @@ export default function Calendar() {
                 const bookedDateISO = DateTime.fromISO(bookedTime).toISODate();
                 return bookedDateISO === selectedDateISO;
             })
-            .map((bookedTime) =>
-                DateTime.fromISO(bookedTime, {
+            .map((bookedTime) => {
+                const formattedTime = DateTime.fromISO(bookedTime, {
                     zone: 'utc',
-                }).toFormat('HH:mm'),
-            );
+                }).toFormat('HH:mm');
+                return formattedTime;
+            });
     }, [selectedDate, bookedTimes]);
-
     const isBookedTime = (time: string) => {
         return bookedTimesForDate.includes(time);
     };
@@ -189,33 +199,13 @@ export default function Calendar() {
             });
         }
     }, [treatment, selectedDate]);
-
-    // Check if the selected date has all time slots booked
-    const isNotAvailableDate = (date: Date) => {
-        const count = bookedTimes.filter((booked) => {
-            const bookedDate = new Date(booked);
-            return (
-                bookedDate.getFullYear() === date.getFullYear() &&
-                bookedDate.getMonth() === date.getMonth() &&
-                bookedDate.getDate() === date.getDate()
-            );
-        }).length;
-        return count >= timeSlots.length;
-    };
-
-    if (isLoading) {
-        return (
-            <Flex align='center' justify='center' minH='200px'>
-                <Spinner size='xl' />
-            </Flex>
-        );
-    }
-
+    // Check the available slots for 1 hour and 2 hour appointments
     const isSlotAvailabe = (time: string) => {
-        const slotsAvailabe = treatmentDuration / 60;
-        // find the index of the selected time
+        if (!treatment || !treatment.duration) return false;
+        const slotsAvailable = treatment.duration / 60;
         const currentIndex = timeSlots.indexOf(time);
-        for (let i = 0; i < slotsAvailabe; i++) {
+        if (currentIndex === -1) return false;
+        for (let i = 0; i < slotsAvailable; i++) {
             const slot = timeSlots[currentIndex + i];
             if (!slot || isBookedTime(slot)) {
                 return false;
@@ -298,8 +288,7 @@ export default function Calendar() {
                                 bg={
                                     isPastDate(date) ||
                                     isSunday(date) ||
-                                    isFutureDate(date) ||
-                                    isNotAvailableDate(date)
+                                    isFutureDate(date)
                                         ? 'gray.200' // Past dates or Sundays
                                         : selectedDate?.toDateString() ===
                                           date.toDateString()
@@ -311,8 +300,7 @@ export default function Calendar() {
                                 color={
                                     isPastDate(date) ||
                                     isSunday(date) ||
-                                    isFutureDate(date) ||
-                                    isNotAvailableDate(date)
+                                    isFutureDate(date)
                                         ? 'gray.400' // Past dates or Sundays
                                         : selectedDate?.toDateString() ===
                                           date.toDateString()
@@ -322,8 +310,7 @@ export default function Calendar() {
                                 _hover={
                                     isPastDate(date) ||
                                     isSunday(date) ||
-                                    isFutureDate(date) ||
-                                    isNotAvailableDate(date)
+                                    isFutureDate(date)
                                         ? {} // No hover for past dates or Sundays
                                         : { bg: 'gray.200' } // Hover for future dates
                                 }
@@ -332,8 +319,7 @@ export default function Calendar() {
                                     isTreatmentSelected === false ||
                                     isPastDate(date) ||
                                     isSunday(date) ||
-                                    isFutureDate(date) ||
-                                    isNotAvailableDate(date)
+                                    isFutureDate(date)
                                 } // Disable past dates or Sundays
                             >
                                 {date.getDate()} {/* Day of the month */}
@@ -385,8 +371,8 @@ export default function Calendar() {
                                         onClick={() =>
                                             !isPastTime(time) &&
                                             !isBookedTime(time) &&
-                                            handleTimeSelect(time) &&
-                                            isSlotAvailabe(time)
+                                            isSlotAvailabe(time) &&
+                                            handleTimeSelect(time)
                                         }
                                         disabled={
                                             isPastTime(time) ||

@@ -97,10 +97,9 @@ export default function AppointmentForm({
             const newAppointment = {
                 name: `${personData.name} ${personData.lastName}`,
                 phone: formattedPhone,
-                treatment_ids: [treatment!],
+                treatment_ids: [treatment!.id],
                 scheduled_start: dateTime!,
             };
-
             // create appointment in the backend
             await createAppointment(newAppointment);
 

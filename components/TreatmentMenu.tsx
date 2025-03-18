@@ -15,8 +15,7 @@ import { Treatment } from '@/interfaces/treatment/Treatment';
 import { SelectRoot, Text, createListCollection } from '@chakra-ui/react';
 
 export default function TreatmentMenu() {
-    const { treatment, setTreatment, treatmentDuration, setTreatmentDuration } =
-        useBookingContext();
+    const { treatment, setTreatment } = useBookingContext();
     const [treatments, setTreatments] = useState<Treatment[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -25,8 +24,6 @@ export default function TreatmentMenu() {
             try {
                 const data = await getTreatments();
                 setTreatments(data);
-                const durationData = treatments.find((t) => t.id === treatment);
-                console.log(durationData);
             } catch (error) {
                 setError(
                     'No se pudieron cargar los tratamientos. Inténtalo de nuevo más tarde.',
@@ -36,30 +33,18 @@ export default function TreatmentMenu() {
         fetchTreatments();
     }, []);
 
-    // get treatment duration when treatment changes
-    useEffect(() => {
-        getTreatmentDuration();
-        console.log(treatment);
-    }, [treatment]);
-
-    // get treatment duration
-    const getTreatmentDuration = () => {
-        const durationData = treatments.find((t) => t.id === treatment);
-        console.log(durationData);
-        if (durationData) {
-            setTreatmentDuration(durationData.duration);
-        } else {
-            setTreatmentDuration(0);
+    const handleTreatmentSelect = (selectedValue: string) => {
+        const treatmentId = parseInt(selectedValue);
+        const selectedTreatment = treatments.find((t) => t.id === treatmentId);
+        if (selectedTreatment) {
+            setTreatment(selectedTreatment);
         }
     };
 
-    const handleTreatmentSelect = (selectedValue: string) => {
-        const treatmentId = parseInt(selectedValue);
-        setTreatment(treatmentId);
-    };
-
     const getSelectedTreatmentName = () => {
-        const selectedTreatment = treatments.find((t) => t.id === treatment);
+        const selectedTreatment = treatments.find(
+            (t) => t.id === treatment?.id,
+        );
         return selectedTreatment?.name ?? 'Servicio a realizar';
     };
 
@@ -90,7 +75,7 @@ export default function TreatmentMenu() {
                             key={id}
                             p={2}
                             data-state={
-                                treatment === id ? 'checked' : 'unchecked'
+                                treatment?.id === id ? 'checked' : 'unchecked'
                             }
                             // disable the treatment if the booking is already made
                         >

@@ -1,11 +1,12 @@
 'use client';
 
+import { Treatment } from '@/interfaces/treatment/Treatment';
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // define the context type
 type BookingContextType = {
-    treatment: number | null;
-    setTreatment: (treatment: number) => void;
+    treatment: Treatment | null;
+    setTreatment: (treatment: Treatment | null) => void;
     isSuccessfullyBooked: boolean;
     setIsSuccessfullyBooked: (isSuccessfullyBooked: boolean) => void;
     dateTime: string | null;
@@ -17,8 +18,6 @@ type BookingContextType = {
         phone: string;
     }) => void;
     resetBooking: () => void;
-    treatmentDuration: number;
-    setTreatmentDuration: (duration: number) => void;
 };
 
 // Create the context
@@ -39,7 +38,7 @@ export const useBookingContext = () => {
 export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const [treatment, setTreatment] = useState<number | null>(null);
+    const [treatment, setTreatment] = useState<Treatment | null>(null);
     const [dateTime, setDateTime] = useState<string | null>(null);
     const [isSuccessfullyBooked, setIsSuccessfullyBooked] =
         useState<boolean>(false);
@@ -52,7 +51,6 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
         lastName: '',
         phone: '',
     });
-    const [treatmentDuration, setTreatmentDuration] = useState<number>(0);
 
     // function to reset the booking
     const resetBooking = () => {
@@ -80,8 +78,6 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
                 resetBooking,
                 isSuccessfullyBooked,
                 setIsSuccessfullyBooked,
-                treatmentDuration,
-                setTreatmentDuration,
             }}
         >
             {children}

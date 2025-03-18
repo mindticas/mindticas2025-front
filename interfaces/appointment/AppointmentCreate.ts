@@ -3,4 +3,4 @@ export interface AppointmentCreate {
     phone: string;
     scheduled_start: string;
     treatment_ids: number[];
- }
+}
