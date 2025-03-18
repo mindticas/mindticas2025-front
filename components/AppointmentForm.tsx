@@ -89,21 +89,24 @@ export default function AppointmentForm({
 
         // Set loading state spinner
         setIsLoading(true);
-
         try {
+            // Check if the treatment is not null
+            if (!treatment || !treatment.id) {
+                throw new Error(
+                    'Se requiere tratamiento y debe tener una identificación válida.',
+                );
+            }
             // Format phone number to remove country code
             const formattedPhone = formatPhoneNumber(personData.phone);
             // Create object with appointment data
             const newAppointment = {
                 name: `${personData.name} ${personData.lastName}`,
                 phone: formattedPhone,
-                treatment_ids: [treatment!],
+                treatment_ids: [treatment.id],
                 scheduled_start: dateTime!,
             };
-
             // create appointment in the backend
             await createAppointment(newAppointment);
-
             // if appointment is created successfully, show success message
             setIsLoading(false);
             onSuccess();

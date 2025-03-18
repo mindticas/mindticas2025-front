@@ -16,6 +16,7 @@ import { DateTime } from 'luxon';
 import { getAppointments } from '@/services/AppointmentService';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useRef } from 'react';
 
 // Available time slots
 const timeSlots = [
@@ -32,8 +33,10 @@ const timeSlots = [
 const isSunday = (date: Date) => date.getDay() === 0;
 
 export default function Calendar() {
-    const { setDateTime, dateTime } = useBookingContext();
+    const { setDateTime, dateTime, treatment } = useBookingContext();
     const [error, setError] = useState<string | null>(null);
+    const boxRef = useRef<HTMLDivElement>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
@@ -42,6 +45,8 @@ export default function Calendar() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [bookedTimes, setBookedTimes] = useState<string[]>([]);
+    // Check if a treatment is selected
+    const isTreatmentSelected = !!treatment;
 
     // Function to get the current month in Spanish
     const getMonth = () =>
@@ -50,16 +55,31 @@ export default function Calendar() {
     // fetch booked appointments
     useEffect(() => {
         const fetchAppointments = async () => {
+            setIsLoading(true);
             try {
                 const data = await getAppointments();
-                const bookedTimes = data.map((appointment) => {
-                    return appointment.scheduled_start;
-                });
+                const bookedTimes = data
+                    .flatMap((appointment) => {
+                        const startTime = DateTime.fromISO(
+                            appointment.scheduled_start,
+                            { zone: 'utc' },
+                        );
+                        if (appointment.duration === 120) {
+                            const nextSlot = startTime
+                                .plus({ hours: 1 })
+                                .toISO();
+                            return [appointment.scheduled_start, nextSlot];
+                        }
+                        return appointment.scheduled_start;
+                    })
+                    .filter(Boolean) as string[];
                 setBookedTimes(bookedTimes);
             } catch (error) {
                 setError(
                     'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
                 );
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -68,19 +88,19 @@ export default function Calendar() {
             setSelectedDate(null);
             setSelectedTime(null);
         }
-
         fetchAppointments();
     }, [dateTime]);
 
-    // Generate dates for the current week (13 days: 7 days before, today, and 5 days after)
+    // Generate dates for the current week
     const weekDates = useMemo(() => {
         const today = new Date();
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay()); // Adjust to the start of the week (Sunday)
+        const currentSunday = new Date(today);
+        currentSunday.setDate(today.getDate() - today.getDay());
+        currentSunday.setDate(currentSunday.getDate() - 7);
 
-        return Array.from({ length: 13 }, (_, i) => {
-            const date = new Date(startOfWeek);
-            date.setDate(startOfWeek.getDate() + i); // Add consecutive days
+        return Array.from({ length: 28 }, (_, i) => {
+            const date = new Date(currentSunday);
+            date.setDate(currentSunday.getDate() + i);
             return date;
         });
     }, []);
@@ -110,7 +130,6 @@ export default function Calendar() {
                 },
                 { zone: 'utc' },
             );
-
             const isoString = dateTime.toISO();
             // Set the selected date and time in the BookingContext
             setDateTime(isoString);
@@ -129,6 +148,14 @@ export default function Calendar() {
         return date < new Date(today.setHours(0, 0, 0, 0)); // Compare with the start of the current day
     };
 
+    const isFutureDate = (date: Date) => {
+        const today = new Date();
+        const weekAfter = new Date(today);
+        weekAfter.setDate(today.getDate() + 8);
+        weekAfter.setHours(0, 0, 0, 0);
+        return date >= weekAfter;
+    };
+
     // Check if a time is in the past (only applies if the selected date is today)
     const isPastTime = (time: string) => {
         if (!selectedDate || !isToday(selectedDate)) return false; // Only applies if the date is today
@@ -141,33 +168,61 @@ export default function Calendar() {
         return timeDate < new Date(); // Compare with the current time
     };
 
+    // Load all reserved times
     const bookedTimesForDate = useMemo(() => {
         if (!selectedDate) return [];
-
         // Format the selected date in ISO format (without time)
         const selectedDateISO = DateTime.fromJSDate(selectedDate).toISODate();
-
         // Filter booked appointments for the selected date
         return bookedTimes
             .filter((bookedTime) => {
                 const bookedDateISO = DateTime.fromISO(bookedTime).toISODate();
                 return bookedDateISO === selectedDateISO;
             })
-            .map((bookedTime) =>
-                DateTime.fromISO(bookedTime, {
+            .map((bookedTime) => {
+                const formattedTime = DateTime.fromISO(bookedTime, {
                     zone: 'utc',
-                }).toFormat('HH:mm'),
-            );
+                }).toFormat('HH:mm');
+                return formattedTime;
+            });
     }, [selectedDate, bookedTimes]);
-
     const isBookedTime = (time: string) => {
         return bookedTimesForDate.includes(time);
+    };
+
+    // Scroll to the schedules when the treatment and day are selected
+    useEffect(() => {
+        if (selectedDate && boxRef.current) {
+            boxRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        }
+    }, [treatment, selectedDate]);
+    // Check the available slots for 1 hour and 2 hour appointments
+    const isSlotAvailabe = (time: string) => {
+        if (!treatment || !treatment.duration) return false;
+        const slotsAvailable = treatment.duration / 60;
+        const currentIndex = timeSlots.indexOf(time);
+        if (currentIndex === -1) return false;
+        for (let i = 0; i < slotsAvailable; i++) {
+            const slot = timeSlots[currentIndex + i];
+            if (!slot || isBookedTime(slot)) {
+                return false;
+            }
+        }
+        return true;
     };
 
     return (
         <>
             <div>{error && <p style={{ color: 'red' }}>{error}</p>}</div>
-            <Flex direction='column' align='center' mx='auto'>
+            <Flex
+                direction='column'
+                align='center'
+                mx='auto'
+                filter={treatment ? 'auto' : 'blur(5px)'} // Blur the calendar if no treatment is selected
+            >
                 <Box
                     className='calendar-box'
                     bg='white'
@@ -231,7 +286,9 @@ export default function Calendar() {
                                 borderRadius='md'
                                 transition='background-color 0.2s'
                                 bg={
-                                    isPastDate(date) || isSunday(date)
+                                    isPastDate(date) ||
+                                    isSunday(date) ||
+                                    isFutureDate(date)
                                         ? 'gray.200' // Past dates or Sundays
                                         : selectedDate?.toDateString() ===
                                           date.toDateString()
@@ -241,7 +298,9 @@ export default function Calendar() {
                                         : 'gray.100' // Future dates
                                 }
                                 color={
-                                    isPastDate(date) || isSunday(date)
+                                    isPastDate(date) ||
+                                    isSunday(date) ||
+                                    isFutureDate(date)
                                         ? 'gray.400' // Past dates or Sundays
                                         : selectedDate?.toDateString() ===
                                           date.toDateString()
@@ -249,12 +308,19 @@ export default function Calendar() {
                                         : 'black' // Future dates or today
                                 }
                                 _hover={
-                                    isPastDate(date) || isSunday(date)
+                                    isPastDate(date) ||
+                                    isSunday(date) ||
+                                    isFutureDate(date)
                                         ? {} // No hover for past dates or Sundays
                                         : { bg: 'gray.200' } // Hover for future dates
                                 }
                                 onClick={() => handleDateSelect(date)}
-                                disabled={isPastDate(date) || isSunday(date)} // Disable past dates or Sundays
+                                disabled={
+                                    isTreatmentSelected === false ||
+                                    isPastDate(date) ||
+                                    isSunday(date) ||
+                                    isFutureDate(date)
+                                } // Disable past dates or Sundays
                             >
                                 {date.getDate()} {/* Day of the month */}
                             </Button>
@@ -263,7 +329,7 @@ export default function Calendar() {
 
                     {/* Time selection (only if a date is selected) */}
                     {selectedDate && (
-                        <Box>
+                        <Box ref={boxRef}>
                             <Heading
                                 as='h3'
                                 fontSize='lg'
@@ -302,15 +368,16 @@ export default function Calendar() {
                                                 ? {} // No hover for past times
                                                 : { bg: 'gray.200' } // Hover for future times
                                         }
-                                        onClick={
-                                            () =>
-                                                !isPastTime(time) &&
-                                                !isBookedTime(time) &&
-                                                handleTimeSelect(time) // Handle time selection
+                                        onClick={() =>
+                                            !isPastTime(time) &&
+                                            !isBookedTime(time) &&
+                                            isSlotAvailabe(time) &&
+                                            handleTimeSelect(time)
                                         }
                                         disabled={
                                             isPastTime(time) ||
-                                            isBookedTime(time)
+                                            isBookedTime(time) ||
+                                            !isSlotAvailabe(time)
                                         } // Disable past times
                                     >
                                         {time}

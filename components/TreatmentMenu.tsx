@@ -30,17 +30,21 @@ export default function TreatmentMenu() {
                 );
             }
         };
-
         fetchTreatments();
     }, []);
 
     const handleTreatmentSelect = (selectedValue: string) => {
         const treatmentId = parseInt(selectedValue);
-        setTreatment(treatmentId);
+        const selectedTreatment = treatments.find((t) => t.id === treatmentId);
+        if (selectedTreatment) {
+            setTreatment(selectedTreatment);
+        }
     };
 
     const getSelectedTreatmentName = () => {
-        const selectedTreatment = treatments.find((t) => t.id === treatment);
+        const selectedTreatment = treatments.find(
+            (t) => t.id === treatment?.id,
+        );
         return selectedTreatment?.name ?? 'Servicio a realizar';
     };
 
@@ -71,7 +75,7 @@ export default function TreatmentMenu() {
                             key={id}
                             p={2}
                             data-state={
-                                treatment === id ? 'checked' : 'unchecked'
+                                treatment?.id === id ? 'checked' : 'unchecked'
                             }
                             // disable the treatment if the booking is already made
                         >
