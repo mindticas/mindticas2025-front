@@ -9,16 +9,26 @@ exports[`Calendar Snapshot should match the snapshot 1`] = `
   </script>
   <div />
   <div
-    class="css-1gcrimv"
+    class="css-qj8tuy"
   >
     <div
       class="calendar-box css-vk4h8o"
     >
-      <h2
-        class="chakra-heading css-1bzk9nh"
+      <div
+        class="css-kg7qdy"
       >
-        Selecciona el día
-      </h2>
+        <h2
+          class="chakra-heading css-wu1q6v"
+        >
+          Selecciona el día
+        </h2>
+        <span
+          class="chakra-badge css-1xfmew8"
+          style="text-transform: capitalize;"
+        >
+          marzo
+        </span>
+      </div>
       <div
         class="css-56tv3v"
       >
@@ -66,80 +76,196 @@ exports[`Calendar Snapshot should match the snapshot 1`] = `
           disabled=""
           type="button"
         >
-          2 
-        </button>
-        <button
-          class="chakra-button css-r87ip0"
-          type="button"
-        >
-          3 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          type="button"
-        >
-          4 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          type="button"
-        >
-          5 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          type="button"
-        >
-          6 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          type="button"
-        >
-          7 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          type="button"
-        >
-          8 
+          9 
         </button>
         <button
           class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
-          9 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          type="button"
-        >
           10 
         </button>
         <button
-          class="chakra-button css-1732jk6"
+          class="chakra-button css-qa2o2z"
+          disabled=""
           type="button"
         >
           11 
         </button>
         <button
-          class="chakra-button css-1732jk6"
+          class="chakra-button css-qa2o2z"
+          disabled=""
           type="button"
         >
           12 
         </button>
         <button
-          class="chakra-button css-1732jk6"
+          class="chakra-button css-qa2o2z"
+          disabled=""
           type="button"
         >
           13 
         </button>
         <button
-          class="chakra-button css-1732jk6"
+          class="chakra-button css-qa2o2z"
+          disabled=""
           type="button"
         >
           14 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          15 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          16 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          17 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          18 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          19 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          20 
+        </button>
+        <button
+          class="chakra-button css-r87ip0"
+          disabled=""
+          type="button"
+        >
+          21 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          22 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          23 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          24 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          25 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          26 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          27 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          28 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          29 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          30 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          31 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          1 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          2 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          3 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          4 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          5 
         </button>
       </div>
     </div>

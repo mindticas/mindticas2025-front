@@ -205,6 +205,9 @@ export default function Calendar() {
         const slotsAvailable = treatment.duration / 60;
         const currentIndex = timeSlots.indexOf(time);
         if (currentIndex === -1) return false;
+        if (treatment.duration === 120 && time === '14:00') {
+            return false;
+        }
         for (let i = 0; i < slotsAvailable; i++) {
             const slot = timeSlots[currentIndex + i];
             if (!slot || isBookedTime(slot)) {
