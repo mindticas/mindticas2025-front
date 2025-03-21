@@ -1,14 +1,7 @@
 :root {
   --background: #ffffff;
-  --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 html,
 body {
@@ -17,7 +10,7 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  color: #333;
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -30,13 +23,24 @@ body {
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.PhoneInputInput{
+  background-color: var(--background);
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.chakra-select__indicatorGroup{
+  padding: 10px;
+}
+.chakra-select__trigger{
+padding: 10px;
+cursor: pointer;
+}
+.css-1006k0u {
+  gap: 20px;
+}
+
+[data-state="unchecked"] [data-part="item-indicator"] {
+  display: none !important;
+}
+.css-t10ba0,.css-1r6tcn5  {
+  max-width: none;
 }

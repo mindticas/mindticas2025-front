@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppointmentForm Snapshot should match the snapshot 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <form
+    style="width: 100%;"
+  >
+    <div
+      class="css-s6kjdg"
+    >
+      <fieldset
+        class="fieldset__root css-1pplgli"
+        data-part="root"
+        data-scope="fieldset"
+      >
+        <div
+          class="chakra-stack css-8g8ihq"
+        >
+          <legend
+            class="fieldset__legend css-181jjb6"
+            data-part="legend"
+            data-scope="fieldset"
+          >
+            Datos del contacto
+          </legend>
+          <span
+            class="fieldset__helperText css-a5zrz7"
+            data-part="helper-text"
+            data-scope="fieldset"
+            id="fieldset:::r0:::helper-text"
+          >
+            Ingrese los datos del contacto para agendar una cita
+          </span>
+        </div>
+        <div
+          class="fieldset__content css-mpjbgj"
+        >
+          <div
+            class="chakra-field__root css-13f87cb"
+            data-part="root"
+            data-scope="field"
+            id="field:::r1:"
+            role="group"
+          >
+            <label
+              class="chakra-field__label css-65zcwe"
+              data-part="label"
+              data-scope="field"
+              for=":r1:"
+              id="field:::r1:::label"
+            >
+              Nombre
+              <span
+                aria-hidden="true"
+                class="chakra-field__requiredIndicator css-gp8wgo"
+              >
+                *
+              </span>
+            </label>
+            <input
+              class="chakra-input css-6w9nzz"
+              data-part="input"
+              data-required=""
+              data-scope="field"
+              id=":r1:"
+              name="name"
+              placeholder="Juan"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="chakra-field__root css-13f87cb"
+            data-part="root"
+            data-scope="field"
+            id="field:::r2:"
+            role="group"
+          >
+            <label
+              class="chakra-field__label css-65zcwe"
+              data-part="label"
+              data-scope="field"
+              for=":r2:"
+              id="field:::r2:::label"
+            >
+              Apellido
+              <span
+                aria-hidden="true"
+                class="chakra-field__requiredIndicator css-gp8wgo"
+              >
+                *
+              </span>
+            </label>
+            <input
+              class="chakra-input css-6w9nzz"
+              data-part="input"
+              data-required=""
+              data-scope="field"
+              id=":r2:"
+              name="lastName"
+              placeholder="Torres"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="chakra-field__root css-13f87cb"
+            data-part="root"
+            data-scope="field"
+            id="field:::r3:"
+            role="group"
+          >
+            <label
+              class="chakra-field__label css-65zcwe"
+              data-part="label"
+              data-scope="field"
+              for=":r3:"
+              id="field:::r3:::label"
+            >
+              Número de teléfono
+              <span
+                aria-hidden="true"
+                class="chakra-field__requiredIndicator css-gp8wgo"
+              >
+                *
+              </span>
+            </label>
+            <div
+              class="PhoneInputInput PhoneInput"
+              style="padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; width: 100%;"
+            >
+              <div
+                class="PhoneInputCountry"
+              >
+                <select
+                  aria-label="Phone number country"
+                  class="PhoneInputCountrySelect"
+                >
+                  <option
+                    value="ZZ"
+                  >
+                    International
+                  </option>
+                  <option
+                    value="MX"
+                  >
+                    Mexico
+                  </option>
+                </select>
+                <div
+                  aria-hidden="true"
+                  class="PhoneInputCountryIcon PhoneInputCountryIcon--border"
+                >
+                  <img
+                    alt="Mexico"
+                    class="PhoneInputCountryIconImg"
+                    src="https://purecatamphetamine.github.io/country-flag-icons/3x2/MX.svg"
+                  />
+                </div>
+                <div
+                  class="PhoneInputCountrySelectArrow"
+                />
+              </div>
+              <input
+                autocomplete="tel"
+                class="PhoneInputInput"
+                placeholder="Ingresa tu número de teléfono"
+                type="tel"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <button
+          class="chakra-button css-bqcyop"
+          type="submit"
+        >
+          Agendar
+        </button>
+      </fieldset>
+    </div>
+  </form>
+</DocumentFragment>
+`;
