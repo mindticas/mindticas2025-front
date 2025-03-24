@@ -32,9 +32,6 @@ export default function AdminNavbar() {
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const isDesktop = useBreakpointValue({ base: false, md: true });
-    const handleLogout = () => {
-        console.log('Logging out...');
-    };
 
     return (
         <Box bg='gray.800' color='white' shadow='lg'>
@@ -101,7 +98,6 @@ export default function AdminNavbar() {
                 {/* Sección de botón Logout para desktop */}
                 {isDesktop && (
                     <Button
-                        onClick={handleLogout}
                         py='2'
                         px='4'
                         bg='red.600'
@@ -165,7 +161,6 @@ export default function AdminNavbar() {
                             );
                         })}
                         <Button
-                            onClick={handleLogout}
                             variant='ghost'
                             justifyContent='flex-start'
                             px='3'
