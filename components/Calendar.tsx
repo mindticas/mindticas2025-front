@@ -36,7 +36,8 @@ export default function Calendar() {
     const { setDateTime, dateTime, treatment } = useBookingContext();
     const [error, setError] = useState<string | null>(null);
     const boxRef = useRef<HTMLDivElement>(null);
-
+    const TREATMENT_DURATION = 120;
+    const REST_TIME = '14:00';
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
 
@@ -201,9 +202,10 @@ export default function Calendar() {
         const slotsAvailable = treatment.duration / 60;
         const currentIndex = timeSlots.indexOf(time);
         if (currentIndex === -1) return false;
-        if (treatment.duration === 120 && time === '14:00') {
+
+        if (treatment.duration === TREATMENT_DURATION && time === REST_TIME)
             return false;
-        }
+
         for (let i = 0; i < slotsAvailable; i++) {
             const slot = timeSlots[currentIndex + i];
             if (!slot || isBookedTime(slot)) {
