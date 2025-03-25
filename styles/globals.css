@@ -44,3 +44,23 @@ cursor: pointer;
 .css-t10ba0,.css-1r6tcn5  {
   max-width: none;
 }
+.tr-table:hover,.css-4jvnpz:hover,.css-lr1uno:hover   {
+  background-color: #f5f5f5; ;
+
+}
+.css-fa4i0c {
+  color:#4B5563;
+  font-weight: 600;
+  padding: 10px;
+}
+.chakra-select__positioner,.css-1fx66aq  {
+  z-index: 10000;
+  min-width: 200px;
+}
+.css-m6e6s1{
+  margin: 10px;
+}
+
+.css-lr1uno {
+  color: black;
+}
