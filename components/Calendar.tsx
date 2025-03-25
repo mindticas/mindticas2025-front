@@ -36,8 +36,8 @@ export default function Calendar() {
     const { setDateTime, dateTime, treatment } = useBookingContext();
     const [error, setError] = useState<string | null>(null);
     const boxRef = useRef<HTMLDivElement>(null);
-    const [isLoading, setIsLoading] = useState(false);
-
+    const TREATMENT_DURATION = 120;
+    const REST_TIME = '14:00';
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
 
@@ -55,7 +55,6 @@ export default function Calendar() {
     // fetch booked appointments
     useEffect(() => {
         const fetchAppointments = async () => {
-            setIsLoading(true);
             try {
                 const data = await getAppointments();
                 const bookedTimes = data
@@ -78,8 +77,6 @@ export default function Calendar() {
                 setError(
                     'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
                 );
-            } finally {
-                setIsLoading(false);
             }
         };
 
@@ -205,6 +202,10 @@ export default function Calendar() {
         const slotsAvailable = treatment.duration / 60;
         const currentIndex = timeSlots.indexOf(time);
         if (currentIndex === -1) return false;
+
+        if (treatment.duration === TREATMENT_DURATION && time === REST_TIME)
+            return false;
+
         for (let i = 0; i < slotsAvailable; i++) {
             const slot = timeSlots[currentIndex + i];
             if (!slot || isBookedTime(slot)) {

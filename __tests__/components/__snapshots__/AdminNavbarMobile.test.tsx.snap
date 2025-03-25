@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminNavbarMobile Snapshot should match the snapshot 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-efzgkz"
+  >
+    <div
+      class="css-lhqv6a"
+    >
+      <a
+        class="chakra-link css-1sa6w8m"
+        href="/admin/citas"
+      >
+        <svg
+          class="lucide lucide-scissors"
+          fill="none"
+          height="32"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="6"
+            cy="6"
+            r="3"
+          />
+          <path
+            d="M8.12 8.12 12 12"
+          />
+          <path
+            d="M20 4 8.12 15.88"
+          />
+          <circle
+            cx="6"
+            cy="18"
+            r="3"
+          />
+          <path
+            d="M14.8 14.8 20 20"
+          />
+        </svg>
+        <p
+          class="css-2jpnh5"
+        >
+          Elegangster Admin
+        </p>
+      </a>
+      <button
+        aria-label="Abrir menú"
+        class="chakra-button css-ld77z8"
+        type="button"
+      >
+        <svg
+          class="lucide lucide-menu"
+          fill="none"
+          height="24"
+          stroke="white"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="4"
+            x2="20"
+            y1="12"
+            y2="12"
+          />
+          <line
+            x1="4"
+            x2="20"
+            y1="6"
+            y2="6"
+          />
+          <line
+            x1="4"
+            x2="20"
+            y1="18"
+            y2="18"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
