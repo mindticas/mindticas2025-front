@@ -24,6 +24,7 @@ import {
     useBreakpointValue,
     Text,
     Badge,
+    Field,
 } from '@chakra-ui/react';
 import {
     SelectContent,
@@ -281,14 +282,19 @@ export default function CitasPage() {
                                 <Dialog.Body>
                                     <form onSubmit={handleSubmit}>
                                         <Box mb={4}>
-                                            <Input
-                                                p={2}
-                                                name='name'
-                                                placeholder='Nombre del Cliente'
-                                                value={formData.name}
-                                                onChange={handleInputChange}
-                                                required
-                                            />
+                                            <Field.Root>
+                                                <Field.Label fontWeight='semibold'>
+                                                    Nombre
+                                                </Field.Label>
+                                                <Input
+                                                    p={2}
+                                                    name='name'
+                                                    placeholder='Nombre del Cliente'
+                                                    value={formData.name}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                />
+                                            </Field.Root>
                                         </Box>
                                         <Box mb={4}>
                                             <SelectRoot
@@ -305,7 +311,7 @@ export default function CitasPage() {
                                                 }
                                                 required
                                             >
-                                                <SelectLabel fontWeight='bold'>
+                                                <SelectLabel fontWeight='semibold'>
                                                     Servicio a realizar
                                                 </SelectLabel>
                                                 <SelectTrigger>
@@ -340,36 +346,46 @@ export default function CitasPage() {
                                             </SelectRoot>
                                         </Box>
                                         <Box mb={4}>
-                                            <Input
-                                                _dark={{
-                                                    '&::-webkit-calendar-picker-indicator':
-                                                        {
-                                                            filter: 'invert(1)',
-                                                        },
-                                                }}
-                                                p={2}
-                                                type='date'
-                                                name='date'
-                                                value={formData.date}
-                                                onChange={handleInputChange}
-                                                required
-                                            />
+                                            <Field.Root>
+                                                <Field.Label fontWeight='semibold'>
+                                                    Fecha
+                                                </Field.Label>
+                                                <Input
+                                                    _dark={{
+                                                        '&::-webkit-calendar-picker-indicator':
+                                                            {
+                                                                filter: 'invert(1)',
+                                                            },
+                                                    }}
+                                                    p={2}
+                                                    type='date'
+                                                    name='date'
+                                                    value={formData.date}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                />
+                                            </Field.Root>
                                         </Box>
                                         <Box mb={4}>
-                                            <Input
-                                                _dark={{
-                                                    '&::-webkit-calendar-picker-indicator':
-                                                        {
-                                                            filter: 'invert(1)',
-                                                        },
-                                                }}
-                                                p={2}
-                                                type='time'
-                                                name='time'
-                                                value={formData.time}
-                                                onChange={handleInputChange}
-                                                required
-                                            />
+                                            <Field.Root>
+                                                <Field.Label fontWeight='semibold'>
+                                                    Hora
+                                                </Field.Label>
+                                                <Input
+                                                    _dark={{
+                                                        '&::-webkit-calendar-picker-indicator':
+                                                            {
+                                                                filter: 'invert(1)',
+                                                            },
+                                                    }}
+                                                    p={2}
+                                                    type='time'
+                                                    name='time'
+                                                    value={formData.time}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                />
+                                            </Field.Root>
                                         </Box>
                                     </form>
                                 </Dialog.Body>
@@ -601,89 +617,82 @@ export default function CitasPage() {
                                         })()}
                                     </Badge>
                                 </Table.Cell>
-                                <Table.Cell p={2}>
-                                    <Grid
-                                        templateColumns='repeat(3, 1fr)'
-                                        gap='1'
-                                    >
-                                        <Dialog.Root>
-                                            <Dialog.Trigger asChild>
-                                                <Tooltip
-                                                    showArrow
-                                                    content='Editar cita'
-                                                    positioning={{
-                                                        placement: 'top',
-                                                    }}
+                                <Table.Cell
+                                    p={2}
+                                    display='flex'
+                                    justifyContent='center'
+                                >
+                                    <Dialog.Root>
+                                        <Dialog.Trigger asChild>
+                                            <Tooltip
+                                                showArrow
+                                                content='Editar cita'
+                                                positioning={{
+                                                    placement: 'top',
+                                                }}
+                                            >
+                                                <Button
+                                                    backgroundColor='transparent'
+                                                    size='md'
+                                                    onClick={() =>
+                                                        handleEdit(
+                                                            appointment.id,
+                                                        )
+                                                    }
                                                 >
-                                                    <Button
-                                                        backgroundColor='transparent'
-                                                        size='md'
-                                                        onClick={() =>
-                                                            handleEdit(
-                                                                appointment.id,
-                                                            )
-                                                        }
-                                                    >
-                                                        <FilePenLine
-                                                            color='blue'
-                                                            strokeWidth={3}
-                                                        />
-                                                    </Button>
-                                                </Tooltip>
-                                            </Dialog.Trigger>
-                                        </Dialog.Root>
-                                        <Tooltip
-                                            showArrow
-                                            content='Cancelar cita'
-                                            positioning={{
-                                                placement: 'top',
-                                            }}
+                                                    <FilePenLine
+                                                        color='blue'
+                                                        strokeWidth={3}
+                                                    />
+                                                </Button>
+                                            </Tooltip>
+                                        </Dialog.Trigger>
+                                    </Dialog.Root>
+                                    <Tooltip
+                                        showArrow
+                                        content='Cancelar cita'
+                                        positioning={{
+                                            placement: 'top',
+                                        }}
+                                    >
+                                        <Button
+                                            size='md'
+                                            backgroundColor='transparent'
+                                            ml={2}
+                                            color='red'
+                                            disabled={
+                                                appointment.status ===
+                                                'cancelled'
+                                            }
+                                            onClick={() =>
+                                                handleDeleteClick(
+                                                    appointment.id,
+                                                )
+                                            }
                                         >
-                                            <Button
-                                                size='md'
-                                                backgroundColor='transparent'
-                                                ml={2}
-                                                color='red'
-                                                visibility={
-                                                    appointment.status !==
-                                                    'cancelled'
-                                                        ? 'visible'
-                                                        : 'hidden'
-                                                }
-                                                onClick={() =>
-                                                    handleDeleteClick(
-                                                        appointment.id,
-                                                    )
-                                                }
-                                            >
-                                                <CircleX strokeWidth={3} />
-                                            </Button>
-                                        </Tooltip>
-                                        <Tooltip
-                                            showArrow
-                                            content='Completar cita'
-                                            positioning={{
-                                                placement: 'top',
-                                            }}
+                                            <CircleX strokeWidth={3} />
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip
+                                        showArrow
+                                        content='Completar cita'
+                                        positioning={{
+                                            placement: 'top',
+                                        }}
+                                    >
+                                        <Button
+                                            size='md'
+                                            backgroundColor='transparent'
+                                            color='green'
+                                            ml={2}
+                                            disabled={
+                                                appointment.status ===
+                                                'completed'
+                                            }
                                         >
-                                            <Button
-                                                size='md'
-                                                backgroundColor='transparent'
-                                                color='green'
-                                                ml={2}
-                                                visibility={
-                                                    appointment.status !==
-                                                    'completed'
-                                                        ? 'visible'
-                                                        : 'hidden'
-                                                }
-                                            >
-                                                <CircleCheckBig
-                                                    strokeWidth={3}
-                                                />
-                                            </Button>
-                                        </Tooltip>
-                                    </Grid>
+                                            <CircleCheckBig strokeWidth={3} />
+                                        </Button>
+                                    </Tooltip>
                                 </Table.Cell>
                             </Table.Row>
                         ))}
