@@ -1,5 +1,5 @@
 import { Box, Flex, Link as ChakraLink, Button, Text } from '@chakra-ui/react';
-import { BarChart, Calendar, LogOut, Scissors, Users } from 'lucide-react';
+import { LogOut, Scissors } from 'lucide-react';
 import React from 'react';
 import NextLink from 'next/link';
 import { AdminNavbarDesktopProps } from '@/interfaces/navItems/navItems';
@@ -72,6 +72,7 @@ export default function DesktopViewAdmin({
                 <Button
                     py='2'
                     px='4'
+                    color='white'
                     bg='red.600'
                     _hover={{ bg: 'red.700' }}
                     fontWeight='bold'
