@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login Snapshot should match the snapshot 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-1p1q308"
+  >
+    <div
+      class="css-1234vry"
+    >
+      <form>
+        <div
+          class="chakra-stack css-11vffse"
+        >
+          <h1
+            class="chakra-heading css-1dtsck9"
+          >
+            Iniciar sesión
+          </h1>
+          <div
+            class="chakra-stack css-fn1s88"
+          >
+            <div
+              class="chakra-field__root css-13f87cb"
+              data-part="root"
+              data-scope="field"
+              id="field:::r0:"
+              role="group"
+            >
+              <label
+                class="chakra-field__label css-9de5sl"
+                data-part="label"
+                data-scope="field"
+                for=":r0:"
+                id="field:::r0:::label"
+              >
+                Usuario
+              </label>
+              <input
+                class="chakra-input css-1hb1osm"
+                data-part="input"
+                data-scope="field"
+                id=":r0:"
+                name="username"
+                placeholder="Ingresa tu usuario"
+              />
+            </div>
+            <div
+              class="chakra-field__root css-13f87cb"
+              data-part="root"
+              data-scope="field"
+              id="field:::r1:"
+              role="group"
+            >
+              <label
+                class="chakra-field__label css-9de5sl"
+                data-part="label"
+                data-scope="field"
+                for=":r1:"
+                id="field:::r1:::label"
+              >
+                Contraseña
+              </label>
+              <div
+                class="css-r4izcz"
+              >
+                <input
+                  class="chakra-input css-1gk9sfn"
+                  data-part="input"
+                  data-scope="field"
+                  id=":r1:"
+                  name="password"
+                  placeholder="Ingresa tu contraseña"
+                  type="password"
+                />
+                <div
+                  class="css-ds5jk8"
+                >
+                  <svg
+                    class="lucide lucide-eye"
+                    fill="none"
+                    height="18"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="18"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+                    />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="3"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <button
+              class="chakra-button css-723201"
+              type="submit"
+            >
+              Enviar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</DocumentFragment>
+`;

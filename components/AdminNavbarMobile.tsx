@@ -53,7 +53,7 @@ export default function AdminNavbarMobile({
             </Flex>
             {/* Mobile menu */}
             {isMobileMenuOpen && (
-                <Box pb='4' display={{ md: 'none' }}>
+                <Box pb='4' display={{ lg: 'none' }}>
                     <Stack px='2'>
                         {navItems.map((item) => {
                             const Icon = item.icon;
