@@ -2,24 +2,16 @@
 
 import type React from 'react';
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import {
-    CalendarCheck,
-    CircleCheckBig,
-    CircleX,
-    Clock,
-    FilePenLine,
-} from 'lucide-react';
+import { CircleCheckBig, CircleX, FilePenLine } from 'lucide-react';
 import {
     Box,
     Button,
     Input,
-    Grid,
     Dialog,
     Portal,
     CloseButton,
     SelectRoot,
     createListCollection,
-    Table,
     useBreakpointValue,
     Text,
     Badge,
@@ -43,45 +35,79 @@ import { getTreatments } from '@/services/TreatmentService';
 import { Treatment } from '@/interfaces/treatment/Treatment';
 import { splitDateTimeFromISO } from '@/utils/dateUtils';
 import { Toaster, toaster } from '@/components/ui/toaster';
+import { AdminTable } from '@/components/AdminTable';
+import { SearchFilters, statusOptions } from '@/components/SearchFilters';
+import { useFilters } from '@/hooks/useFilters';
+import {
+    AppointmentUpdate,
+    FormDataType,
+} from '@/interfaces/appointment/AppointmentUpdate';
 
-const statusOptions = [
-    {
-        value: 'confirmed',
-        label: 'Confirmado',
-        color: 'blue',
-        icon: <CalendarCheck size={16} />,
-    },
-    {
-        value: 'pending',
-        label: 'Pendiente',
-        color: 'yellow',
-        icon: <Clock size={16} strokeWidth={3} />,
-    },
-    {
-        value: 'canceled',
-        label: 'Cancelado',
-        color: 'red',
-        icon: <CircleX size={16} strokeWidth={3} />,
-    },
-    {
-        value: 'completed',
-        label: 'Completado',
-        color: 'green',
-        icon: <CircleCheckBig size={16} strokeWidth={3} />,
-    },
-    { value: '', label: 'Todos los estatus', color: 'gray' },
-];
-
+/**
+ * The `CitasPage` component is the main page for managing appointments in the admin panel.
+ * It provides functionality for viewing, filtering, creating, editing, canceling, and completing appointments.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} The rendered component for the appointments management page.
+ *
+ * @description
+ * This component includes:
+ * - A table displaying a list of appointments with filtering options.
+ * - Modals for creating, editing, and canceling appointments.
+ * - Functions to handle appointment actions such as editing, canceling, and completing.
+ * - State management for appointments, filters, modals, and loading/error states.
+ *
+ *
+ * @remarks
+ * - The component uses `useEffect` to fetch initial data for appointments and treatments.
+ * - It includes a `useMemo` hook to filter appointments based on user input.
+ * - The component relies on external utility functions like `getAppointments`, `getTreatments`, and `updateAppointment`.
+ *
+ * @state
+ * - `isSmallScreen` (`boolean`): Determines if the screen size is small.
+ * - `appointments` (`Appointment[]`): List of appointments.
+ * - `formData` (`FormDataType`): Form data for creating or editing an appointment.
+ * - `filters` (`FiltersType`): Filters applied to the appointments list.
+ * - `editingId` (`number | null`): ID of the appointment being edited.
+ * - `isModalOpen` (`boolean`): Whether the create/edit modal is open.
+ * - `deleteModalOpen` (`boolean`): Whether the cancelation modal is open.
+ * - `appointmentIdToCancel` (`number | null`): ID of the appointment to cancel.
+ * - `isLoading` (`boolean`): Whether data is being loaded.
+ * - `isLoadingSubmit` (`boolean`): Whether a form submission is in progress.
+ * - `error` (`string | null`): Error message, if any.
+ * - `treatments` (`Treatment[]`): List of available treatments.
+ *
+ * @functions
+ * - `handleEdit(id: number)`: Opens the edit modal for the specified appointment.
+ * - `handleInputChange(e: React.ChangeEvent<HTMLInputElement>)`: Updates form data based on user input.
+ * - `handleSubmit(e: React.FormEvent)`: Submits the form for creating or editing an appointment.
+ * - `getUpdatedFields(formData: FormDataType, originalAppointment: Appointment)`: Determines the fields that have been updated.
+ * - `refreshAppointmentState(appointmentId: number)`: Refreshes the state of a specific appointment.
+ * - `closeModal()`: Closes the create/edit modal.
+ * - `handleUpdateError(error: unknown)`: Handles errors during appointment updates.
+ * - `handleCancelClick(id: number)`: Opens the cancelation modal for the specified appointment.
+ * - `confirmCancelation()`: Confirms and processes the cancelation of an appointment.
+ * - `handleComplete(id: number)`: Marks an appointment as completed.
+ *
+ * @dependencies
+ * - `useBreakpointValue`: Determines screen size.
+ * - `useFilters`: Manages filtering logic.
+ * - `getAppointments`, `getTreatments`, `updateAppointment`, `getAppointmentById`: API calls for appointments and treatments.
+ * - `toaster`: Displays notifications.
+ * - `AdminTable`, `SearchFilters`: Custom components for displaying and filtering appointments.
+ * - `Dialog`, `Field`, `Input`, `Button`, `Badge`, `Tooltip`: UI components for modals, forms, and actions.
+ */
 export default function CitasPage() {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const [appointments, setAppointments] = useState<Appointment[]>([]);
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormDataType>({
         name: '',
         treatment: '',
         date: '',
         time: '',
     });
-    const [filters, setFilters] = useState({
+    const { filters, handleFilterChange, handleStatusChange } = useFilters({
         name: '',
         treatments: '',
         date: '',
@@ -90,11 +116,12 @@ export default function CitasPage() {
     const [editingId, setEditingId] = useState<number | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteModalOpen, setCancelationModalOpen] = useState(false);
-    const [appointmentIdToCancel, setappointmentIdToCancel] = useState<
+    const [appointmentIdToCancel, setAppointmentIdToCancel] = useState<
         number | null
     >(null);
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [treatments, setTreatments] = useState<Treatment[]>([]);
 
@@ -150,50 +177,101 @@ export default function CitasPage() {
         [],
     );
 
-    const handleFilterChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const { name, value } = e.target;
-            setFilters((prev) => ({ ...prev, [name]: value }));
-        },
-        [],
-    );
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (editingId === null) return;
 
-        if (editingId !== null) {
-            try {
-                const updatedAppointment = {
-                    customer_name: formData.name,
-                    treatments_id: [parseInt(formData.treatment)],
-                    scheduled_start: `${formData.date}T${formData.time}:00Z`,
-                };
-                await updateAppointment(editingId, updatedAppointment);
-                const verifiedAppointment = await getAppointmentById(editingId);
-                setAppointments((prev) =>
-                    prev.map((appointment) =>
-                        appointment.id === editingId
-                            ? { ...appointment, ...verifiedAppointment }
-                            : appointment,
-                    ),
-                );
+        try {
+            setIsLoadingSubmit(true);
+            const originalAppointment = await getAppointmentById(editingId);
+            const updatedFields = getUpdatedFields(
+                formData,
+                originalAppointment,
+            );
 
+            if (Object.keys(updatedFields).length > 0) {
+                await updateAppointment(editingId, updatedFields);
+                await refreshAppointmentState(editingId);
                 toaster.create({
                     type: 'success',
                     duration: 5000,
                     title: 'Cita actualizada con éxito',
                 });
-            } catch (error) {
+            } else {
                 toaster.create({
-                    type: 'error',
+                    type: 'info',
                     duration: 5000,
-                    title: 'Ocurrió un error al actualizar la cita, intenta de nuevo',
+                    title: 'No hay cambios para actualizar',
                 });
             }
-
-            setEditingId(null);
-            setIsModalOpen(false);
+        } catch (error) {
+            handleUpdateError(error);
+        } finally {
+            closeModal();
+            setIsLoadingSubmit(false);
         }
+    };
+
+    const getUpdatedFields = (
+        formData: FormDataType,
+        originalAppointment: Appointment,
+    ) => {
+        const updatedFields: Partial<AppointmentUpdate> = {};
+
+        if (formData.name !== originalAppointment.customer?.name) {
+            updatedFields.customer_name = formData.name;
+        }
+
+        const originalTreatmentIds = originalAppointment.treatments
+            .map((t) => t.id)
+            .sort()
+            .join(',');
+        const newTreatmentIds = formData.treatment
+            .split(',')
+            .map((id) => parseInt(id.trim()))
+            .sort()
+            .join(',');
+
+        if (newTreatmentIds !== originalTreatmentIds) {
+            updatedFields.treatments_id = formData.treatment
+                .split(',')
+                .map((id) => parseInt(id.trim()));
+        }
+
+        const newScheduledStart = `${formData.date}T${formData.time}:00.000Z`;
+        if (newScheduledStart !== originalAppointment.scheduled_start) {
+            updatedFields.scheduled_start = newScheduledStart;
+        }
+
+        return updatedFields;
+    };
+
+    const refreshAppointmentState = async (appointmentId: number) => {
+        const verifiedAppointment = await getAppointmentById(appointmentId);
+        setAppointments((prev) =>
+            prev.map((appointment) =>
+                appointment.id === appointmentId
+                    ? { ...appointment, ...verifiedAppointment }
+                    : appointment,
+            ),
+        );
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setEditingId(null);
+    };
+
+    const handleUpdateError = (error: unknown) => {
+        const errorMessage =
+            error instanceof Error
+                ? error.message
+                : 'Error al actualizar la cita';
+        toaster.create({
+            type: 'error',
+            duration: 5000,
+            title: errorMessage,
+        });
     };
 
     const filteredAppointments = useMemo(() => {
@@ -205,16 +283,16 @@ export default function CitasPage() {
                 appointment.treatments?.some((treatment) =>
                     treatment.name
                         .toLowerCase()
-                        .includes(filters.treatments.toLowerCase()),
+                        .includes(filters.treatments!.toLowerCase()),
                 ) &&
-                appointment.scheduled_start.includes(filters.date) &&
+                appointment.scheduled_start.includes(filters.date!) &&
                 (filters.status === '' || appointment.status === filters.status)
             );
         });
     }, [appointments, filters]);
 
     const handleCancelClick = (id: number) => {
-        setappointmentIdToCancel(id);
+        setAppointmentIdToCancel(id);
         setCancelationModalOpen(true);
     };
 
@@ -251,7 +329,7 @@ export default function CitasPage() {
             });
         }
 
-        setappointmentIdToCancel(null);
+        setAppointmentIdToCancel(null);
         setCancelationModalOpen(false);
     };
 
@@ -281,6 +359,127 @@ export default function CitasPage() {
         }
     };
 
+    const tableColumns = [
+        {
+            key: 'name',
+            header: 'NOMBRE',
+            render: (appointment: Appointment) =>
+                appointment.customer?.name || 'Sin nombre',
+            align: 'center' as const,
+        },
+        {
+            key: 'treatment',
+            header: 'TRATAMIENTO',
+            render: (appointment: Appointment) =>
+                appointment.treatments.map((t) => t.name).join(', ') ||
+                'Sin tratamiento',
+            align: 'center' as const,
+        },
+        {
+            key: 'date',
+            header: 'FECHA',
+            render: (appointment: Appointment) =>
+                new Date(appointment.scheduled_start).toLocaleDateString(
+                    'es-ES',
+                    {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                    },
+                ),
+            align: 'center' as const,
+        },
+        {
+            key: 'time',
+            header: 'HORA',
+            render: (appointment: Appointment) =>
+                new Date(appointment.scheduled_start).toLocaleTimeString(
+                    'es-ES',
+                    {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone: 'UTC',
+                    },
+                ),
+            align: 'center' as const,
+        },
+        {
+            key: 'status',
+            header: 'ESTATUS',
+            render: (appointment: Appointment) => {
+                const status = statusOptions.find(
+                    (opt) => opt.value === appointment.status,
+                );
+                return (
+                    <Badge
+                        colorPalette={status?.color}
+                        borderRadius='full'
+                        px={1}
+                        py={1}
+                        display='flex'
+                        justifyContent='center'
+                        gap={1}
+                    >
+                        {status?.icon}
+                        {status?.label}
+                    </Badge>
+                );
+            },
+            align: 'center' as const,
+        },
+        {
+            key: 'actions',
+            header: 'ACCIONES',
+            render: (appointment: Appointment) => (
+                <Box display='flex' justifyContent='center'>
+                    <Tooltip
+                        content='Editar cita'
+                        positioning={{ placement: 'top' }}
+                    >
+                        <Button
+                            backgroundColor='transparent'
+                            size='md'
+                            onClick={() => handleEdit(appointment.id)}
+                        >
+                            <FilePenLine color='blue' strokeWidth={3} />
+                        </Button>
+                    </Tooltip>
+                    <Tooltip
+                        content='Cancelar cita'
+                        positioning={{ placement: 'top' }}
+                    >
+                        <Button
+                            size='md'
+                            backgroundColor='transparent'
+                            ml={2}
+                            color='red'
+                            disabled={appointment.status === 'canceled'}
+                            onClick={() => handleCancelClick(appointment.id)}
+                        >
+                            <CircleX strokeWidth={3} />
+                        </Button>
+                    </Tooltip>
+                    <Tooltip
+                        content='Completar cita'
+                        positioning={{ placement: 'top' }}
+                    >
+                        <Button
+                            size='md'
+                            backgroundColor='transparent'
+                            color='green'
+                            ml={2}
+                            disabled={appointment.status === 'completed'}
+                            onClick={() => handleComplete(appointment.id)}
+                        >
+                            <CircleCheckBig strokeWidth={3} />
+                        </Button>
+                    </Tooltip>
+                </Box>
+            ),
+            align: 'center' as const,
+        },
+    ];
+
     return (
         <>
             <Box
@@ -292,7 +491,13 @@ export default function CitasPage() {
             >
                 <div>
                     {error && (
-                        <p style={{ color: 'red', textAlign: 'center' }}>
+                        <p
+                            style={{
+                                color: 'red',
+                                textAlign: 'center',
+                                padding: '10px',
+                            }}
+                        >
                             {error}
                         </p>
                     )}
@@ -470,6 +675,7 @@ export default function CitasPage() {
                                                 Cancelar
                                             </Button>
                                         </Dialog.ActionTrigger>
+
                                         <Button
                                             colorScheme='blue'
                                             ml={3}
@@ -477,10 +683,15 @@ export default function CitasPage() {
                                             p={2}
                                             backgroundColor='#1C4ED8'
                                             color='white'
+                                            disabled={isLoadingSubmit}
                                         >
-                                            {editingId !== null
-                                                ? 'Actualizar'
-                                                : 'Guardar'}
+                                            {isLoadingSubmit ? (
+                                                <Spinner size='sm' mr={2} />
+                                            ) : editingId !== null ? (
+                                                'Actualizar'
+                                            ) : (
+                                                'Guardar'
+                                            )}
                                         </Button>
                                     </Dialog.Footer>
                                 </Dialog.Content>
@@ -551,278 +762,20 @@ export default function CitasPage() {
                 </Box>
 
                 {/* Filters */}
-                <Grid
-                    templateColumns={{ base: '1fr', md: 'repeat(4, 1fr)' }}
-                    gap={4}
-                    mb={4}
-                >
-                    <Input
-                        p={2}
-                        name='name'
-                        placeholder='Filtrar por nombre'
-                        fontSize='md'
-                        value={filters.name}
-                        onChange={handleFilterChange}
-                    />
-                    <Input
-                        p={2}
-                        fontSize='md'
-                        name='treatments'
-                        placeholder='Filtrar por servicio'
-                        value={filters.treatments}
-                        onChange={handleFilterChange}
-                    />
-                    <Input
-                        p={2}
-                        type='date'
-                        _dark={{
-                            '&::-webkit-calendar-picker-indicator': {
-                                filter: 'invert(1)',
-                            },
-                        }}
-                        name='date'
-                        fontSize='md'
-                        value={filters.date}
-                        onChange={handleFilterChange}
-                    />
+                <SearchFilters
+                    filters={filters}
+                    onFilterChange={handleFilterChange}
+                    onStatusChange={handleStatusChange}
+                    showStatusFilter={true}
+                    showDateFilter={true}
+                    showTreatmentFilter={true}
+                />
 
-                    <SelectRoot
-                        name='status'
-                        collection={createListCollection({
-                            items: statusOptions,
-                        })}
-                        onValueChange={(e) =>
-                            setFilters({
-                                ...filters,
-                                status: e.value.toString(),
-                            })
-                        }
-                    >
-                        <SelectTrigger>
-                            {filters.status
-                                ? statusOptions.find(
-                                      (opt) => opt.value === filters.status,
-                                  )?.label
-                                : 'Filtrar por estado'}
-                        </SelectTrigger>
-                        <SelectContent backgroundColor='white'>
-                            {statusOptions.map(({ value, label }) => (
-                                <SelectItem
-                                    cursor='pointer'
-                                    _hover={{ backgroundColor: 'gray.100' }}
-                                    backgroundColor='white'
-                                    item={value}
-                                    key={value}
-                                    p={2}
-                                >
-                                    {label}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </SelectRoot>
-                </Grid>
-
-                {/* Table */}
-                {isLoading ? (
-                    <Box
-                        display='flex'
-                        alignItems='center'
-                        justifyContent='center'
-                        height='300px'
-                    >
-                        <Spinner size='xl' />
-                    </Box>
-                ) : (
-                    <>
-                        <Table.ScrollArea borderWidth='1px' borderRadius='lg'>
-                            <Table.Root size='sm' variant='outline'>
-                                <Table.Header>
-                                    <Table.Row bg='#F3F4F6' fontWeight='800'>
-                                        <Table.ColumnHeader textAlign='center'>
-                                            NOMBRE
-                                        </Table.ColumnHeader>
-                                        <Table.ColumnHeader textAlign='center'>
-                                            TRATAMIENTO
-                                        </Table.ColumnHeader>
-                                        <Table.ColumnHeader textAlign='center'>
-                                            FECHA
-                                        </Table.ColumnHeader>
-                                        <Table.ColumnHeader textAlign='center'>
-                                            HORA
-                                        </Table.ColumnHeader>
-                                        <Table.ColumnHeader textAlign='center'>
-                                            ESTATUS
-                                        </Table.ColumnHeader>
-                                        <Table.ColumnHeader textAlign='center'>
-                                            ACCIONES
-                                        </Table.ColumnHeader>
-                                    </Table.Row>
-                                </Table.Header>
-                                <Table.Body>
-                                    {filteredAppointments.map((appointment) => (
-                                        <Table.Row
-                                            className='tr-table'
-                                            key={appointment.id}
-                                            borderBottomWidth={1}
-                                        >
-                                            <Table.Cell textAlign='center'>
-                                                {appointment.customer?.name ||
-                                                    'Sin nombre'}
-                                            </Table.Cell>
-                                            <Table.Cell textAlign='center'>
-                                                {appointment.treatments
-                                                    .map(
-                                                        (treatment) =>
-                                                            treatment.name,
-                                                    )
-                                                    .join(', ') ||
-                                                    'Sin tratamiento'}
-                                            </Table.Cell>
-                                            <Table.Cell textAlign='center'>
-                                                {new Date(
-                                                    appointment.scheduled_start,
-                                                ).toLocaleDateString('es-ES', {
-                                                    day: '2-digit',
-                                                    month: '2-digit',
-                                                    year: 'numeric',
-                                                })}
-                                            </Table.Cell>
-                                            <Table.Cell textAlign='center'>
-                                                {new Date(
-                                                    appointment.scheduled_start,
-                                                ).toLocaleTimeString('es-ES', {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                    timeZone: 'UTC',
-                                                })}
-                                            </Table.Cell>
-                                            <Table.Cell textAlign='center'>
-                                                <Badge
-                                                    colorPalette={
-                                                        statusOptions.find(
-                                                            (opt) =>
-                                                                opt.value ===
-                                                                appointment.status,
-                                                        )?.color
-                                                    }
-                                                    borderRadius='full'
-                                                    px={2}
-                                                    py={1}
-                                                >
-                                                    {(() => {
-                                                        const { label, icon } =
-                                                            statusOptions.find(
-                                                                (opt) =>
-                                                                    opt.value ===
-                                                                    appointment.status,
-                                                            ) || {
-                                                                label: 'Sin estatus',
-                                                            };
-                                                        return (
-                                                            <>
-                                                                {icon}
-                                                                {label}
-                                                            </>
-                                                        );
-                                                    })()}
-                                                </Badge>
-                                            </Table.Cell>
-                                            <Table.Cell
-                                                p={2}
-                                                display='flex'
-                                                justifyContent='center'
-                                            >
-                                                <Dialog.Root>
-                                                    <Dialog.Trigger asChild>
-                                                        <Tooltip
-                                                            showArrow
-                                                            content='Editar cita'
-                                                            positioning={{
-                                                                placement:
-                                                                    'top',
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                backgroundColor='transparent'
-                                                                size='md'
-                                                                onClick={() =>
-                                                                    handleEdit(
-                                                                        appointment.id,
-                                                                    )
-                                                                }
-                                                            >
-                                                                <FilePenLine
-                                                                    color='blue'
-                                                                    strokeWidth={
-                                                                        3
-                                                                    }
-                                                                />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </Dialog.Trigger>
-                                                </Dialog.Root>
-                                                <Tooltip
-                                                    showArrow
-                                                    content='Cancelar cita'
-                                                    positioning={{
-                                                        placement: 'top',
-                                                    }}
-                                                >
-                                                    <Button
-                                                        size='md'
-                                                        backgroundColor='transparent'
-                                                        ml={2}
-                                                        color='red'
-                                                        disabled={
-                                                            appointment.status ===
-                                                            'canceled'
-                                                        }
-                                                        onClick={() =>
-                                                            handleCancelClick(
-                                                                appointment.id,
-                                                            )
-                                                        }
-                                                    >
-                                                        <CircleX
-                                                            strokeWidth={3}
-                                                        />
-                                                    </Button>
-                                                </Tooltip>
-                                                <Tooltip
-                                                    showArrow
-                                                    content='Completar cita'
-                                                    positioning={{
-                                                        placement: 'top',
-                                                    }}
-                                                >
-                                                    <Button
-                                                        size='md'
-                                                        backgroundColor='transparent'
-                                                        color='green'
-                                                        ml={2}
-                                                        disabled={
-                                                            appointment.status ===
-                                                            'completed'
-                                                        }
-                                                        onClick={() =>
-                                                            handleComplete(
-                                                                appointment.id,
-                                                            )
-                                                        }
-                                                    >
-                                                        <CircleCheckBig
-                                                            strokeWidth={3}
-                                                        />
-                                                    </Button>
-                                                </Tooltip>
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    ))}
-                                </Table.Body>
-                            </Table.Root>
-                        </Table.ScrollArea>
-                    </>
-                )}
+                <AdminTable
+                    data={filteredAppointments}
+                    columns={tableColumns}
+                    isLoading={isLoading}
+                />
             </Box>
             <Toaster />
         </>

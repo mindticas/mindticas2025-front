@@ -13,7 +13,7 @@ export const createAppointment = async(newAppointment: AppointmentCreate): Promi
             body: JSON.stringify(newAppointment),
         });
         if (!response.ok) {
-            throw new Error('Error to create appointment');
+            throw new Error('Error al crear la cita');
         }
         return await response.json() 
 }   catch(error){
@@ -24,7 +24,7 @@ export const getAppointments = async(): Promise<Appointment[]> => {
     try {
         const response = await fetch(`${API_URL}/appointment`);
         if (!response.ok) {
-            throw new Error('Error to get appointments');
+            throw new Error('Error al obtener las citas');
         }
         return await response.json() 
 }   catch(error){
@@ -35,7 +35,7 @@ export const getAppointmentById = async(appointmentId:number): Promise<Appointme
     try {
         const response = await fetch(`${API_URL}/appointment/${appointmentId}`);
         if (!response.ok) {
-            throw new Error('Error to get appointment');
+            throw new Error('Error al obtener la cita');
         }
         return await response.json()
 }   catch(error){
@@ -52,7 +52,8 @@ export const updateAppointment = async(appointmentId:number, updatedAppointment:
             body: JSON.stringify(updatedAppointment),
         });
         if (!response.ok) {
-            throw new Error('Error to update appointment');
+            const errorData = await response.json();            
+            throw new Error(errorData.message || 'Error al actualizar la cita');
         }
         return await response.json() 
 }   catch(error){
