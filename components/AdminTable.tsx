@@ -19,6 +19,20 @@ interface AdminTableProps<T> {
     scrollable?: boolean;
 }
 
+/**
+ * A generic table component for displaying data in an admin interface.
+ *
+ * @template T - The type of the data items to be displayed in the table.
+ *
+ * @param {Object} props - The properties for the AdminTable component.
+ * @param {T[]} props.data - The array of data items to be displayed in the table.
+ * @param {Array<{ key: string; header: string; align?: 'left' | 'center' | 'right'; width?: string; render: (item: T) => React.ReactNode }>} props.columns -
+ * An array of column definitions, where each column specifies a key, header text, optional alignment, optional width, and a render function for the cell content.
+ * @param {boolean} [props.isLoading=false] - A flag indicating whether the table is in a loading state. If true, a loading spinner is displayed.
+ * @param {string} [props.emptyMessage='No hay datos disponibles'] - The message to display when there is no data available.
+ *
+ * @returns {JSX.Element} The rendered table component, including a loading spinner, table content, or an empty message as appropriate.
+ */
 export function AdminTable<T>({
     data,
     columns,

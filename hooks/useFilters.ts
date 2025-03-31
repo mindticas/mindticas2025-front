@@ -9,6 +9,17 @@ export interface FilterOptions {
     [key: string]: string | undefined; // Allow additional properties
   }
 
+/**
+ * Custom hook to manage filter options.
+ *
+ * @param initialFilters - The initial filter options to set up the state.
+ * @returns An object containing:
+ * - `filters`: The current filter options.
+ * - `handleFilterChange`: A function to handle changes to filter inputs.
+ * - `handleStatusChange`: A function to update the `status` filter.
+ * - `resetFilters`: A function to reset filters to their initial state.
+ * - `setFilters`: A function to manually update the filters state.
+ */
 export const useFilters = (initialFilters: FilterOptions) => {
   const [filters, setFilters] = useState<FilterOptions>(initialFilters);
 

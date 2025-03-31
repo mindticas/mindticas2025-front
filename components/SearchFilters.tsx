@@ -52,6 +52,25 @@ export const statusOptions = [
     },
     { value: '', label: 'Todos los estatus', color: 'gray' },
 ];
+/**
+ * A functional component that renders a set of search filters for filtering data.
+ * The component supports filters for name, treatments, date, and status, with
+ * optional visibility for each filter type.
+ *
+ * @param {SearchFiltersProps} props - The props for the `SearchFilters` component.
+ * @param {Object} props.filters - The current filter values.
+ * @param {string} props.filters.name - The filter value for the name input.
+ * @param {string} [props.filters.treatments] - The filter value for the treatments input.
+ * @param {string} [props.filters.date] - The filter value for the date input.
+ * @param {string} [props.filters.status] - The filter value for the status dropdown.
+ * @param {(event: React.ChangeEvent<HTMLInputElement>) => void} props.onFilterChange - Callback function triggered when a filter input value changes.
+ * @param {(value: string) => void} [props.onStatusChange] - Callback function triggered when the status filter value changes.
+ * @param {boolean} [props.showStatusFilter=false] - Whether to show the status filter dropdown.
+ * @param {boolean} [props.showDateFilter=false] - Whether to show the date filter input.
+ * @param {boolean} [props.showTreatmentFilter=false] - Whether to show the treatments filter input.
+ *
+ * @returns {JSX.Element} The rendered search filters component.
+ */
 export function SearchFilters({
     filters,
     onFilterChange,
