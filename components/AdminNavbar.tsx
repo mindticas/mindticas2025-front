@@ -9,7 +9,7 @@ import AdminNavbarMobile from './AdminNavbarMobile';
 export default function AdminNavbar() {
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const isDesktop = useBreakpointValue({ base: false, md: true });
+    const isDesktop = useBreakpointValue({ base: false, lg: true });
 
     const handleToggleMenu = () => setIsMobileMenuOpen((prev) => !prev);
 

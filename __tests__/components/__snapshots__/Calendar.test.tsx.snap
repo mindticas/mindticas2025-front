@@ -128,21 +128,21 @@ exports[`Calendar Snapshot should match the snapshot 1`] = `
           30 
         </button>
         <button
-          class="chakra-button css-r87ip0"
+          class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
           31 
         </button>
         <button
-          class="chakra-button css-1732jk6"
+          class="chakra-button css-qa2o2z"
           disabled=""
           type="button"
         >
           1 
         </button>
         <button
-          class="chakra-button css-1732jk6"
+          class="chakra-button css-r87ip0"
           disabled=""
           type="button"
         >
@@ -184,14 +184,14 @@ exports[`Calendar Snapshot should match the snapshot 1`] = `
           7 
         </button>
         <button
-          class="chakra-button css-qa2o2z"
+          class="chakra-button css-1732jk6"
           disabled=""
           type="button"
         >
           8 
         </button>
         <button
-          class="chakra-button css-qa2o2z"
+          class="chakra-button css-1732jk6"
           disabled=""
           type="button"
         >
