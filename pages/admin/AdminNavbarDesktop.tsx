@@ -3,11 +3,23 @@ import { LogOut, Scissors } from 'lucide-react';
 import React from 'react';
 import NextLink from 'next/link';
 import { AdminNavbarDesktopProps } from '@/interfaces/navItems/navItems';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 export default function DesktopViewAdmin({
     navItems,
     pathname,
 }: AdminNavbarDesktopProps) {
+    const router = useRouter();
+
+    const handleLogout = () => {
+        try {
+            Cookies.remove('AUTH_TOKEN');
+            router.push('/login');
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    };
     return (
         <Box bg='gray.800' color='white' shadow='lg'>
             <Flex
@@ -21,8 +33,6 @@ export default function DesktopViewAdmin({
                 {/* Logo and links */}
                 <Flex align='center'>
                     <ChakraLink
-                        as={NextLink}
-                        href='/admin/citas'
                         display='flex'
                         alignItems='center'
                         _hover={{ textDecoration: 'none' }}
@@ -79,6 +89,7 @@ export default function DesktopViewAdmin({
                     display='flex'
                     alignItems='center'
                     gap='5'
+                    onClick={handleLogout}
                 >
                     <LogOut size={32} />
                     Salir
