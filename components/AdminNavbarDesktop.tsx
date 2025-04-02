@@ -1,13 +1,21 @@
 import { Box, Flex, Link as ChakraLink, Button, Text } from '@chakra-ui/react';
-import { LogOut, Scissors } from 'lucide-react';
+import { LogOut, RefreshCcw, Scissors } from 'lucide-react';
 import React from 'react';
 import NextLink from 'next/link';
 import { AdminNavbarDesktopProps } from '@/interfaces/navItems/navItems';
+import { refreshToken } from '@/services/RefreshToken';
 
 export default function DesktopViewAdmin({
     navItems,
     pathname,
 }: AdminNavbarDesktopProps) {
+    const handleRefresh = async () => {
+        try {
+            await refreshToken();
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <Box bg='gray.800' color='white' shadow='lg'>
             <Flex
@@ -68,21 +76,39 @@ export default function DesktopViewAdmin({
                         })}
                     </Flex>
                 </Flex>
-                {/* Logout button section for desktop */}
-                <Button
-                    py='2'
-                    px='4'
-                    color='white'
-                    bg='red.600'
-                    _hover={{ bg: 'red.700' }}
-                    fontWeight='bold'
-                    display='flex'
-                    alignItems='center'
-                    gap='5'
-                >
-                    <LogOut size={32} />
-                    Salir
-                </Button>
+                <Flex align='center' gap='4'>
+                    {/* Logout button section for desktop */}
+                    <Button
+                        py='2'
+                        px='4'
+                        color='white'
+                        bg='red.600'
+                        _hover={{ bg: 'red.700' }}
+                        fontWeight='bold'
+                        display='flex'
+                        alignItems='center'
+                        gap='5'
+                    >
+                        <LogOut size={32} />
+                        Salir
+                    </Button>
+                    {/* Logout button section for desktop */}
+                    <Button
+                        py='2'
+                        px='2'
+                        color='white'
+                        bg='blue.600'
+                        _hover={{ bg: 'blue.700' }}
+                        fontWeight='bold'
+                        display='flex'
+                        alignItems='center'
+                        gap='5'
+                        onClick={handleRefresh}
+                    >
+                        <RefreshCcw size={32} />
+                        Sincronizar
+                    </Button>
+                </Flex>
             </Flex>
         </Box>
     );
