@@ -2,6 +2,7 @@
 
 import { Table, Box, Spinner } from '@chakra-ui/react';
 import { ReactNode } from 'react';
+import { adminTableMessages } from './constraints/adminMessages';
 
 interface ColumnDef<T> {
     key: string;
@@ -37,7 +38,7 @@ export function AdminTable<T>({
     data,
     columns,
     isLoading = false,
-    emptyMessage = 'No hay datos disponibles',
+    emptyMessage = adminTableMessages.emptyData.es,
 }: AdminTableProps<T>) {
     if (isLoading) {
         return (
@@ -70,7 +71,7 @@ export function AdminTable<T>({
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {data.length === 0 ? (
+                {data.length === 0 && !isLoading ? (
                     <Table.Row>
                         <Table.Cell
                             p={3}

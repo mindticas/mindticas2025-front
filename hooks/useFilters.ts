@@ -36,8 +36,9 @@ export const useFilters = (initialFilters: FilterOptions) => {
   }, []);
 
   const resetFilters = useCallback(() => {
-    setFilters(initialFilters);
+    setFilters(() => ({ ...initialFilters })); 
   }, [initialFilters]);
+
 
   return {
     filters,

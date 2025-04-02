@@ -55,7 +55,12 @@ cursor: pointer;
 }
 .chakra-select__positioner,.css-1fx66aq  {
   z-index: 10000;
-  min-width: 200px;
+  min-width: 220px;
+}
+.select-content-admin-edit{
+  position: absolute;
+bottom: 25px;
+   
 }
 .css-m6e6s1{
   margin: 10px;
