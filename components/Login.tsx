@@ -26,6 +26,7 @@ export default function Login() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     // State for loading state
     const [isLoading, setIsLoading] = useState(false);
+    const [isPageTransitioning, setIsPageTransitioning] = useState(false);
     const router = useRouter();
 
     const togglePasswordVisibility = () => {
@@ -53,6 +54,7 @@ export default function Login() {
             const response = await loginUser(formData);
             // If response have a token, is saved in Cookies and redirect to admin
             if (response.token) {
+                setIsPageTransitioning(true);
                 router.push('/admin');
             }
             setIsLoading(false);
@@ -65,6 +67,23 @@ export default function Login() {
     useEffect(() => {
         if (errorMessage) setErrorMessage(null);
     }, [formData.name, formData.password]);
+
+    // transition spinner to admin
+    if (isPageTransitioning) {
+        return (
+            <Box
+                w='100vw'
+                h='100vh'
+                bg='white'
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                flexDirection='column'
+            >
+                <Spinner color='black' size='xl' />
+            </Box>
+        );
+    }
 
     return (
         <Box
