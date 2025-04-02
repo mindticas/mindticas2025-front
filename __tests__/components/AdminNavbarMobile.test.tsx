@@ -1,5 +1,5 @@
 import { render } from '../../utils/render-test';
-import AdminNavbarMobile from '@/components/AdminNavbarMobile';
+import AdminNavbarMobile from '@/pages/admin/AdminNavbarMobile';
 import { navItems } from '@/utils/navItems';
 
 describe('AdminNavbarMobile Snapshot', () => {
