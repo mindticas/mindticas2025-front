@@ -1,4 +1,4 @@
-import AdminNavbar from '@/components/AdminNavbar';
+import AdminNavbar from '@/pages/admin/AdminNavbar';
 import { render } from '@/utils/render-test';
 
 describe('AdminNavbar Snapshot', () => {
