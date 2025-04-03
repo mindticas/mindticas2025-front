@@ -1,12 +1,15 @@
-import { API_URL } from "./apiConfig"
+import { API_URL } from './apiConfig';
 
-export const refreshToken = async() => {
+export const refreshToken = async () => {
     try {
         window.open(`${API_URL}/google-calendar/sync`, '_blank');
     } catch (error) {
-    console.error('Error initiating Google Calendar authentication:', error);
+        console.error(
+            'Error initiating Google Calendar authentication:',
+            error,
+        );
     }
-}
+};
 
 export const handleRefresh = async () => {
     try {

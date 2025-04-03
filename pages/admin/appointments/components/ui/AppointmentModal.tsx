@@ -127,8 +127,8 @@ export function AppointmentModal({
                                 {mode === 'cancel'
                                     ? 'Confirmar cancelación'
                                     : mode === 'edit'
-                                    ? 'Editar Cita'
-                                    : 'Nueva Cita'}
+                                      ? 'Editar Cita'
+                                      : 'Nueva Cita'}
                             </Dialog.Title>
                             <Dialog.CloseTrigger asChild>
                                 <CloseButton color='black' size='sm' />

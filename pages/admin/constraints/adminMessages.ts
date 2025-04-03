@@ -1,8 +1,5 @@
 export const adminTableMessages = {
-    
     emptyData: {
-      es: "No hay datos disponibles"
-    }
-  };
-  
-
+        es: 'No hay datos disponibles',
+    },
+};

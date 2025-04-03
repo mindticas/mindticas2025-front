@@ -261,11 +261,11 @@ export default function Calendar() {
                                     isFutureDate(date)
                                         ? 'gray.200' // Past dates or Sundays
                                         : selectedDate?.toDateString() ===
-                                          date.toDateString()
-                                        ? 'black' // Selected date
-                                        : isToday(date)
-                                        ? 'gray.200' // Today
-                                        : 'gray.100' // Future dates
+                                            date.toDateString()
+                                          ? 'black' // Selected date
+                                          : isToday(date)
+                                            ? 'gray.200' // Today
+                                            : 'gray.100' // Future dates
                                 }
                                 color={
                                     isPastDate(date) ||
@@ -273,9 +273,9 @@ export default function Calendar() {
                                     isFutureDate(date)
                                         ? 'gray.400' // Past dates or Sundays
                                         : selectedDate?.toDateString() ===
-                                          date.toDateString()
-                                        ? 'white' // Selected date
-                                        : 'black' // Future dates or today
+                                            date.toDateString()
+                                          ? 'white' // Selected date
+                                          : 'black' // Future dates or today
                                 }
                                 _hover={
                                     isPastDate(date) ||
@@ -321,16 +321,16 @@ export default function Calendar() {
                                             isBookedTime(time)
                                                 ? 'gray.200' // Past times
                                                 : selectedTime === time
-                                                ? 'black' // Selected time
-                                                : 'gray.100' // Future times
+                                                  ? 'black' // Selected time
+                                                  : 'gray.100' // Future times
                                         }
                                         color={
                                             isPastTime(time) ||
                                             isBookedTime(time)
                                                 ? 'gray.400' // Past times
                                                 : selectedTime === time
-                                                ? 'white' // Selected time
-                                                : 'black' // Future times
+                                                  ? 'white' // Selected time
+                                                  : 'black' // Future times
                                         }
                                         _hover={
                                             isPastTime(time) ||
