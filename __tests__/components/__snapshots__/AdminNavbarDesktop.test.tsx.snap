@@ -62,8 +62,8 @@ exports[`AdminNavbarDesktop Snapshot should match the snapshot 1`] = `
           class="css-1xaiisq"
         >
           <a
-            class="chakra-link css-v6hlzi"
-            href="/admin/citas"
+            class="chakra-link css-a3d9va"
+            href="/admin"
           >
             <svg
               class="lucide lucide-calendar"

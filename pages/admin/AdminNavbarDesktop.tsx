@@ -30,8 +30,6 @@ export default function DesktopViewAdmin({
                 {/* Logo and links */}
                 <Flex align='center'>
                     <ChakraLink
-                        as={NextLink}
-                        href='/admin/citas'
                         display='flex'
                         alignItems='center'
                         _hover={{ textDecoration: 'none' }}

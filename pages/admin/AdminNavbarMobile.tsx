@@ -13,6 +13,7 @@ import {
 import { LogOut, Menu, Scissors } from 'lucide-react';
 import NextLink from 'next/link';
 import CalendarImg from '@/public/google-calendar.png';
+import { handleLogout } from '@/services/authService';
 
 export default function AdminNavbarMobile({
     navItems,
@@ -98,6 +99,7 @@ export default function AdminNavbarMobile({
                             fontWeight='medium'
                             color='gray.300'
                             _hover={{ bg: 'gray.700', color: 'white' }}
+                            onClick={handleLogout}
                         >
                             <LogOut size={16} />
                             Salir
