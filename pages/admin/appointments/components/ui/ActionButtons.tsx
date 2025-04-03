@@ -22,7 +22,7 @@ interface AppointmentActionsProps {
     customActions?: ActionButtonConfig[];
 }
 
-export function AppointmentActions({
+export default function AppointmentActions({
     appointmentId,
     status,
     onEdit,

@@ -13,16 +13,17 @@ import { getTreatments } from '@/services/TreatmentService';
 import { Treatment } from '@/interfaces/treatment/Treatment';
 import { splitDateTimeFromISO } from '@/utils/dateUtils';
 import { Toaster, toaster } from '@/components/ui/toaster';
-import { AdminTable } from '@/pages/admin/AdminTable';
+
 import { SearchFilters } from '@/components/SearchFilters';
 import { useFilters } from '@/hooks/useFilters';
 import {
     AppointmentUpdate,
     FormDataType,
 } from '@/interfaces/appointment/AppointmentUpdate';
-import { StatusBadge } from './components/ui/StatusBadge';
-import { AppointmentActions } from './components/ui/ActionButtons';
-import { AppointmentModal } from './components/ui/AppointmentModal';
+import StatusBadge from './components/ui/StatusBadge';
+import AppointmentActions from './components/ui/ActionButtons';
+import AppointmentModal from './components/ui/AppointmentModal';
+import AdminTable from '../AdminTable';
 
 /**
  * The `CitasPage` component is the main page for managing appointments in the admin panel.
