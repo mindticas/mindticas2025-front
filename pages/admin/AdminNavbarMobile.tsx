@@ -1,5 +1,4 @@
 import { AdminNavbarMobileProps } from '@/interfaces/navItems/navItems';
-import { handleRefresh } from '@/services/RefreshToken';
 import {
     Box,
     Flex,
@@ -13,6 +12,7 @@ import {
 import { LogOut, Menu, Scissors } from 'lucide-react';
 import NextLink from 'next/link';
 import CalendarImg from '@/public/google-calendar.png';
+import { handleRefresh } from '@/services/RefreshToken';
 import { handleLogout } from '@/services/authService';
 
 export default function AdminNavbarMobile({

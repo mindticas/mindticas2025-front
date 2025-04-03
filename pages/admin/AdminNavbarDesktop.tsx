@@ -12,6 +12,7 @@ import NextLink from 'next/link';
 import { AdminNavbarDesktopProps } from '@/interfaces/navItems/navItems';
 import { handleRefresh } from '@/services/RefreshToken';
 import CalendarImg from '@/public/google-calendar.png';
+import { handleLogout } from '@/services/authService';
 
 export default function DesktopViewAdmin({
     navItems,
@@ -86,6 +87,7 @@ export default function DesktopViewAdmin({
                         display='flex'
                         alignItems='center'
                         gap='2'
+                        onClick={handleLogout}
                     >
                         <LogOut size={32} />
                         Salir
