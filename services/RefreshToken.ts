@@ -8,3 +8,11 @@ export const refreshToken = async() => {
     console.error('Error initiating Google Calendar authentication:', error);
     }
 }
+
+export const handleRefresh = async () => {
+    try {
+        await refreshToken();
+    } catch (error) {
+        console.log(error);
+    }
+};

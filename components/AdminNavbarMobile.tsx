@@ -1,4 +1,5 @@
 import { AdminNavbarMobileProps } from '@/interfaces/navItems/navItems';
+import { handleRefresh } from '@/services/RefreshToken';
 import {
     Box,
     Flex,
@@ -7,9 +8,11 @@ import {
     Stack,
     Button,
     Text,
+    Image,
 } from '@chakra-ui/react';
 import { LogOut, Menu, Scissors } from 'lucide-react';
 import NextLink from 'next/link';
+import CalendarImg from '@/public/google-calendar.png';
 
 export default function AdminNavbarMobile({
     navItems,
@@ -41,7 +44,6 @@ export default function AdminNavbarMobile({
                         Elegangster Admin
                     </Text>
                 </ChakraLink>
-
                 <IconButton
                     aria-label='Abrir menú'
                     variant='ghost'
@@ -53,7 +55,7 @@ export default function AdminNavbarMobile({
             </Flex>
             {/* Mobile menu */}
             {isMobileMenuOpen && (
-                <Box pb='4' display={{ lg: 'none' }}>
+                <Box pb='4' display={{ xl: 'none' }}>
                     <Stack px='2'>
                         {navItems.map((item) => {
                             const Icon = item.icon;
@@ -66,7 +68,7 @@ export default function AdminNavbarMobile({
                                     px='3'
                                     py='2'
                                     rounded='md'
-                                    fontSize='base'
+                                    fontSize='lg'
                                     fontWeight='medium'
                                     bg={active ? 'gray.900' : 'transparent'}
                                     _hover={{
@@ -89,16 +91,36 @@ export default function AdminNavbarMobile({
                         })}
                         <Button
                             variant='ghost'
-                            justifyContent='flex-start'
                             px='3'
                             py='2'
-                            fontSize='base'
+                            justifyContent='flex-start'
+                            fontSize='lg'
                             fontWeight='medium'
                             color='gray.300'
                             _hover={{ bg: 'gray.700', color: 'white' }}
                         >
-                            <LogOut size={20} />
+                            <LogOut size={16} />
                             Salir
+                        </Button>
+                        <Button
+                            onClick={handleRefresh}
+                            justifyContent='flex-start'
+                            variant='ghost'
+                            px='3'
+                            py='2'
+                            fontSize='lg'
+                            fontWeight='medium'
+                            color='gray.300'
+                            _hover={{ bg: 'gray.700', color: 'white' }}
+                        >
+                            <Image
+                                boxSize='25px'
+                                rounded='md'
+                                src={CalendarImg.src}
+                            />
+                            <Text fontSize='md' fontWeight='medium'>
+                                Sincronizar
+                            </Text>
                         </Button>
                     </Stack>
                 </Box>
