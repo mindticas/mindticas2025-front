@@ -42,7 +42,7 @@ interface AppointmentModalProps {
     onCancel?: (id: number) => Promise<void>;
 }
 
-export function AppointmentModal({
+export default function AppointmentModal({
     isOpen,
     onClose,
     mode,
@@ -72,7 +72,14 @@ export function AppointmentModal({
                 time: initialData.time,
             });
         }
-    }, [isOpen, initialData.id]);
+    }, [
+        isOpen,
+        initialData.id,
+        initialData.name,
+        initialData.treatment,
+        initialData.date,
+        initialData.time,
+    ]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -127,8 +134,8 @@ export function AppointmentModal({
                                 {mode === 'cancel'
                                     ? 'Confirmar cancelación'
                                     : mode === 'edit'
-                                      ? 'Editar Cita'
-                                      : 'Nueva Cita'}
+                                    ? 'Editar Cita'
+                                    : 'Nueva Cita'}
                             </Dialog.Title>
                             <Dialog.CloseTrigger asChild>
                                 <CloseButton color='black' size='sm' />
@@ -155,66 +162,74 @@ export function AppointmentModal({
                                     </Box>
 
                                     <Box mb={4}>
-                                        <SelectRoot
-                                            name='treatment'
-                                            collection={createListCollection({
-                                                items: treatments,
-                                            })}
-                                            onValueChange={(e) => {
-                                                const selectedTreatment =
-                                                    treatments.find(
-                                                        (treatment) =>
-                                                            treatment.name ===
-                                                            e.value.toString(),
-                                                    );
-                                                setFormData({
-                                                    ...formData,
-                                                    treatment: selectedTreatment
-                                                        ? selectedTreatment.id.toString()
-                                                        : '',
-                                                });
-                                            }}
-                                            required
-                                        >
-                                            <SelectLabel fontWeight='semibold'>
-                                                Servicio a realizar
-                                            </SelectLabel>
-                                            <SelectTrigger>
-                                                {treatments.find(
-                                                    (t) =>
-                                                        t.id.toString() ===
-                                                        formData.treatment,
-                                                )?.name ||
-                                                    'Seleccionar servicio'}
-                                            </SelectTrigger>
-                                            <SelectContent
-                                                className='select-content-admin-edit'
-                                                backgroundColor='white'
-                                            >
-                                                {treatments.map(
-                                                    ({ id, name }) => (
-                                                        <SelectItem
-                                                            cursor='pointer'
-                                                            _hover={{
-                                                                backgroundColor:
-                                                                    'gray.100',
-                                                            }}
-                                                            backgroundColor='white'
-                                                            item={name}
-                                                            key={id}
-                                                            p={2}
-                                                            data-state={
-                                                                id === id
-                                                                    ? 'checked'
-                                                                    : 'unchecked'
-                                                            }
-                                                        >
-                                                            {name}
-                                                        </SelectItem>
-                                                    ),
+                                        {treatments && (
+                                            <SelectRoot
+                                                name='treatment'
+                                                collection={createListCollection(
+                                                    {
+                                                        items: treatments,
+                                                    },
                                                 )}
-                                            </SelectContent>
-                                        </SelectRoot>
+                                                onValueChange={(e) => {
+                                                    const selectedTreatment =
+                                                        treatments.find(
+                                                            (treatment) =>
+                                                                treatment.name ===
+                                                                e.value.toString(),
+                                                        );
+                                                    setFormData({
+                                                        ...formData,
+                                                        treatment:
+                                                            selectedTreatment
+                                                                ? selectedTreatment.id.toString()
+                                                                : '',
+                                                    });
+                                                }}
+                                                required
+                                            >
+                                                <SelectLabel fontWeight='semibold'>
+                                                    Servicio a realizar
+                                                </SelectLabel>
+                                                <SelectTrigger>
+                                                    {(treatments &&
+                                                        treatments.find(
+                                                            (t) =>
+                                                                t.id.toString() ===
+                                                                formData.treatment,
+                                                        )?.name) ||
+                                                        'Seleccionar servicio'}
+                                                </SelectTrigger>
+                                                <SelectContent
+                                                    className='select-content-admin-edit'
+                                                    backgroundColor='white'
+                                                >
+                                                    {treatments &&
+                                                        treatments.map(
+                                                            ({ id, name }) => (
+                                                                <SelectItem
+                                                                    cursor='pointer'
+                                                                    _hover={{
+                                                                        backgroundColor:
+                                                                            'gray.100',
+                                                                    }}
+                                                                    backgroundColor='white'
+                                                                    item={name}
+                                                                    key={id}
+                                                                    p={2}
+                                                                    data-state={
+                                                                        id ===
+                                                                        id
+                                                                            ? 'checked'
+                                                                            : 'unchecked'
+                                                                    }
+                                                                >
+                                                                    {name}
+                                                                </SelectItem>
+                                                            ),
+                                                        )}
+                                                </SelectContent>
+                                            </SelectRoot>
+                                        )}
                                     </Box>
 
                                     <Box mb={4}>

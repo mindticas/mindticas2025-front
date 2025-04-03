@@ -42,37 +42,38 @@ export default function DesktopViewAdmin({
                         </Text>
                     </ChakraLink>
                     <Flex ml='10' align='center' gap='4'>
-                        {navItems.map((item) => {
-                            const Icon = item.icon;
-                            const active = pathname === item.href;
-                            return (
-                                <ChakraLink
-                                    key={item.name}
-                                    as={NextLink}
-                                    px='3'
-                                    py='2'
-                                    href={item.href}
-                                    rounded='md'
-                                    fontSize='md'
-                                    fontWeight='medium'
-                                    bg={active ? 'gray.900' : 'transparent'}
-                                    _hover={{
-                                        bg: 'gray.700',
-                                        textDecoration: 'none',
-                                    }}
-                                    display='flex'
-                                    alignItems='center'
-                                    color='white'
-                                >
-                                    <Icon
-                                        width={24}
-                                        height={24}
-                                        style={{ marginRight: '8px' }}
-                                    />
-                                    {item.name}
-                                </ChakraLink>
-                            );
-                        })}
+                        {navItems &&
+                            navItems.map((item) => {
+                                const Icon = item.icon;
+                                const active = pathname === item.href;
+                                return (
+                                    <ChakraLink
+                                        key={item.name}
+                                        as={NextLink}
+                                        px='3'
+                                        py='2'
+                                        href={item.href}
+                                        rounded='md'
+                                        fontSize='md'
+                                        fontWeight='medium'
+                                        bg={active ? 'gray.900' : 'transparent'}
+                                        _hover={{
+                                            bg: 'gray.700',
+                                            textDecoration: 'none',
+                                        }}
+                                        display='flex'
+                                        alignItems='center'
+                                        color='white'
+                                    >
+                                        <Icon
+                                            width={24}
+                                            height={24}
+                                            style={{ marginRight: '8px' }}
+                                        />
+                                        {item.name}
+                                    </ChakraLink>
+                                );
+                            })}
                     </Flex>
                 </Flex>
                 <Flex align='center' gap='4'>
@@ -99,6 +100,7 @@ export default function DesktopViewAdmin({
                         cursor='pointer'
                         onClick={handleRefresh}
                         src={CalendarImg.src}
+                        alt='Imagen de google calendar'
                     />
                 </Flex>
             </Flex>

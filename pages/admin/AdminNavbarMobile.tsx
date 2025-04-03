@@ -119,6 +119,7 @@ export default function AdminNavbarMobile({
                                 boxSize='25px'
                                 rounded='md'
                                 src={CalendarImg.src}
+                                alt='Imagen de google calendar'
                             />
                             <Text fontSize='md' fontWeight='medium'>
                                 Sincronizar
