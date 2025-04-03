@@ -10,8 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { LogOut, Menu, Scissors } from 'lucide-react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
+import { handleLogout } from '@/services/authService';
 
 export default function AdminNavbarMobile({
     navItems,
@@ -19,17 +18,6 @@ export default function AdminNavbarMobile({
     isMobileMenuOpen,
     onToggleMenu,
 }: AdminNavbarMobileProps) {
-    const router = useRouter();
-
-    const handleLogout = () => {
-        try {
-            Cookies.remove('AUTH_TOKEN');
-            router.push('/login');
-        } catch (error) {
-            console.log('Error during logout: ', error);
-        }
-    };
-
     return (
         <Box bg='gray.800' color='white' shadow='lg'>
             <Flex

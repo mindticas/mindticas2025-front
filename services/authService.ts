@@ -2,9 +2,9 @@ import { LoginCredentials } from "@/interfaces/login/LoginCredentials";
 import { LoginResponse } from "@/interfaces/login/LoginResponse";
 import { API_URL } from "./apiConfig";
 import Cookies from 'js-cookie'
+import router from "next/router";
 
 export const loginUser = async (credentials: LoginCredentials): Promise<LoginResponse> => {
-
     try{
         const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
@@ -14,7 +14,6 @@ export const loginUser = async (credentials: LoginCredentials): Promise<LoginRes
             body: JSON.stringify(credentials),
     });
         if(!response.ok){
-            const errorData = await response.json();
             throw new Error('Usuario o contraseña incorrectos, intente nuevamente');
         }
         const userData: LoginResponse = await response.json();
@@ -29,5 +28,14 @@ export const loginUser = async (credentials: LoginCredentials): Promise<LoginRes
     } catch(error){
         console.error('Error en el login')
         throw error;
+    }
+}
+
+export const handleLogout = () => {
+    try {
+        Cookies.remove('AUTH_TOKEN');
+        router.push('/login');
+    } catch (error) {
+        console.error('Error during logout:', error);
     }
 }

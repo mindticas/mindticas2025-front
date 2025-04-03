@@ -3,23 +3,12 @@ import { LogOut, Scissors } from 'lucide-react';
 import React from 'react';
 import NextLink from 'next/link';
 import { AdminNavbarDesktopProps } from '@/interfaces/navItems/navItems';
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
+import { handleLogout } from '@/services/authService';
 
 export default function DesktopViewAdmin({
     navItems,
     pathname,
 }: AdminNavbarDesktopProps) {
-    const router = useRouter();
-
-    const handleLogout = () => {
-        try {
-            Cookies.remove('AUTH_TOKEN');
-            router.push('/login');
-        } catch (error) {
-            console.error('Error during logout:', error);
-        }
-    };
     return (
         <Box bg='gray.800' color='white' shadow='lg'>
             <Flex
