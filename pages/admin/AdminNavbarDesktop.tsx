@@ -3,6 +3,7 @@ import { LogOut, Scissors } from 'lucide-react';
 import React from 'react';
 import NextLink from 'next/link';
 import { AdminNavbarDesktopProps } from '@/interfaces/navItems/navItems';
+import { handleLogout } from '@/services/authService';
 
 export default function DesktopViewAdmin({
     navItems,
@@ -21,8 +22,6 @@ export default function DesktopViewAdmin({
                 {/* Logo and links */}
                 <Flex align='center'>
                     <ChakraLink
-                        as={NextLink}
-                        href='/admin/citas'
                         display='flex'
                         alignItems='center'
                         _hover={{ textDecoration: 'none' }}
@@ -79,6 +78,7 @@ export default function DesktopViewAdmin({
                     display='flex'
                     alignItems='center'
                     gap='5'
+                    onClick={handleLogout}
                 >
                     <LogOut size={32} />
                     Salir

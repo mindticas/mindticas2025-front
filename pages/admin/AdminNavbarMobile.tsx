@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { LogOut, Menu, Scissors } from 'lucide-react';
 import NextLink from 'next/link';
+import { handleLogout } from '@/services/authService';
 
 export default function AdminNavbarMobile({
     navItems,
@@ -96,6 +97,7 @@ export default function AdminNavbarMobile({
                             fontWeight='medium'
                             color='gray.300'
                             _hover={{ bg: 'gray.700', color: 'white' }}
+                            onClick={handleLogout}
                         >
                             <LogOut size={20} />
                             Salir
