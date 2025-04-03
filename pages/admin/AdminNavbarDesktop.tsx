@@ -1,8 +1,17 @@
-import { Box, Flex, Link as ChakraLink, Button, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Flex,
+    Link as ChakraLink,
+    Button,
+    Text,
+    Image,
+} from '@chakra-ui/react';
 import { LogOut, Scissors } from 'lucide-react';
 import React from 'react';
 import NextLink from 'next/link';
 import { AdminNavbarDesktopProps } from '@/interfaces/navItems/navItems';
+import { handleRefresh } from '@/services/RefreshToken';
+import CalendarImg from '@/public/google-calendar.png';
 import { handleLogout } from '@/services/authService';
 
 export default function DesktopViewAdmin({
@@ -32,7 +41,6 @@ export default function DesktopViewAdmin({
                             Elegangster Admin
                         </Text>
                     </ChakraLink>
-
                     <Flex ml='10' align='center' gap='4'>
                         {navItems.map((item) => {
                             const Icon = item.icon;
@@ -67,22 +75,32 @@ export default function DesktopViewAdmin({
                         })}
                     </Flex>
                 </Flex>
-                {/* Logout button section for desktop */}
-                <Button
-                    py='2'
-                    px='4'
-                    color='white'
-                    bg='red.600'
-                    _hover={{ bg: 'red.700' }}
-                    fontWeight='bold'
-                    display='flex'
-                    alignItems='center'
-                    gap='5'
-                    onClick={handleLogout}
-                >
-                    <LogOut size={32} />
-                    Salir
-                </Button>
+                <Flex align='center' gap='4'>
+                    {/* Logout button section for desktop */}
+                    <Button
+                        py='2'
+                        px='3'
+                        color='white'
+                        bg='red.600'
+                        _hover={{ bg: 'red.700' }}
+                        fontWeight='bold'
+                        display='flex'
+                        alignItems='center'
+                        gap='2'
+                        onClick={handleLogout}
+                    >
+                        <LogOut size={32} />
+                        Salir
+                    </Button>
+                    {/* Google calendar button section for desktop */}
+                    <Image
+                        boxSize='40px'
+                        rounded='md'
+                        cursor='pointer'
+                        onClick={handleRefresh}
+                        src={CalendarImg.src}
+                    />
+                </Flex>
             </Flex>
         </Box>
     );
