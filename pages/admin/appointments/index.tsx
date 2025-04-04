@@ -24,6 +24,7 @@ import StatusBadge from './components/ui/StatusBadge';
 import AppointmentActions from './components/ui/ActionButtons';
 import AppointmentModal from './components/ui/AppointmentModal';
 import { AdminTable } from '../AdminTable';
+import { DateTime } from 'luxon';
 
 /**
  * The `CitasPage` component is the main page for managing appointments in the admin panel.
@@ -161,10 +162,25 @@ export default function CitasPage() {
         }
 
         const newScheduledStart = `${formData.date}T${formData.time}:00.000Z`;
-        if (newScheduledStart !== originalAppointment.scheduled_start) {
-            updatedFields.scheduled_start = newScheduledStart;
-        }
 
+        if (newScheduledStart !== originalAppointment.scheduled_start) {
+            // Convert the new scheduled start time to UTC
+            const localDateFromUtc = DateTime.fromISO(newScheduledStart, {
+                zone: 'utc',
+            }).setZone();
+
+            // Get the offset in hours
+            const offsetInHours = localDateFromUtc.offset / 60;
+
+            // Add the offset to the date
+            const adjustedLocalDate = DateTime.fromISO(newScheduledStart).plus({
+                hours: Math.abs(offsetInHours),
+            });
+
+            // Convert the adjusted date back to UTC
+            const adjustedUtcDate = adjustedLocalDate.toUTC().toString();
+            updatedFields.scheduled_start = adjustedUtcDate;
+        }
         return updatedFields;
     };
 

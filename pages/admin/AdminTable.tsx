@@ -49,7 +49,6 @@ export function AdminTable<T>({
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
     const paginatedData = data.slice(startIndex, endIndex);
-    console.log(currentPage);
 
     // Reset the current page to 1 when the data changes
     useEffect(() => {
