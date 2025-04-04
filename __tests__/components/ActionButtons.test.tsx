@@ -1,4 +1,4 @@
-import { AppointmentActions } from '@/pages/admin/appointments/components/ui/ActionButtons';
+import AppointmentActions from '@/pages/admin/appointments/components/ui/ActionButtons';
 import { render } from '@/utils/render-test';
 import { screen, fireEvent } from '@testing-library/react';
 

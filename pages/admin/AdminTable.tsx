@@ -41,7 +41,7 @@ export function AdminTable<T>({
     columns,
     isLoading = false,
     emptyMessage = adminTableMessages.emptyData.es,
-    itemsPerPage = 10,
+    itemsPerPage = 1,
 }: AdminTableProps<T>) {
     const [currentPage, setCurrentPage] = useState(1);
     const totalItems = data.length;
@@ -49,18 +49,19 @@ export function AdminTable<T>({
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
     const paginatedData = data.slice(startIndex, endIndex);
+    console.log(currentPage);
 
     // Reset the current page to 1 when the data changes
     useEffect(() => {
-        setCurrentPage(1);
+        if (currentPage !== 1) setCurrentPage(1);
     }, [data.length]);
 
     // Adjust the current page if it exceeds the total number of pages
     useEffect(() => {
         if (currentPage > totalPages && totalPages > 0) {
-            setCurrentPage(totalPages);
+            setCurrentPage(totalPages - 1);
         }
-    }, [totalPages, currentPage]);
+    }, [totalPages]);
 
     if (isLoading) {
         return (
@@ -94,7 +95,7 @@ export function AdminTable<T>({
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {data.length === 0 && !isLoading ? (
+                {paginatedData.length === 0 ? (
                     <Table.Row>
                         <Table.Cell
                             p={3}
@@ -105,7 +106,7 @@ export function AdminTable<T>({
                         </Table.Cell>
                     </Table.Row>
                 ) : (
-                    data.map((item, index) => (
+                    paginatedData.map((item, index) => (
                         <Table.Row
                             className='tr-table'
                             key={index}

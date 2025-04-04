@@ -130,6 +130,7 @@ exports[`SearchFilters should render with all filters enabled 1`] = `
     <input
       class="chakra-input css-sjm060"
       name="date"
+      placeholder="Filtrar por fecha"
       type="date"
       value=""
     />
@@ -211,6 +212,7 @@ exports[`SearchFilters should render with date filter only 1`] = `
     <input
       class="chakra-input css-sjm060"
       name="date"
+      placeholder="Filtrar por fecha"
       type="date"
       value="2023-01-01"
     />

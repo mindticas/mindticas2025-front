@@ -301,6 +301,7 @@ exports[`AdminNavbarDesktop Snapshot should match the snapshot 1`] = `
           Salir
         </button>
         <img
+          alt="Imagen de google calendar"
           class="chakra-image css-1d8ofal"
           src="/img.jpg"
         />

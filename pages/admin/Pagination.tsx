@@ -3,7 +3,7 @@
 import { Flex, Text, Button } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
-interface PaginationProps {
+export interface PaginationProps {
     currentPage: number;
     totalItems: number;
     itemsPerPage: number;
