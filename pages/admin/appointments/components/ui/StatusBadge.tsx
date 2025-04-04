@@ -6,7 +6,7 @@ interface BadgeProps {
     statusValue?: string;
 }
 
-export function StatusBadge({ statusValue }: BadgeProps) {
+export default function StatusBadge({ statusValue }: BadgeProps) {
     const statusConfig = statusOptions.find((opt) => opt.value === statusValue);
 
     return (

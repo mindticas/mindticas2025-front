@@ -1,0 +1,11 @@
+./__tests__/**/*.ts
+./!components/**/*.ts
+./!components/**/*.tsx
+./!hooks/**/*.ts
+./!interfaces/**/*.ts
+./!pages/**/*.ts
+./!pages/**/*.tsx
+./!services/**/*.ts
+./!utils/**/*.ts
+./!middleware.ts
+./!*.ts

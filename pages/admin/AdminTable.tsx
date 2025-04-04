@@ -1,8 +1,8 @@
 'use client';
 
+import adminTableMessages from '@/constraints/adminMessages';
 import { Table, Box, Spinner } from '@chakra-ui/react';
 import { ReactNode, useEffect, useState } from 'react';
-import { adminTableMessages } from './constraints/adminMessages';
 import { Pagination } from './Pagination';
 
 interface ColumnDef<T> {
@@ -36,7 +36,6 @@ interface AdminTableProps<T> {
  *
  * @returns {JSX.Element} The rendered table component, including a loading spinner, table content, or an empty message as appropriate.
  */
-
 export function AdminTable<T>({
     data,
     columns,
@@ -80,21 +79,22 @@ export function AdminTable<T>({
         <Table.Root size='sm' variant='outline' showColumnBorder>
             <Table.Header>
                 <Table.Row bg='#F3F4F6'>
-                    {columns.map((column) => (
-                        <Table.ColumnHeader
-                            key={column.key}
-                            textAlign={column.align || 'center'}
-                            width={column.width}
-                            py={2}
-                            fontWeight='bold'
-                        >
-                            {column.header}
-                        </Table.ColumnHeader>
-                    ))}
+                    {columns &&
+                        columns.map((column) => (
+                            <Table.ColumnHeader
+                                key={column.key}
+                                textAlign={column.align || 'center'}
+                                width={column.width}
+                                py={2}
+                                fontWeight='bold'
+                            >
+                                {column.header}
+                            </Table.ColumnHeader>
+                        ))}
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {paginatedData.length === 0 && !isLoading ? (
+                {data.length === 0 && !isLoading ? (
                     <Table.Row>
                         <Table.Cell
                             p={3}
@@ -105,7 +105,7 @@ export function AdminTable<T>({
                         </Table.Cell>
                     </Table.Row>
                 ) : (
-                    paginatedData.map((item, index) => (
+                    data.map((item, index) => (
                         <Table.Row
                             className='tr-table'
                             key={index}

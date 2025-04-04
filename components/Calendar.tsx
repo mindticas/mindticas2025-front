@@ -36,8 +36,6 @@ export default function Calendar() {
     const { setDateTime, dateTime, treatment } = useBookingContext();
     const [error, setError] = useState<string | null>(null);
     const boxRef = useRef<HTMLDivElement>(null);
-    const TREATMENT_DURATION = 120;
-    const REST_TIME = '14:00';
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
 
@@ -58,19 +56,7 @@ export default function Calendar() {
             try {
                 const data = await getAppointments();
                 const bookedTimes = data
-                    .flatMap((appointment) => {
-                        const startTime = DateTime.fromISO(
-                            appointment.scheduled_start,
-                            { zone: 'utc' },
-                        );
-                        if (appointment.duration === 120) {
-                            const nextSlot = startTime
-                                .plus({ hours: 1 })
-                                .toISO();
-                            return [appointment.scheduled_start, nextSlot];
-                        }
-                        return appointment.scheduled_start;
-                    })
+                    .map((appointment) => appointment.scheduled_start)
                     .filter(Boolean) as string[];
                 setBookedTimes(bookedTimes);
             } catch (error) {
@@ -197,23 +183,6 @@ export default function Calendar() {
         }
     }, [treatment, selectedDate]);
     // Check the available slots for 1 hour and 2 hour appointments
-    const isSlotAvailabe = (time: string) => {
-        if (!treatment || !treatment.duration) return false;
-        const slotsAvailable = treatment.duration / 60;
-        const currentIndex = timeSlots.indexOf(time);
-        if (currentIndex === -1) return false;
-
-        if (treatment.duration === TREATMENT_DURATION && time === REST_TIME)
-            return false;
-
-        for (let i = 0; i < slotsAvailable; i++) {
-            const slot = timeSlots[currentIndex + i];
-            if (!slot || isBookedTime(slot)) {
-                return false;
-            }
-        }
-        return true;
-    };
 
     return (
         <>
@@ -292,11 +261,11 @@ export default function Calendar() {
                                     isFutureDate(date)
                                         ? 'gray.200' // Past dates or Sundays
                                         : selectedDate?.toDateString() ===
-                                          date.toDateString()
-                                        ? 'black' // Selected date
-                                        : isToday(date)
-                                        ? 'gray.200' // Today
-                                        : 'gray.100' // Future dates
+                                            date.toDateString()
+                                          ? 'black' // Selected date
+                                          : isToday(date)
+                                            ? 'gray.200' // Today
+                                            : 'gray.100' // Future dates
                                 }
                                 color={
                                     isPastDate(date) ||
@@ -304,9 +273,9 @@ export default function Calendar() {
                                     isFutureDate(date)
                                         ? 'gray.400' // Past dates or Sundays
                                         : selectedDate?.toDateString() ===
-                                          date.toDateString()
-                                        ? 'white' // Selected date
-                                        : 'black' // Future dates or today
+                                            date.toDateString()
+                                          ? 'white' // Selected date
+                                          : 'black' // Future dates or today
                                 }
                                 _hover={
                                     isPastDate(date) ||
@@ -352,16 +321,16 @@ export default function Calendar() {
                                             isBookedTime(time)
                                                 ? 'gray.200' // Past times
                                                 : selectedTime === time
-                                                ? 'black' // Selected time
-                                                : 'gray.100' // Future times
+                                                  ? 'black' // Selected time
+                                                  : 'gray.100' // Future times
                                         }
                                         color={
                                             isPastTime(time) ||
                                             isBookedTime(time)
                                                 ? 'gray.400' // Past times
                                                 : selectedTime === time
-                                                ? 'white' // Selected time
-                                                : 'black' // Future times
+                                                  ? 'white' // Selected time
+                                                  : 'black' // Future times
                                         }
                                         _hover={
                                             isPastTime(time) ||
@@ -372,13 +341,11 @@ export default function Calendar() {
                                         onClick={() =>
                                             !isPastTime(time) &&
                                             !isBookedTime(time) &&
-                                            isSlotAvailabe(time) &&
                                             handleTimeSelect(time)
                                         }
                                         disabled={
                                             isPastTime(time) ||
-                                            isBookedTime(time) ||
-                                            !isSlotAvailabe(time)
+                                            isBookedTime(time)
                                         } // Disable past times
                                     >
                                         {time}
