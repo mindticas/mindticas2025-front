@@ -23,7 +23,7 @@ import {
 import StatusBadge from './components/ui/StatusBadge';
 import AppointmentActions from './components/ui/ActionButtons';
 import AppointmentModal from './components/ui/AppointmentModal';
-import AdminTable from '../AdminTable';
+import { AdminTable } from '../AdminTable';
 
 /**
  * The `CitasPage` component is the main page for managing appointments in the admin panel.

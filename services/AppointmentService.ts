@@ -2,6 +2,7 @@ import { AppointmentCreate } from '@/interfaces/appointment/AppointmentCreate';
 import { API_URL } from './apiConfig';
 import { Appointment } from '@/interfaces/appointment/Appointment';
 import { AppointmentUpdate } from '@/interfaces/appointment/AppointmentUpdate';
+import Cookies from 'js-cookie';
 
 export const createAppointment = async (
     newAppointment: AppointmentCreate,
@@ -54,12 +55,14 @@ export const updateAppointment = async (
     updatedAppointment: AppointmentUpdate,
 ): Promise<Appointment> => {
     try {
+        const token = Cookies.get('AUTH_TOKEN');
         const response = await fetch(
             `${API_URL}/appointment/${appointmentId}`,
             {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(updatedAppointment),
             },
