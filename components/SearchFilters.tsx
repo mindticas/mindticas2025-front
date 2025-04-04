@@ -116,6 +116,7 @@ export function SearchFilters({
                     }}
                     name='date'
                     fontSize='md'
+                    placeholder='Filtrar por fecha'
                     value={filters.date || ''}
                     onChange={onFilterChange}
                 />

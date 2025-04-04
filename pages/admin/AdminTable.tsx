@@ -1,8 +1,9 @@
 'use client';
 
 import { Table, Box, Spinner } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { adminTableMessages } from './constraints/adminMessages';
+import { Pagination } from './Pagination';
 
 interface ColumnDef<T> {
     key: string;
@@ -18,6 +19,7 @@ interface AdminTableProps<T> {
     isLoading?: boolean;
     emptyMessage?: string;
     scrollable?: boolean;
+    itemsPerPage?: number;
 }
 
 /**
@@ -34,12 +36,33 @@ interface AdminTableProps<T> {
  *
  * @returns {JSX.Element} The rendered table component, including a loading spinner, table content, or an empty message as appropriate.
  */
+
 export function AdminTable<T>({
     data,
     columns,
     isLoading = false,
     emptyMessage = adminTableMessages.emptyData.es,
+    itemsPerPage = 10,
 }: AdminTableProps<T>) {
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalItems = data.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+    const paginatedData = data.slice(startIndex, endIndex);
+
+    // Reset the current page to 1 when the data changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [data.length]);
+
+    // Adjust the current page if it exceeds the total number of pages
+    useEffect(() => {
+        if (currentPage > totalPages && totalPages > 0) {
+            setCurrentPage(totalPages);
+        }
+    }, [totalPages, currentPage]);
+
     if (isLoading) {
         return (
             <Box
@@ -71,7 +94,7 @@ export function AdminTable<T>({
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {data.length === 0 && !isLoading ? (
+                {paginatedData.length === 0 && !isLoading ? (
                     <Table.Row>
                         <Table.Cell
                             p={3}
@@ -82,7 +105,7 @@ export function AdminTable<T>({
                         </Table.Cell>
                     </Table.Row>
                 ) : (
-                    data.map((item, index) => (
+                    paginatedData.map((item, index) => (
                         <Table.Row
                             className='tr-table'
                             key={index}
@@ -106,8 +129,16 @@ export function AdminTable<T>({
     );
 
     return (
-        <Table.ScrollArea borderWidth='1px' borderRadius='lg'>
-            {TableContent}
-        </Table.ScrollArea>
+        <Box>
+            <Table.ScrollArea borderWidth='1px' borderRadius='lg'>
+                {TableContent}
+            </Table.ScrollArea>
+            <Pagination
+                currentPage={currentPage}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+            />
+        </Box>
     );
 }
