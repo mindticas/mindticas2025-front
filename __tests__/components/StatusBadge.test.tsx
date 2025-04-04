@@ -1,4 +1,4 @@
-import { StatusBadge } from '@/pages/admin/appointments/components/ui/StatusBadge';
+import StatusBadge from '@/pages/admin/appointments/components/ui/StatusBadge';
 import { render } from '@/utils/render-test';
 
 describe('StatusBadge Component', () => {

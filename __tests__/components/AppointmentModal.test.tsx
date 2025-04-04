@@ -1,5 +1,5 @@
 import { Treatment } from '@/interfaces/treatment/Treatment';
-import { AppointmentModal } from '@/pages/admin/appointments/components/ui/AppointmentModal';
+import AppointmentModal from '@/pages/admin/appointments/components/ui/AppointmentModal';
 import { render } from '@/utils/render-test';
 
 const mockTreatments: Treatment[] = [
