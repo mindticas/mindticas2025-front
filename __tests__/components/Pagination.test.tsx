@@ -1,4 +1,4 @@
-import { Pagination } from '@/pages/admin/Pagination';
+import Pagination from '@/pages/admin/Pagination';
 import { render } from '@/utils/render-test';
 
 describe('Pagination Snapshot', () => {
