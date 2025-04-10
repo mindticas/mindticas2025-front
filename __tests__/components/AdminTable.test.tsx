@@ -1,4 +1,4 @@
-import { AdminTable } from '@/pages/admin/AdminTable';
+import AdminTable from '@/pages/admin/AdminTable';
 import { render } from '@/utils/render-test';
 
 // Mock data for testing
