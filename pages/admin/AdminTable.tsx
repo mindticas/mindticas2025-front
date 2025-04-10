@@ -41,7 +41,7 @@ export function AdminTable<T>({
     columns,
     isLoading = false,
     emptyMessage = adminTableMessages.emptyData.es,
-    itemsPerPage = 1,
+    itemsPerPage = 3,
 }: AdminTableProps<T>) {
     const [currentPage, setCurrentPage] = useState(1);
     const totalItems = data.length;
@@ -58,7 +58,7 @@ export function AdminTable<T>({
     // Adjust the current page if it exceeds the total number of pages
     useEffect(() => {
         if (currentPage > totalPages && totalPages > 0) {
-            setCurrentPage(totalPages - 1);
+            setCurrentPage(1);
         }
     }, [totalPages]);
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, Text, Button } from '@chakra-ui/react';
+import { Flex, Text, Button, useBreakpointValue } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
 export interface PaginationProps {
@@ -18,6 +18,7 @@ export const Pagination = ({
     onPageChange,
     maxVisibleButtons = 5,
 }: PaginationProps) => {
+    const isSmallScreen = useBreakpointValue({ base: true, sm: false });
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     const handlePrevious = () => onPageChange(Math.max(1, currentPage - 1));
     const handleNext = () =>
@@ -55,7 +56,14 @@ export const Pagination = ({
     };
 
     return (
-        <Flex justifyContent='space-between' alignItems='center' mt={4} px={4}>
+        <Flex
+            justifyContent={isSmallScreen ? 'center' : 'space-between'}
+            flexWrap={'wrap'}
+            gap={isSmallScreen ? 3 : 6}
+            alignItems='center'
+            mt={4}
+            px={4}
+        >
             <Text fontSize='sm' color='gray.600'>
                 Página
                 <Text m={1} as='span' fontWeight='bold'>

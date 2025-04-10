@@ -1,8 +1,12 @@
+import { DateTime } from "luxon";
+
 interface DateTimeParts {
     date: string;
     time: string;
 }
+
 // * @returns Object with (YYYY-MM-DD) y time (HH:MM)
+
 export const splitDateTimeFromISO = (
     isoString: string | null | undefined,
 ): DateTimeParts => {
@@ -14,8 +18,10 @@ export const splitDateTimeFromISO = (
         return { date: '', time: '' };
     }
 
-    // Format date (YYYY-MM-DD)
-    const date = dateObj.toISOString().split('T')[0];
+    // format date (YYYY-MM-DD)
+    const date = DateTime.fromJSDate(dateObj)
+       .setZone('local')
+        .toFormat('yyyy-MM-dd');
 
     // format time (HH:MM)
     const time = dateObj
@@ -23,8 +29,8 @@ export const splitDateTimeFromISO = (
             hour: '2-digit',
             minute: '2-digit',
             hour12: false,
-            timeZone: 'UTC',
         })
         .replace(/\./g, '');
+
     return { date, time };
 };

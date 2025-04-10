@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { useState, useMemo, useEffect } from 'react';
-import { Box, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Text, useBreakpointValue } from '@chakra-ui/react';
 import {
     getAppointmentById,
     getAppointments,
@@ -67,8 +67,20 @@ export default function CitasPage() {
                     getAppointments(),
                     getTreatments(),
                 ]);
+                const adjustedAppointments = appointmentsData.map(
+                    (appointment) => {
+                        const adjustedScheduledStart = DateTime.fromISO(
+                            appointment.scheduled_start,
+                            { zone: 'utc' },
+                        ).setZone('local');
 
-                setAppointments(appointmentsData);
+                        return {
+                            ...appointment,
+                            scheduled_start: adjustedScheduledStart.toString(),
+                        };
+                    },
+                );
+                setAppointments(adjustedAppointments);
                 setTreatments(treatmentsData);
             } catch (error) {
                 setError(
@@ -104,9 +116,18 @@ export default function CitasPage() {
         try {
             if (modalState.mode === 'edit' && data.id) {
                 const originalAppointment = await getAppointmentById(data.id);
+                const adjustedAppointment = {
+                    ...originalAppointment,
+                    scheduled_start: DateTime.fromISO(
+                        originalAppointment.scheduled_start,
+                        { zone: 'utc' },
+                    )
+                        .setZone('local')
+                        .toFormat("yyyy-MM-dd'T'HH:mm"),
+                };
                 const updatedFields = getUpdatedFields(
                     data,
-                    originalAppointment,
+                    adjustedAppointment,
                 );
 
                 if (Object.keys(updatedFields).length == 0) {
@@ -117,6 +138,7 @@ export default function CitasPage() {
                     });
                     return;
                 }
+
                 await updateAppointment(data.id, updatedFields);
                 await refreshAppointmentState(data.id);
 
@@ -161,35 +183,36 @@ export default function CitasPage() {
                 .map((id) => parseInt(id.trim()));
         }
 
-        const newScheduledStart = `${formData.date}T${formData.time}:00.000Z`;
+        const newScheduledStart = `${formData.date}T${formData.time}`;
 
         if (newScheduledStart !== originalAppointment.scheduled_start) {
-            // Convert the new scheduled start time to UTC
-            const localDateFromUtc = DateTime.fromISO(newScheduledStart, {
-                zone: 'utc',
-            }).setZone();
-
-            // Get the offset in hours
-            const offsetInHours = localDateFromUtc.offset / 60;
-
-            // Add the offset to the date
-            const adjustedLocalDate = DateTime.fromISO(newScheduledStart).plus({
-                hours: Math.abs(offsetInHours),
-            });
-
-            // Convert the adjusted date back to UTC
-            const adjustedUtcDate = adjustedLocalDate.toUTC().toString();
-            updatedFields.scheduled_start = adjustedUtcDate;
+            const adjustedScheduledStart = DateTime.fromISO(newScheduledStart, {
+                zone: 'local',
+            })
+                .setZone('utc')
+                .toFormat("yyyy-MM-dd'T'HH:mm");
+            updatedFields.scheduled_start = adjustedScheduledStart;
         }
         return updatedFields;
     };
 
     const refreshAppointmentState = async (appointmentId: number) => {
         const verifiedAppointment = await getAppointmentById(appointmentId);
+
+        const adjustedAppointment = {
+            ...verifiedAppointment,
+            scheduled_start: DateTime.fromISO(
+                verifiedAppointment.scheduled_start,
+                { zone: 'utc' },
+            )
+                .setZone('local')
+                .toFormat('yyyy/MM/dd, HH:mm'),
+        };
+
         setAppointments((prev) =>
             prev.map((appointment) =>
                 appointment.id === appointmentId
-                    ? { ...appointment, ...verifiedAppointment }
+                    ? adjustedAppointment
                     : appointment,
             ),
         );
@@ -327,7 +350,6 @@ export default function CitasPage() {
                     {
                         hour: '2-digit',
                         minute: '2-digit',
-                        timeZone: 'UTC',
                     },
                 ),
             align: 'center' as const,
@@ -368,6 +390,10 @@ export default function CitasPage() {
                 borderRadius='lg'
                 className='light'
             >
+                <Text fontSize='2xl' fontWeight='bold' mb={4}>
+                    Citas
+                </Text>
+
                 <div>
                     {error && (
                         <p

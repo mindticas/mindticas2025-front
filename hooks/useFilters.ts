@@ -1,3 +1,4 @@
+import { SortCriteria } from '@/components/SearchFilters';
 import { useState, useCallback } from 'react';
 
 export interface FilterOptions {
@@ -5,6 +6,7 @@ export interface FilterOptions {
     treatments?: string;
     date?: string;
     status?: string;
+    sort?: SortCriteria;
     [key: string]: string | undefined; // Allow additional properties
 }
 
@@ -33,6 +35,11 @@ export const useFilters = (initialFilters: FilterOptions) => {
     const handleStatusChange = useCallback((status: string) => {
         setFilters((prev) => ({ ...prev, status }));
     }, []);
+    
+
+    const handleSortChange = useCallback((sort: SortCriteria) => {
+        setFilters(prev => ({ ...prev, sort }));
+    }, []);
 
     const resetFilters = useCallback(() => {
         setFilters(() => ({ ...initialFilters }));
@@ -43,6 +50,7 @@ export const useFilters = (initialFilters: FilterOptions) => {
         handleFilterChange,
         handleStatusChange,
         resetFilters,
+        handleSortChange,
         setFilters,
     };
 };
