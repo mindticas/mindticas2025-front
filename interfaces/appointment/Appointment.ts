@@ -8,7 +8,7 @@ export interface Appointment extends AppointmentCreate {
     duration: number;
     status: string;
     customer: Customer;
-    user:User;
+    user: User;
     treatments: Treatment[];
     created_at: string;
     updated_at: string;

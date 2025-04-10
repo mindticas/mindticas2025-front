@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AdminTable } from '../AdminTable';
+
 import { Customer } from '@/interfaces/customer/Customer';
 import { getCustomerById, getCustomers } from '@/services/CustomerService';
 import { SearchFilters, SortCriteria } from '@/components/SearchFilters';
@@ -19,7 +19,7 @@ import { CloseButton } from '@/components/ui/close-button';
 import StatusBadge from '../appointments/components/ui/StatusBadge';
 import { Appointment } from '@/interfaces/appointment/Appointment';
 import { DateTime } from 'luxon';
-import { fi } from 'date-fns/locale';
+import AdminTable from '../AdminTable';
 
 export default function ClientsPage() {
     const [customers, setCustomers] = useState<Customer[]>([]);

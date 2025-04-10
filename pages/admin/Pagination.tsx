@@ -11,13 +11,13 @@ export interface PaginationProps {
     onPageChange: (page: number) => void;
 }
 
-export const Pagination = ({
+export default function Pagination({
     currentPage,
     totalItems,
     itemsPerPage,
     onPageChange,
     maxVisibleButtons = 5,
-}: PaginationProps) => {
+}: PaginationProps) {
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     const handlePrevious = () => onPageChange(Math.max(1, currentPage - 1));
@@ -100,4 +100,4 @@ export const Pagination = ({
             </Flex>
         </Flex>
     );
-};
+}
