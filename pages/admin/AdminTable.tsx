@@ -3,7 +3,7 @@
 import adminTableMessages from '@/constraints/adminMessages';
 import { Table, Box, Spinner } from '@chakra-ui/react';
 import { ReactNode, useEffect, useState } from 'react';
-import { Pagination } from './Pagination';
+import Pagination from './Pagination';
 
 interface ColumnDef<T> {
     key: string;
@@ -36,12 +36,12 @@ interface AdminTableProps<T> {
  *
  * @returns {JSX.Element} The rendered table component, including a loading spinner, table content, or an empty message as appropriate.
  */
-export function AdminTable<T>({
+export default function AdminTable<T>({
     data,
     columns,
     isLoading = false,
     emptyMessage = adminTableMessages.emptyData.es,
-    itemsPerPage = 3,
+    itemsPerPage = 10,
 }: AdminTableProps<T>) {
     const [currentPage, setCurrentPage] = useState(1);
     const totalItems = data.length;
