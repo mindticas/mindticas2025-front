@@ -1,28 +1,46 @@
 'use client';
 
-import { Grid, Input } from '@chakra-ui/react';
+import { Button, Grid, HStack, Input, Menu, Text } from '@chakra-ui/react';
 import { SelectRoot, createListCollection } from '@chakra-ui/react';
 import {
     SelectContent,
     SelectItem,
     SelectTrigger,
 } from '@/components/ui/select';
-import { CalendarCheck, CircleCheckBig, CircleX, Clock } from 'lucide-react';
+import {
+    ArrowDown,
+    ArrowUp,
+    CalendarCheck,
+    ChevronDown,
+    CircleCheckBig,
+    CircleX,
+    Clock,
+} from 'lucide-react';
 
 export interface AppointmentsFilters {
     name: string;
     treatments?: string;
     date?: string;
     status?: string;
+    sort?: SortCriteria;
 }
+
+export type SortCriteria =
+    | 'SERVICE_COUNT_ASC'
+    | 'SERVICE_COUNT_DESC'
+    | 'CUSTOMER_NAME_ASC'
+    | 'CUSTOMER_NAME_DESC'
+    | '';
 
 interface SearchFiltersProps {
     filters: AppointmentsFilters;
     onFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onStatusChange?: (status: string) => void;
+    onSortChange?: (sort: SortCriteria) => void;
     showStatusFilter?: boolean;
     showDateFilter?: boolean;
     showTreatmentFilter?: boolean;
+    showSort?: boolean;
 }
 
 export const statusOptions = [
@@ -52,6 +70,30 @@ export const statusOptions = [
     },
     { value: '', label: 'Todos los estatus', color: 'gray' },
 ];
+
+const sortOptions = [
+    {
+        value: 'SERVICE_COUNT_ASC',
+        label: 'Núm. Servicios (menos a más)',
+        icon: <ArrowUp size={20} />,
+    },
+    {
+        value: 'SERVICE_COUNT_DESC',
+        label: 'Núm. Servicios (más a menos)',
+        icon: <ArrowDown size={20} />,
+    },
+    {
+        value: 'CUSTOMER_NAME_ASC',
+        label: 'Nombre (A-Z)',
+        icon: <ArrowUp size={20} />,
+    },
+    {
+        value: 'CUSTOMER_NAME_DESC',
+        label: 'Nombre (Z-A)',
+        icon: <ArrowDown size={20} />,
+    },
+];
+
 /**
  * A functional component that renders a set of search filters for filtering data.
  * The component supports filters for name, treatments, date, and status, with
@@ -75,13 +117,22 @@ export function SearchFilters({
     filters,
     onFilterChange,
     onStatusChange,
+    onSortChange,
     showStatusFilter = false,
     showDateFilter = false,
     showTreatmentFilter = false,
+    showSort = false,
 }: SearchFiltersProps) {
+    const activeSortLabel = sortOptions.find(
+        (opt) => opt.value === filters.sort,
+    )?.label;
+
     return (
         <Grid
-            templateColumns={{ base: '1fr', md: 'repeat(4, 1fr)' }}
+            templateColumns={{
+                base: '1fr',
+                md: showSort ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+            }}
             gap={4}
             mb={4}
         >
@@ -152,6 +203,54 @@ export function SearchFilters({
                         ))}
                     </SelectContent>
                 </SelectRoot>
+            )}
+
+            {/* Sort options */}
+            {showSort && onSortChange && (
+                <Menu.Root>
+                    <Menu.Trigger asChild>
+                        <Button variant='subtle' size='sm'>
+                            {filters.sort ? (
+                                filters.sort.includes('_ASC') ? (
+                                    <ArrowUp size={16} />
+                                ) : (
+                                    <ArrowDown size={16} />
+                                )
+                            ) : (
+                                <ChevronDown size={16} />
+                            )}
+
+                            {filters.sort
+                                ? `Orden: ${activeSortLabel?.split(' ')[1]}`
+                                : 'Ordenar por'}
+                        </Button>
+                    </Menu.Trigger>
+                    <Menu.Positioner>
+                        <Menu.Content>
+                            {sortOptions.map((option) => (
+                                <Menu.Item
+                                    key={option.value}
+                                    value={option.value}
+                                    onClick={() =>
+                                        onSortChange(
+                                            option.value as SortCriteria,
+                                        )
+                                    }
+                                    _hover={{ bg: 'gray.100' }}
+                                >
+                                    <HStack
+                                        p={2}
+                                        width={'100%'}
+                                        justifyContent={'space-between'}
+                                    >
+                                        <Text>{option.label}</Text>
+                                        {option?.icon}
+                                    </HStack>
+                                </Menu.Item>
+                            ))}
+                        </Menu.Content>
+                    </Menu.Positioner>
+                </Menu.Root>
             )}
         </Grid>
     );
