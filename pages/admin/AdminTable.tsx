@@ -37,14 +37,14 @@ interface AdminTableProps<T> {
  * @returns {JSX.Element} The rendered table component, including a loading spinner, table content, or an empty message as appropriate.
  */
 export default function AdminTable<T>({
-    data,
+    data = [],
     columns,
     isLoading = false,
     emptyMessage = adminTableMessages.emptyData.es,
     itemsPerPage = 10,
 }: AdminTableProps<T>) {
     const [currentPage, setCurrentPage] = useState(1);
-    const totalItems = data.length;
+    const totalItems = data?.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
@@ -53,7 +53,7 @@ export default function AdminTable<T>({
     // Reset the current page to 1 when the data changes
     useEffect(() => {
         if (currentPage !== 1) setCurrentPage(1);
-    }, [data.length]);
+    }, [data?.length]);
 
     // Adjust the current page if it exceeds the total number of pages
     useEffect(() => {
@@ -94,33 +94,35 @@ export default function AdminTable<T>({
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {paginatedData.length === 0 ? (
+                {paginatedData && paginatedData?.length === 0 ? (
                     <Table.Row>
                         <Table.Cell
                             p={3}
-                            colSpan={columns.length}
+                            colSpan={columns?.length}
                             textAlign='center'
                         >
                             {emptyMessage}
                         </Table.Cell>
                     </Table.Row>
                 ) : (
+                    paginatedData &&
                     paginatedData.map((item, index) => (
                         <Table.Row
                             className='tr-table'
                             key={index}
                             borderBottomWidth={1}
                         >
-                            {columns.map((column) => (
-                                <Table.Cell
-                                    key={`${column.key}-${index}`}
-                                    textAlign={column.align || 'center'}
-                                    px={2}
-                                    width='fit-content'
-                                >
-                                    {column.render(item)}
-                                </Table.Cell>
-                            ))}
+                            {columns &&
+                                columns.map((column) => (
+                                    <Table.Cell
+                                        key={`${column.key}-${index}`}
+                                        textAlign={column.align || 'center'}
+                                        px={2}
+                                        width='fit-content'
+                                    >
+                                        {column.render(item)}
+                                    </Table.Cell>
+                                ))}
                         </Table.Row>
                     ))
                 )}
