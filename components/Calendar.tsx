@@ -52,27 +52,29 @@ export default function Calendar() {
 
     // fetch booked appointments
     useEffect(() => {
-        const fetchAppointments = async () => {
-            try {
-                const data = await getAppointments();
-                const bookedTimes = data
-                    .map((appointment) => appointment.scheduled_start)
-                    .filter(Boolean) as string[];
-                setBookedTimes(bookedTimes);
-            } catch (error) {
-                setError(
-                    'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
-                );
-            }
-        };
+        if (treatment) {
+            const fetchAppointments = async () => {
+                try {
+                    const data = await getAppointments();
+                    const bookedTimes = data
+                        .map((appointment) => appointment.scheduled_start)
+                        .filter(Boolean) as string[];
+                    setBookedTimes(bookedTimes);
+                } catch (error) {
+                    setError(
+                        'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
+                    );
+                }
+            };
 
-        // if dateTime is reset to null, reset selectedDate and selectedTime
-        if (!dateTime) {
-            setSelectedDate(null);
-            setSelectedTime(null);
+            // if dateTime is reset to null, reset selectedDate and selectedTime
+            if (!dateTime) {
+                setSelectedDate(null);
+                setSelectedTime(null);
+            }
+            fetchAppointments();
         }
-        fetchAppointments();
-    }, [dateTime]);
+    }, [treatment, dateTime]);
 
     // Generate dates for the current week
     const weekDates = useMemo(() => {
