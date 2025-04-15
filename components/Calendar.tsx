@@ -67,12 +67,12 @@ export default function Calendar() {
                 }
             };
 
-            // if dateTime is reset to null, reset selectedDate and selectedTime
-            if (!dateTime) {
-                setSelectedDate(null);
-                setSelectedTime(null);
-            }
             fetchAppointments();
+        }
+        // if dateTime is reset to null, reset selectedDate and selectedTime
+        if (!dateTime) {
+            setSelectedDate(null);
+            setSelectedTime(null);
         }
     }, [treatment, dateTime]);
 
@@ -164,11 +164,13 @@ export default function Calendar() {
             })
             .map((bookedTime) => {
                 const formattedTime = DateTime.fromISO(bookedTime, {
-                    zone: 'utc',
+                    zone: 'local',
                 }).toFormat('HH:mm');
+
                 return formattedTime;
             });
     }, [selectedDate, bookedTimes]);
+
     const isBookedTime = (time: string) => {
         return bookedTimesForDate.includes(time);
     };
@@ -182,7 +184,6 @@ export default function Calendar() {
             });
         }
     }, [treatment, selectedDate]);
-    // Check the available slots for 1 hour and 2 hour appointments
 
     return (
         <>
