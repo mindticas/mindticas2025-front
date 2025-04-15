@@ -66,7 +66,12 @@ body {
 .css-m6e6s1 {
     margin: 10px;
 }
-
 .css-lr1uno {
     color: black;
+}
+.select-content-service {
+    width: 160px !important;
+    color: black;
+    ;
+    padding: 10px;
 }
