@@ -1,7 +1,8 @@
 import { Customer } from '../customer/Customer';
 import { Treatment } from '../treatment/Treatment';
+import { User } from '../user/User';
 import { AppointmentCreate } from './AppointmentCreate';
-import { User } from './User';
+
 
 export interface Appointment extends AppointmentCreate {
     id: number;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Customer } from '@/interfaces/customer/Customer';
 import { getCustomerById, getCustomers } from '@/services/CustomerService';
-import { SearchFilters, SortCriteria } from '@/components/SearchFilters';
+import { SearchFilters } from '@/components/SearchFilters';
 import { useFilters } from '@/hooks/useFilters';
 import {
     Box,
@@ -28,7 +28,7 @@ export default function ClientsPage() {
         Appointment[]
     >([]);
     const [loading, setLoading] = useState(true);
-    const { filters, handleFilterChange, setFilters } = useFilters({
+    const { filters, handleFilterChange, handleSortChange } = useFilters({
         name: '',
         sort: '',
     });
@@ -74,10 +74,6 @@ export default function ClientsPage() {
 
     const handleCloseClientModal = () => {
         setOpenModal(false);
-    };
-
-    const handleSortChange = (sort: SortCriteria) => {
-        setFilters({ ...filters, sort });
     };
 
     const tableColumns = [
