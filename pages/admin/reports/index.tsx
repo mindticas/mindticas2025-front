@@ -1,9 +1,9 @@
 import TotalEarnings from './components/TotalEarnings';
 import KeyMetrics from './components/KeyMetrics';
-import NumberServices from './components/NumberServices';
 import DateInputs from './components/DateInputs';
 import { StatisticsDataResponse } from '@/interfaces/statistics/StatisticsDataResponse';
 import { useState } from 'react';
+import { StatisticsData } from '@/interfaces/statistics/StatisticsData';
 
 export default function Reports() {
     const [selectedTreatment, setSelectedTreatment] = useState<string>('');
@@ -15,28 +15,37 @@ export default function Reports() {
         startDate: string;
         endDate: string;
     }>({ startDate: '', endDate: '' });
+    const [isLoadingStatistics, setIsLoadingStatistics] = useState(false);
+    const handleDateChange = (dates: StatisticsData) => {
+        setDateRange({
+            startDate: dates.startDate,
+            endDate: dates.endDate,
+        });
+    };
+    const handleTreatmentSelect = (treatmentId: string) => {
+        setSelectedTreatment(treatmentId);
+    };
+    const handleLoadingChange = (isLoading: boolean) => {
+        setIsLoadingStatistics(isLoading);
+    };
 
     return (
         <>
             <DateInputs
                 onStatisticsFetched={setStatistics}
-                onDateChange={(dates) =>
-                    setDateRange({
-                        startDate: dates.startDate, // Adjust property names as needed
-                        endDate: dates.endDate, // Adjust property names as needed
-                    })
-                }
-                onTreatmentSelect={(id) => {
-                    setSelectedTreatment(id);
-                }}
+                onDateChange={handleDateChange}
+                onTreatmentSelect={handleTreatmentSelect}
+                onLoadingChange={handleLoadingChange}
             />
-            <KeyMetrics statistics={statistics} />
+            <KeyMetrics
+                statistics={statistics}
+                isLoading={isLoadingStatistics}
+            />
             <TotalEarnings
                 selectedTreatmentId={selectedTreatment}
                 dateRange={dateRange}
                 statistics={statistics || undefined}
             />
-            {/* <NumberServices /> */}
         </>
     );
 }

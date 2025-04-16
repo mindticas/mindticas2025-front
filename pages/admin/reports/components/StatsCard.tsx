@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import { ComponentType, SVGProps } from 'react';
 
 interface StatsCardProps {
@@ -6,6 +6,7 @@ interface StatsCardProps {
     value: number;
     icon?: ComponentType<SVGProps<SVGSVGElement>>;
     color?: string;
+    isLoading?: boolean;
 }
 
 const StatsCard = ({
@@ -13,6 +14,7 @@ const StatsCard = ({
     value,
     icon: IconComponent,
     color,
+    isLoading = false,
 }: StatsCardProps) => {
     const bgColor = `${color?.split('.')[0]}.50`;
     return (
@@ -41,9 +43,15 @@ const StatsCard = ({
             <Text fontSize='md' fontWeight='medium' color='gray.700' mb='1'>
                 {title}
             </Text>
-            <Text fontSize='2xl' fontWeight='bold'>
-                {value}
-            </Text>
+            <Flex justifyContent='center' alignItems='center' height='36px'>
+                {isLoading ? (
+                    <Spinner size='lg' color={color} />
+                ) : (
+                    <Text fontSize='2xl' fontWeight='bold'>
+                        {value}
+                    </Text>
+                )}
+            </Flex>
         </Box>
     );
 };

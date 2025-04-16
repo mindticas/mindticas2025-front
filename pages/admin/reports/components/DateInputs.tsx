@@ -27,12 +27,14 @@ interface DateInputsProps {
     onDateChange: (dates: StatisticsData) => void;
     onStatisticsFetched: (data: StatisticsDataResponse) => void;
     onTreatmentSelect: (treatmentId: string) => void;
+    onLoadingChange?: (isLoading: boolean) => void;
 }
 
 export default function DateInputs({
     onStatisticsFetched,
     onDateChange,
     onTreatmentSelect,
+    onLoadingChange,
 }: DateInputsProps) {
     const { treatments, error } = useTreatments();
     const [formData, setFormData] = useState<StatisticsData>({
@@ -40,12 +42,7 @@ export default function DateInputs({
         endDate: '',
         treatment: '',
     });
-
-    // Colocar un estado para mostrar el nombre del servicio seleccionado
     const [selectTreatment, setSelectTreatment] = useState('');
-    const [statistics, setStatistics] = useState<StatisticsDataResponse | null>(
-        null,
-    );
     const [statisticsLoading, setStatisticsLoading] = useState(false);
     const [statisticsError, setStatisticsError] = useState<string | null>(null);
 
@@ -77,8 +74,12 @@ export default function DateInputs({
         }
     }, [formData]);
 
+    useEffect(() => {
+        onLoadingChange?.(statisticsLoading);
+    }, [statisticsLoading, onLoadingChange]);
+
     const fetchStatistics = async () => {
-        // Verificar que se hayan seleccionado las fechas
+        // Verify that the dates have been selected
         if (!formData.startDate || !formData.endDate) {
             setStatisticsError('Selecciona fechas de inicio y fin');
             return;
@@ -87,7 +88,7 @@ export default function DateInputs({
         setStatisticsError(null);
         try {
             const data = await getStatistics(formData);
-            // send data to index
+            // Send data to index
             onStatisticsFetched(data);
         } catch (error) {
             setStatisticsError('Error al cargar las estadisticas');
@@ -156,9 +157,9 @@ export default function DateInputs({
                                 items: treatments,
                             })}
                             size='md'
-                            onValueChange={(e) =>
-                                handleSelectChange(e.value.toString())
-                            }
+                            onValueChange={(e) => {
+                                handleSelectChange(e.value.toString());
+                            }}
                             name='treatment'
                         >
                             <SelectHiddenSelect />
@@ -207,6 +208,11 @@ export default function DateInputs({
             </Flex>
             <Box textAlign='center' mx={['4', '8', '12', '14']} mt='6'>
                 {error && <Text color='red.500'>{error}</Text>}
+                {statisticsError && (
+                    <Text color='red.500' mt={error ? 2 : 0}>
+                        {statisticsError}
+                    </Text>
+                )}
             </Box>
         </>
     );

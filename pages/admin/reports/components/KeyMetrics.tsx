@@ -5,9 +5,13 @@ import { StatisticsDataResponse } from '@/interfaces/statistics/StatisticsDataRe
 
 interface KeyMetricsProps {
     statistics: StatisticsDataResponse | null;
+    isLoading?: boolean;
 }
 
-export default function KeyMetrics({ statistics }: KeyMetricsProps) {
+export default function KeyMetrics({
+    statistics,
+    isLoading = false,
+}: KeyMetricsProps) {
     const statsItems = [
         {
             title: 'Ganancias',
@@ -51,6 +55,7 @@ export default function KeyMetrics({ statistics }: KeyMetricsProps) {
                         value={item.value}
                         icon={item.icon}
                         color={item.color}
+                        isLoading={isLoading}
                     />
                 ))}
             </Flex>

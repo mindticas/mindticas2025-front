@@ -12,33 +12,23 @@ import { useTreatments } from '@/hooks/useTreatments';
 import { useEffect, useState } from 'react';
 import { getAppointments } from '@/services/AppointmentService';
 import { Appointment } from '@/interfaces/appointment/Appointment';
-import { StatisticsDataResponse } from '@/interfaces/statistics/StatisticsDataResponse';
 import { splitDateTimeFromISO } from '@/utils/dateUtils';
-
-interface TotalEarningsProps {
-    statistics?: StatisticsDataResponse;
-    dateRange?: {
-        startDate: string;
-        endDate: string;
-    };
-    selectedTreatmentId?: string;
-}
-interface TreatmentStats {
-    name: string;
-    count: number;
-    totalEarnings: number;
-}
+import {
+    TotalEarningsProps,
+    TreatmentStats,
+} from '@/interfaces/statistics/TotalEarnings';
+import parseTreatmentPrice from '@/utils/priceUtils';
 
 export default function TotalEarnings({
     statistics,
     dateRange,
     selectedTreatmentId,
 }: TotalEarningsProps) {
-    const { treatments, error } = useTreatments();
+    const { treatments } = useTreatments();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [filteredStats, setFilteredStats] = useState<TreatmentStats[]>([]);
 
-    // Cargar citas una sola vez
+    // Load appointments
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
@@ -49,34 +39,24 @@ export default function TotalEarnings({
             }
         };
         fetchAppointments();
-    }, []);
-
-    // Función auxiliar para parsear precios
-    const parseTreatmentPrice = (price: unknown): number => {
-        if (typeof price === 'number') return price;
-        if (typeof price === 'string') {
-            const numericValue = parseFloat(price.replace(/[^0-9.-]/g, ''));
-            return isNaN(numericValue) ? 0 : numericValue;
-        }
-        return 0;
-    };
+    }, [statistics]);
 
     useEffect(() => {
         if (!appointments.length || !treatments.length) {
             setFilteredStats([]);
             return;
         }
-
+        // Selected date range
         const { date: startISO } = splitDateTimeFromISO(
             dateRange?.startDate || '',
         );
         const { date: endISO } = splitDateTimeFromISO(dateRange?.endDate || '');
 
-        // 1. Inicializamos mapa para contar TODOS los tratamientos
+        // Initialize map to count all treatments
         const statsMap = treatments.reduce(
             (acc, treatment) => ({
                 ...acc,
-                [treatment.id.toString()]: {
+                [treatment.name.toString()]: {
                     name: treatment.name,
                     count: 0,
                     totalEarnings: 0,
@@ -85,7 +65,7 @@ export default function TotalEarnings({
             {} as Record<string, TreatmentStats>,
         );
 
-        // 2. Procesamos cada cita
+        // Process appointments
         appointments.forEach((appointment) => {
             if (appointment.status !== 'completed') return;
 
@@ -93,13 +73,13 @@ export default function TotalEarnings({
                 appointment.scheduled_start,
             );
 
-            // Filtro por fechas
+            // Filtered by dates
             if (dateRange && (appDate < startISO || appDate > endISO)) return;
 
-            // 3. Contamos tratamientos únicos por cita
+            // Unique treatments are counted per appointment
             const uniqueTreatments = new Map<string, number>();
             appointment.treatments?.forEach((treatment) => {
-                const id = treatment.id.toString();
+                const id = treatment.name.toString();
                 if (!uniqueTreatments.has(id)) {
                     uniqueTreatments.set(
                         id,
@@ -108,35 +88,19 @@ export default function TotalEarnings({
                 }
             });
 
-            // 4. Actualizamos statsMap
+            // 4. Update statsMap
             uniqueTreatments.forEach((price, id) => {
-                // Si hay tratamiento seleccionado, solo contamos ese
+                // If there is a treatment selected, only count that one
                 if (!selectedTreatmentId || id === selectedTreatmentId) {
                     statsMap[id].count += 1;
                     statsMap[id].totalEarnings += price;
                 }
             });
         });
-        // 5. Preparamos resultado final
+
         let result = Object.values(statsMap);
-        // Filtramos según selección
-        result = selectedTreatmentId
-            ? result.filter(
-                  (stat) =>
-                      stat.count > 0 &&
-                      stat.name ===
-                          treatments.find(
-                              (t) => t.id.toString() === selectedTreatmentId,
-                          )?.name,
-              )
-            : result.filter((stat) => stat.count > 0);
-        // Ordenamos
-        result.sort((a, b) => b.count - a.count);
-        console.log('Resultado final:', {
-            selectedTreatmentId,
-            totalCitas: result.reduce((sum, stat) => sum + stat.count, 0),
-            stats: result,
-        });
+        // Filter according to the selected treatment
+        result = result.filter((stat) => stat.count > 0);
         setFilteredStats(result);
     }, [appointments, treatments, dateRange, selectedTreatmentId]);
 
@@ -171,8 +135,6 @@ export default function TotalEarnings({
             >
                 <Text textAlign='center' fontSize='2xl' m='6' fontWeight='bold'>
                     Ganancias por tratamiento
-                    {dateRange?.startDate &&
-                        ` (${dateRange.startDate} al ${dateRange.endDate})`}
                 </Text>
 
                 {filteredStats.length === 0 ? (
@@ -196,7 +158,6 @@ export default function TotalEarnings({
                             >
                                 <XAxis
                                     dataKey='name'
-                                    angle={-45}
                                     textAnchor='end'
                                     height={80}
                                     tick={{ fontSize: 12 }}
@@ -218,9 +179,7 @@ export default function TotalEarnings({
                                 <Tooltip
                                     formatter={(value, name) => [
                                         name === 'Realizaciones'
-                                            ? `${Math.floor(
-                                                  Number(value),
-                                              )} veces`
+                                            ? `${Math.floor(Number(value))}`
                                             : `$${Math.floor(
                                                   Number(value),
                                               ).toLocaleString()}`,
