@@ -36,8 +36,6 @@ export default function Calendar() {
     const { setDateTime, dateTime, treatment } = useBookingContext();
     const [error, setError] = useState<string | null>(null);
     const boxRef = useRef<HTMLDivElement>(null);
-    const [isLoading, setIsLoading] = useState(false);
-
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
 
@@ -54,42 +52,29 @@ export default function Calendar() {
 
     // fetch booked appointments
     useEffect(() => {
-        const fetchAppointments = async () => {
-            setIsLoading(true);
-            try {
-                const data = await getAppointments();
-                const bookedTimes = data
-                    .flatMap((appointment) => {
-                        const startTime = DateTime.fromISO(
-                            appointment.scheduled_start,
-                            { zone: 'utc' },
-                        );
-                        if (appointment.duration === 120) {
-                            const nextSlot = startTime
-                                .plus({ hours: 1 })
-                                .toISO();
-                            return [appointment.scheduled_start, nextSlot];
-                        }
-                        return appointment.scheduled_start;
-                    })
-                    .filter(Boolean) as string[];
-                setBookedTimes(bookedTimes);
-            } catch (error) {
-                setError(
-                    'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
-                );
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        if (treatment) {
+            const fetchAppointments = async () => {
+                try {
+                    const data = await getAppointments();
+                    const bookedTimes = data
+                        .map((appointment) => appointment.scheduled_start)
+                        .filter(Boolean) as string[];
+                    setBookedTimes(bookedTimes);
+                } catch (error) {
+                    setError(
+                        'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
+                    );
+                }
+            };
 
+            fetchAppointments();
+        }
         // if dateTime is reset to null, reset selectedDate and selectedTime
         if (!dateTime) {
             setSelectedDate(null);
             setSelectedTime(null);
         }
-        fetchAppointments();
-    }, [dateTime]);
+    }, [treatment, dateTime]);
 
     // Generate dates for the current week
     const weekDates = useMemo(() => {
@@ -120,19 +105,17 @@ export default function Calendar() {
         if (selectedDate) {
             const [hours, minutes] = time.split(':');
             // Combine date and time in format 'YYYY-MM-DDTHH:MM:SS' with luxon
-            const dateTime = DateTime.fromObject(
-                {
-                    year: selectedDate.getFullYear(),
-                    month: selectedDate.getMonth() + 1,
-                    day: selectedDate.getDate(),
-                    hour: parseInt(hours, 10),
-                    minute: parseInt(minutes, 10),
-                },
-                { zone: 'utc' },
-            );
-            const isoString = dateTime.toISO();
+            const dateTime = DateTime.fromObject({
+                year: selectedDate.getFullYear(),
+                month: selectedDate.getMonth() + 1,
+                day: selectedDate.getDate(),
+                hour: parseInt(hours, 10),
+                minute: parseInt(minutes, 10),
+            });
+
+            const utcDateTime = dateTime.toUTC().toISO();
             // Set the selected date and time in the BookingContext
-            setDateTime(isoString);
+            setDateTime(utcDateTime);
         }
     };
 
@@ -181,11 +164,13 @@ export default function Calendar() {
             })
             .map((bookedTime) => {
                 const formattedTime = DateTime.fromISO(bookedTime, {
-                    zone: 'utc',
+                    zone: 'local',
                 }).toFormat('HH:mm');
+
                 return formattedTime;
             });
     }, [selectedDate, bookedTimes]);
+
     const isBookedTime = (time: string) => {
         return bookedTimesForDate.includes(time);
     };
@@ -199,20 +184,6 @@ export default function Calendar() {
             });
         }
     }, [treatment, selectedDate]);
-    // Check the available slots for 1 hour and 2 hour appointments
-    const isSlotAvailabe = (time: string) => {
-        if (!treatment || !treatment.duration) return false;
-        const slotsAvailable = treatment.duration / 60;
-        const currentIndex = timeSlots.indexOf(time);
-        if (currentIndex === -1) return false;
-        for (let i = 0; i < slotsAvailable; i++) {
-            const slot = timeSlots[currentIndex + i];
-            if (!slot || isBookedTime(slot)) {
-                return false;
-            }
-        }
-        return true;
-    };
 
     return (
         <>
@@ -371,13 +342,11 @@ export default function Calendar() {
                                         onClick={() =>
                                             !isPastTime(time) &&
                                             !isBookedTime(time) &&
-                                            isSlotAvailabe(time) &&
                                             handleTimeSelect(time)
                                         }
                                         disabled={
                                             isPastTime(time) ||
-                                            isBookedTime(time) ||
-                                            !isSlotAvailabe(time)
+                                            isBookedTime(time)
                                         } // Disable past times
                                     >
                                         {time}

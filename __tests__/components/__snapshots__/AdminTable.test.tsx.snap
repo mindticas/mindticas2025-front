@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminTable should render empty state correctly 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-0"
+  >
+    <div
+      class="css-7c1tm2"
+    >
+      <table
+        class="chakra-table__root css-58tpe0"
+      >
+        <thead
+          class="chakra-table__header css-hp6hec"
+        >
+          <tr
+            class="chakra-table__row css-khv411"
+          >
+            <th
+              class="chakra-table__columnHeader css-czbply"
+            >
+              Name
+            </th>
+            <th
+              class="chakra-table__columnHeader css-1fdlycq"
+            >
+              Value
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="chakra-table__body css-0"
+        >
+          <tr
+            class="chakra-table__row css-dj4s8p"
+          >
+            <td
+              class="chakra-table__cell css-fb4w1i"
+              colspan="2"
+            >
+              No items found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AdminTable should render loading state correctly 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-p6748q"
+  >
+    <span
+      class="chakra-spinner css-1x6hz8j"
+    />
+  </div>
+</div>
+`;
+
+exports[`AdminTable should render with custom empty message 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-0"
+  >
+    <div
+      class="css-7c1tm2"
+    >
+      <table
+        class="chakra-table__root css-58tpe0"
+      >
+        <thead
+          class="chakra-table__header css-hp6hec"
+        >
+          <tr
+            class="chakra-table__row css-khv411"
+          >
+            <th
+              class="chakra-table__columnHeader css-czbply"
+            >
+              Name
+            </th>
+            <th
+              class="chakra-table__columnHeader css-1fdlycq"
+            >
+              Value
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="chakra-table__body css-0"
+        >
+          <tr
+            class="chakra-table__row css-dj4s8p"
+          >
+            <td
+              class="chakra-table__cell css-fb4w1i"
+              colspan="2"
+            >
+              Custom empty message
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AdminTable should render with data correctly 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-0"
+  >
+    <div
+      class="css-7c1tm2"
+    >
+      <table
+        class="chakra-table__root css-58tpe0"
+      >
+        <thead
+          class="chakra-table__header css-hp6hec"
+        >
+          <tr
+            class="chakra-table__row css-khv411"
+          >
+            <th
+              class="chakra-table__columnHeader css-czbply"
+            >
+              Name
+            </th>
+            <th
+              class="chakra-table__columnHeader css-1fdlycq"
+            >
+              Value
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="chakra-table__body css-0"
+        >
+          <tr
+            class="tr-table chakra-table__row css-1rw8fi1"
+          >
+            <td
+              class="chakra-table__cell css-9tn4z"
+            >
+              Item 1
+            </td>
+            <td
+              class="chakra-table__cell css-lwlazv"
+            >
+              $100
+            </td>
+          </tr>
+          <tr
+            class="tr-table chakra-table__row css-1rw8fi1"
+          >
+            <td
+              class="chakra-table__cell css-9tn4z"
+            >
+              Item 2
+            </td>
+            <td
+              class="chakra-table__cell css-lwlazv"
+            >
+              $200
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;

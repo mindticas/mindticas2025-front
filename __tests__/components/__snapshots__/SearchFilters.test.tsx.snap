@@ -1,0 +1,342 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchFilters should render basic filters correctly 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-5578bu"
+  >
+    <input
+      class="chakra-input css-b7g0y5"
+      name="name"
+      placeholder="Filtrar por nombre"
+      value=""
+    />
+  </div>
+</div>
+`;
+
+exports[`SearchFilters should render status options correctly 1`] = `
+[
+  {
+    "color": "blue",
+    "icon": {
+      "$$typeof": Symbol(react.transitional.element),
+      "_owner": null,
+      "_store": {},
+      "key": null,
+      "props": {
+        "size": 16,
+      },
+      "type": {
+        "$$typeof": Symbol(react.forward_ref),
+        "render": [Function],
+      },
+    },
+    "label": "Confirmado",
+    "value": "confirmed",
+  },
+  {
+    "color": "yellow",
+    "icon": {
+      "$$typeof": Symbol(react.transitional.element),
+      "_owner": null,
+      "_store": {},
+      "key": null,
+      "props": {
+        "size": 16,
+        "strokeWidth": 3,
+      },
+      "type": {
+        "$$typeof": Symbol(react.forward_ref),
+        "render": [Function],
+      },
+    },
+    "label": "Pendiente",
+    "value": "pending",
+  },
+  {
+    "color": "red",
+    "icon": {
+      "$$typeof": Symbol(react.transitional.element),
+      "_owner": null,
+      "_store": {},
+      "key": null,
+      "props": {
+        "size": 16,
+        "strokeWidth": 3,
+      },
+      "type": {
+        "$$typeof": Symbol(react.forward_ref),
+        "render": [Function],
+      },
+    },
+    "label": "Cancelado",
+    "value": "canceled",
+  },
+  {
+    "color": "green",
+    "icon": {
+      "$$typeof": Symbol(react.transitional.element),
+      "_owner": null,
+      "_store": {},
+      "key": null,
+      "props": {
+        "size": 16,
+        "strokeWidth": 3,
+      },
+      "type": {
+        "$$typeof": Symbol(react.forward_ref),
+        "render": [Function],
+      },
+    },
+    "label": "Completado",
+    "value": "completed",
+  },
+  {
+    "color": "gray",
+    "label": "Todos los estatus",
+    "value": "",
+  },
+]
+`;
+
+exports[`SearchFilters should render with all filters enabled 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-5578bu"
+  >
+    <input
+      class="chakra-input css-b7g0y5"
+      name="name"
+      placeholder="Filtrar por nombre"
+      value=""
+    />
+    <input
+      class="chakra-input css-b7g0y5"
+      name="treatments"
+      placeholder="Filtrar por servicio"
+      value=""
+    />
+    <input
+      class="chakra-input css-sjm060"
+      name="date"
+      placeholder="Filtrar por fecha"
+      type="date"
+      value=""
+    />
+    <div
+      class="chakra-select__root css-3jlqt6"
+      data-part="root"
+      data-scope="select"
+      dir="ltr"
+      id="select::r0:"
+    >
+      <div
+        class="chakra-select__control css-17j1053"
+        data-part="control"
+        data-scope="select"
+        data-state="closed"
+        dir="ltr"
+        id="select::r0::control"
+      >
+        <button
+          aria-controls="select::r0::content"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-labelledby="select::r0::label"
+          class="chakra-select__trigger css-12uc8un"
+          data-part="trigger"
+          data-placeholder-shown=""
+          data-scope="select"
+          data-state="closed"
+          dir="ltr"
+          id="select::r0::trigger"
+          role="combobox"
+          type="button"
+        >
+          Filtrar por estado
+        </button>
+        <div
+          class="chakra-select__indicatorGroup css-1xvjckd"
+        >
+          <div
+            aria-hidden="true"
+            class="chakra-select__indicator css-1atg1ut"
+            data-part="indicator"
+            data-scope="select"
+            data-state="closed"
+            dir="ltr"
+          >
+            <svg
+              class="css-s3mb0o"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="m6 9 6 6 6-6"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SearchFilters should render with date filter only 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-5578bu"
+  >
+    <input
+      class="chakra-input css-b7g0y5"
+      name="name"
+      placeholder="Filtrar por nombre"
+      value=""
+    />
+    <input
+      class="chakra-input css-sjm060"
+      name="date"
+      placeholder="Filtrar por fecha"
+      type="date"
+      value="2023-01-01"
+    />
+  </div>
+</div>
+`;
+
+exports[`SearchFilters should render with name filter filled 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-5578bu"
+  >
+    <input
+      class="chakra-input css-b7g0y5"
+      name="name"
+      placeholder="Filtrar por nombre"
+      value="John Doe"
+    />
+  </div>
+</div>
+`;
+
+exports[`SearchFilters should render with status filter only 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-5578bu"
+  >
+    <input
+      class="chakra-input css-b7g0y5"
+      name="name"
+      placeholder="Filtrar por nombre"
+      value=""
+    />
+    <div
+      class="chakra-select__root css-3jlqt6"
+      data-part="root"
+      data-scope="select"
+      dir="ltr"
+      id="select::r1:"
+    >
+      <div
+        class="chakra-select__control css-17j1053"
+        data-part="control"
+        data-scope="select"
+        data-state="closed"
+        dir="ltr"
+        id="select::r1::control"
+      >
+        <button
+          aria-controls="select::r1::content"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-labelledby="select::r1::label"
+          class="chakra-select__trigger css-12uc8un"
+          data-part="trigger"
+          data-placeholder-shown=""
+          data-scope="select"
+          data-state="closed"
+          dir="ltr"
+          id="select::r1::trigger"
+          role="combobox"
+          type="button"
+        >
+          Confirmado
+        </button>
+        <div
+          class="chakra-select__indicatorGroup css-1xvjckd"
+        >
+          <div
+            aria-hidden="true"
+            class="chakra-select__indicator css-1atg1ut"
+            data-part="indicator"
+            data-scope="select"
+            data-state="closed"
+            dir="ltr"
+          >
+            <svg
+              class="css-s3mb0o"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="m6 9 6 6 6-6"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SearchFilters should render with treatment filter only 1`] = `
+<div>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-5578bu"
+  >
+    <input
+      class="chakra-input css-b7g0y5"
+      name="name"
+      placeholder="Filtrar por nombre"
+      value=""
+    />
+    <input
+      class="chakra-input css-b7g0y5"
+      name="treatments"
+      placeholder="Filtrar por servicio"
+      value="Haircut"
+    />
+  </div>
+</div>
+`;

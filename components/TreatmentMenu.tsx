@@ -41,13 +41,6 @@ export default function TreatmentMenu() {
         }
     };
 
-    const getSelectedTreatmentName = () => {
-        const selectedTreatment = treatments.find(
-            (t) => t.id === treatment?.id,
-        );
-        return selectedTreatment?.name ?? 'Servicio a realizar';
-    };
-
     return (
         <>
             <div>{error && <p style={{ color: 'red' }}>{error}</p>}</div>
@@ -61,8 +54,8 @@ export default function TreatmentMenu() {
                 <SelectLabel fontWeight='bold' ps='1' fontSize='lg'>
                     Servicio a realizar
                 </SelectLabel>
-                <SelectTrigger border='black solid 1px'>
-                    {getSelectedTreatmentName()}
+                <SelectTrigger>
+                    {treatment?.name ?? 'Servicio a realizar'}
                     <SelectValueText />
                 </SelectTrigger>
                 <SelectContent backgroundColor='white'>

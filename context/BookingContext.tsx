@@ -1,7 +1,13 @@
 'use client';
 
 import { Treatment } from '@/interfaces/treatment/Treatment';
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, {
+    createContext,
+    useState,
+    useContext,
+    useEffect,
+    useCallback,
+} from 'react';
 
 // define the context type
 type BookingContextType = {
@@ -53,11 +59,11 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     // function to reset the booking
-    const resetBooking = () => {
+    const resetBooking = useCallback(() => {
         setTreatment(null);
-        setIsSuccessfullyBooked(false);
         setDateTime(null);
-    };
+        setIsSuccessfullyBooked(false);
+    }, []);
 
     // Reset the treatment when booking is successful
     useEffect(() => {
