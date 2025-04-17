@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, useBreakpointValue } from '@chakra-ui/react';
 import {
     BarChart,
     ResponsiveContainer,
@@ -27,6 +27,25 @@ export default function TotalEarnings({
     const { treatments } = useTreatments();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [filteredStats, setFilteredStats] = useState<TreatmentStats[]>([]);
+    const isMobile = useBreakpointValue({
+        base: true,
+        sm: true,
+        md: true,
+        lg: false,
+    });
+
+    const formatTreatmentName = (name: string) => {
+        if (!name) return '';
+        if (!isMobile) {
+            return name;
+        }
+        // If the name has spaces, use initials
+        const words = name.split(' ');
+        if (words.length > 1) {
+            return words.map((word) => word.charAt(0)).join('');
+        }
+        return name.length > 6 ? name.substring(0, 5) + '.' : name;
+    };
 
     // Load appointments
     useEffect(() => {
@@ -88,7 +107,7 @@ export default function TotalEarnings({
                 }
             });
 
-            // 4. Update statsMap
+            // Update statsMap
             uniqueTreatments.forEach((price, id) => {
                 // If there is a treatment selected, only count that one
                 if (!selectedTreatmentId || id === selectedTreatmentId) {
@@ -107,15 +126,15 @@ export default function TotalEarnings({
     if (!dateRange?.startDate) {
         return (
             <Box
-                mx={['4', '8', '12', '16']}
+                mx={isMobile ? '2' : '4'}
                 mt={['8', '16']}
                 mb={['8', '16']}
                 borderRadius='md'
-                p='4'
+                p={isMobile ? '2' : '4'}
                 shadow='sm'
                 textAlign='center'
             >
-                <Text fontSize='xl' color='gray.500'>
+                <Text fontSize='xl' color='gray.500' m={isMobile ? '3' : '4'}>
                     Selecciona un rango de fechas para ver las ganancias por
                     tratamiento
                 </Text>
@@ -144,23 +163,31 @@ export default function TotalEarnings({
                             : 'No hay datos para mostrar en el período seleccionado'}
                     </Text>
                 ) : (
-                    <Box height='500px'>
+                    <Box
+                        height={isMobile ? '400px' : '500px'}
+                        width='100%'
+                        px={0}
+                    >
                         <ResponsiveContainer width='100%' height='100%'>
                             <BarChart
                                 data={filteredStats}
                                 layout='horizontal'
                                 margin={{
                                     top: 20,
-                                    right: 20,
-                                    left: 40,
-                                    bottom: 80,
+                                    right: isMobile ? 5 : 10,
+                                    left: isMobile ? 5 : 10,
+                                    bottom: isMobile ? 50 : 60,
                                 }}
+                                barGap={isMobile ? 1 : 4}
                             >
                                 <XAxis
                                     dataKey='name'
-                                    textAnchor='end'
-                                    height={80}
-                                    tick={{ fontSize: 12 }}
+                                    height={isMobile ? 50 : 80}
+                                    tickFormatter={(value) =>
+                                        formatTreatmentName(value) || ''
+                                    }
+                                    tick={{ fontSize: isMobile ? 10 : 12 }}
+                                    angle={isMobile ? -35 : 0}
                                 />
                                 <YAxis
                                     yAxisId='left'
