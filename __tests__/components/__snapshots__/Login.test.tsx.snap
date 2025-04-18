@@ -11,14 +11,14 @@ exports[`Login Snapshot should match the snapshot 1`] = `
     class="css-1p1q308"
   >
     <div
-      class="css-1234vry"
+      class="css-dnf3u2"
     >
       <form>
         <div
           class="chakra-stack css-11vffse"
         >
           <h1
-            class="chakra-heading css-1dtsck9"
+            class="chakra-heading css-5ek0cf"
           >
             Iniciar sesión
           </h1>
@@ -46,8 +46,10 @@ exports[`Login Snapshot should match the snapshot 1`] = `
                 data-part="input"
                 data-scope="field"
                 id=":r0:"
-                name="username"
+                name="name"
                 placeholder="Ingresa tu usuario"
+                required=""
+                value=""
               />
             </div>
             <div
@@ -76,7 +78,9 @@ exports[`Login Snapshot should match the snapshot 1`] = `
                   id=":r1:"
                   name="password"
                   placeholder="Ingresa tu contraseña"
+                  required=""
                   type="password"
+                  value=""
                 />
                 <div
                   class="css-ds5jk8"

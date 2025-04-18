@@ -66,16 +66,26 @@ body {
 .css-m6e6s1 {
     margin: 10px;
 }
-
 .css-lr1uno {
-  color: black;
+    color: black;
 }
 
-.css-132mmm0 ,.css-1tv1hin  {
-  color: black;
+.css-132mmm0,
+.css-1tv1hin {
+    color: black;
 }
 
-.css-132mmm0:hover,.css-1tv1hin:hover {
-color: white;
+.css-132mmm0:hover,
+.css-1tv1hin:hover {
+    color: white;
 }
 
+.select-content-service {
+    width: 160px !important;
+    color: black;
+}
+.select-content-service {
+    width: 160px !important;
+    color: black;
+    padding: 10px;
+}
