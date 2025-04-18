@@ -22,7 +22,7 @@ export default function TotalEarnings({
     statistics,
     dateRange,
     selectedTreatmentId,
-    treatments,
+    treatments = [],
 }: TotalEarningsProps) {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [filteredStats, setFilteredStats] = useState<TreatmentStats[]>([]);

@@ -95,6 +95,7 @@ exports[`DateInputs component matches snapshot with default state 1`] = `
               aria-labelledby="select::r0::label"
               class="chakra-select__trigger css-12uc8un"
               data-part="trigger"
+              data-placeholder-shown=""
               data-scope="select"
               data-state="closed"
               dir="ltr"
@@ -207,7 +208,11 @@ exports[`DateInputs component matches snapshot with error 1`] = `
             name="treatment"
             style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
             tabindex="-1"
-          />
+          >
+            <option
+              value=""
+            />
+          </select>
           <label
             class="chakra-select__label css-p3rj3s"
             data-part="label"
@@ -237,6 +242,7 @@ exports[`DateInputs component matches snapshot with error 1`] = `
               aria-labelledby="select::r1::label"
               class="chakra-select__trigger css-12uc8un"
               data-part="trigger"
+              data-placeholder-shown=""
               data-scope="select"
               data-state="closed"
               dir="ltr"
@@ -280,6 +286,12 @@ exports[`DateInputs component matches snapshot with error 1`] = `
   </div>
   <div
     class="css-18utin8"
-  />
+  >
+    <p
+      class="css-1nyyqq1"
+    >
+      Error al cargar tratamientos
+    </p>
+  </div>
 </DocumentFragment>
 `;
