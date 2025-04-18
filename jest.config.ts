@@ -20,7 +20,7 @@ const config: Config = {
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     preset: 'ts-jest',
     moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/$1', // O ajusta a '<rootDir>/$1' si no usas carpeta `src`
+        '^@/(.*)$': '<rootDir>/$1',
     },
 };
 
