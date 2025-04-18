@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatsCard Snapshot renders correctly with icon and value 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-1b8npii"
+  >
+    <div
+      class="css-1y96gi1"
+    >
+      <div
+        class="css-1cteixr"
+      >
+        <svg
+          class="lucide lucide-dollar-sign"
+          fill="none"
+          height="24"
+          stroke="white"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="12"
+            x2="12"
+            y1="2"
+            y2="22"
+          />
+          <path
+            d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+          />
+        </svg>
+      </div>
+    </div>
+    <p
+      class="css-ycbeac"
+    >
+      Ganancias
+    </p>
+    <div
+      class="css-1vhhqj7"
+    >
+      <p
+        class="css-158617b"
+      >
+        1234
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`StatsCard Snapshot renders correctly without icon or color 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-gsefhn"
+  >
+    <div
+      class="css-1y96gi1"
+    >
+      <div
+        class="css-axop6m"
+      />
+    </div>
+    <p
+      class="css-ycbeac"
+    >
+      Servicios
+    </p>
+    <div
+      class="css-1vhhqj7"
+    >
+      <p
+        class="css-158617b"
+      >
+        42
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`StatsCard Snapshot renders loading state correctly 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-1b8npii"
+  >
+    <div
+      class="css-1y96gi1"
+    >
+      <div
+        class="css-1cteixr"
+      >
+        <svg
+          class="lucide lucide-dollar-sign"
+          fill="none"
+          height="24"
+          stroke="white"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="12"
+            x2="12"
+            y1="2"
+            y2="22"
+          />
+          <path
+            d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+          />
+        </svg>
+      </div>
+    </div>
+    <p
+      class="css-ycbeac"
+    >
+      Ganancias
+    </p>
+    <div
+      class="css-1vhhqj7"
+    >
+      <span
+        class="chakra-spinner css-15lzuyp"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
