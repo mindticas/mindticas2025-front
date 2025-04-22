@@ -8,7 +8,6 @@ import {
     Tooltip,
     Legend,
 } from 'recharts';
-import { useTreatments } from '@/hooks/useTreatments';
 import { useEffect, useState } from 'react';
 import { getAppointments } from '@/services/AppointmentService';
 import { Appointment } from '@/interfaces/appointment/Appointment';
@@ -23,8 +22,8 @@ export default function TotalEarnings({
     statistics,
     dateRange,
     selectedTreatmentId,
+    treatments,
 }: TotalEarningsProps) {
-    const { treatments } = useTreatments();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [filteredStats, setFilteredStats] = useState<TreatmentStats[]>([]);
     const isMobile = useBreakpointValue({
@@ -49,6 +48,11 @@ export default function TotalEarnings({
 
     // Load appointments
     useEffect(() => {
+        if (!statistics) {
+            setAppointments([]);
+            setFilteredStats([]);
+            return;
+        }
         const fetchAppointments = async () => {
             try {
                 const data = await getAppointments();
@@ -59,6 +63,12 @@ export default function TotalEarnings({
         };
         fetchAppointments();
     }, [statistics]);
+
+    useEffect(() => {
+        if (!dateRange?.startDate || !dateRange.endDate) {
+            setFilteredStats([]);
+        }
+    }, [dateRange?.startDate, dateRange?.endDate]);
 
     useEffect(() => {
         if (!appointments.length || !treatments.length) {
@@ -158,9 +168,14 @@ export default function TotalEarnings({
 
                 {filteredStats.length === 0 ? (
                     <Text textAlign='center' color='gray.500' py={10}>
-                        {appointments.length === 0
-                            ? 'Cargando datos...'
-                            : 'No hay datos para mostrar en el período seleccionado'}
+                        {
+                            // si falta cualquiera de las dos fechas, muestro siempre “No hay datos…”
+                            !dateRange.startDate || !dateRange.endDate
+                                ? 'No hay datos para mostrar en el período seleccionado'
+                                : appointments.length === 0
+                                ? 'Cargando datos...'
+                                : 'No hay datos para mostrar en el período seleccionado'
+                        }
                     </Text>
                 ) : (
                     <Box

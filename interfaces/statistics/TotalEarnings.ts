@@ -1,3 +1,4 @@
+import { Treatment } from '../treatment/Treatment';
 import { StatisticsDataResponse } from './StatisticsDataResponse';
 
 export interface TotalEarningsProps {
@@ -7,6 +8,7 @@ export interface TotalEarningsProps {
         endDate: string;
     };
     selectedTreatmentId?: string;
+    treatments: Treatment[]
 }
 export interface TreatmentStats {
     name: string;

@@ -1,6 +1,6 @@
-import { useTreatments } from '@/hooks/useTreatments';
 import { StatisticsData } from '@/interfaces/statistics/StatisticsData';
 import { StatisticsDataResponse } from '@/interfaces/statistics/StatisticsDataResponse';
+import { Treatment } from '@/interfaces/treatment/Treatment';
 import { getStatistics } from '@/services/StatisticsService';
 import {
     Text,
@@ -25,9 +25,11 @@ import { useEffect, useState } from 'react';
 
 interface DateInputsProps {
     onDateChange: (dates: StatisticsData) => void;
-    onStatisticsFetched: (data: StatisticsDataResponse) => void;
+    onStatisticsFetched: (data: StatisticsDataResponse | null) => void;
     onTreatmentSelect: (treatmentId: string) => void;
-    onLoadingChange?: (isLoading: boolean) => void;
+    onLoadingChange: (isLoading: boolean) => void;
+    treatments: Treatment[];
+    treatmentsError: string | null;
 }
 
 export default function DateInputs({
@@ -35,8 +37,9 @@ export default function DateInputs({
     onDateChange,
     onTreatmentSelect,
     onLoadingChange,
+    treatments,
+    treatmentsError,
 }: DateInputsProps) {
-    const { treatments, error } = useTreatments();
     const [formData, setFormData] = useState<StatisticsData>({
         startDate: '',
         endDate: '',
@@ -63,19 +66,26 @@ export default function DateInputs({
         onTreatmentSelect(value);
     };
 
-    // when dates or treatment change, launch the request
     useEffect(() => {
-        if (formData.startDate && formData.endDate) {
-            onDateChange?.({
-                startDate: formData.startDate,
-                endDate: formData.endDate,
-            });
-            fetchStatistics();
+        if (!formData.startDate || !formData.endDate) {
+            onDateChange({ startDate: '', endDate: '' });
+            onStatisticsFetched(null);
+            return;
         }
+        onDateChange({
+            startDate: formData.startDate,
+            endDate: formData.endDate,
+        });
+        fetchStatistics();
     }, [formData]);
 
     useEffect(() => {
-        onLoadingChange?.(statisticsLoading);
+        if (!formData.startDate || !formData.endDate) {
+        }
+    });
+
+    useEffect(() => {
+        onLoadingChange(statisticsLoading);
     }, [statisticsLoading, onLoadingChange]);
 
     const fetchStatistics = async () => {
@@ -95,6 +105,12 @@ export default function DateInputs({
         } finally {
             setStatisticsLoading(false);
         }
+    };
+
+    const handleClearTreatment = () => {
+        setSelectTreatment('');
+        setFormData((prev) => ({ ...prev, treatment: '' }));
+        onTreatmentSelect('');
     };
 
     return (
@@ -131,6 +147,7 @@ export default function DateInputs({
                                     filter: 'invert(1)',
                                 },
                             }}
+                            value={formData.startDate}
                             onChange={handleInputChange}
                         />
                     </Box>
@@ -148,6 +165,7 @@ export default function DateInputs({
                                     filter: 'invert(1)',
                                 },
                             }}
+                            value={formData.endDate}
                             onChange={handleInputChange}
                         />
                     </Box>
@@ -161,6 +179,7 @@ export default function DateInputs({
                                 handleSelectChange(e.value.toString());
                             }}
                             name='treatment'
+                            value={[selectTreatment]}
                         >
                             <SelectHiddenSelect />
                             <SelectLabel>
@@ -185,6 +204,17 @@ export default function DateInputs({
                                             bg='white'
                                             boxShadow='sm'
                                         >
+                                            <SelectItem
+                                                key='none'
+                                                item=''
+                                                onClick={() =>
+                                                    handleClearTreatment()
+                                                }
+                                                borderBlockEnd='1px solid'
+                                                borderBlockEndColor='gray.200'
+                                            >
+                                                Sin servicio
+                                            </SelectItem>
                                             {treatments.map(({ id, name }) => (
                                                 <SelectItem
                                                     cursor='pointer'
@@ -207,9 +237,11 @@ export default function DateInputs({
                 </Flex>
             </Flex>
             <Box textAlign='center' mx={['4', '8', '12', '14']} mt='6'>
-                {error && <Text color='red.500'>{error}</Text>}
+                {treatmentsError && (
+                    <Text color='red.500'>{treatmentsError}</Text>
+                )}
                 {statisticsError && (
-                    <Text color='red.500' mt={error ? 2 : 0}>
+                    <Text color='red.500' mt={treatmentsError ? 2 : 0}>
                         {statisticsError}
                     </Text>
                 )}
