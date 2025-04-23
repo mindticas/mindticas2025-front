@@ -1,4 +1,3 @@
-import { Treatment } from '@/interfaces/treatment/Treatment';
 import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import { Tooltip } from '@/components/ui/tooltip';
 import React, { useState } from 'react';
@@ -6,14 +5,18 @@ import AdminTable from '../AdminTable';
 import { useTreatments } from '@/hooks/useTreatments';
 import { Pencil, Trash } from 'lucide-react';
 import TreatmentModal from './components/TreatmentModal';
+import { Treatment } from '@/interfaces/treatment/Treatment';
+import { createTreatment } from '@/services/TreatmentService';
+import { toaster, Toaster } from '@/components/ui/toaster';
 
-export default function index() {
-    const { treatments } = useTreatments();
+export default function TreatmentsPage() {
+    const { treatments, refetch } = useTreatments();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [modalState, setModalState] = useState<{
         isOpen: boolean;
-        mode: 'create' | 'edit' | 'cancel';
-        treatmenT?: Treatment;
+        mode: 'create' | 'edit' | 'cancel' | 'delete';
+        selectTreatment?: Treatment;
     }>({
         isOpen: false,
         mode: 'create',
@@ -68,7 +71,7 @@ export default function index() {
                     >
                         <Button
                             backgroundColor='transparent'
-                            onClick={() => console.log(treatment.name)}
+                            onClick={() => handleEditTreatment(treatment)}
                         >
                             <Pencil strokeWidth={3} color='Blue' />
                         </Button>
@@ -90,14 +93,49 @@ export default function index() {
         },
     ];
 
-    function addTreatment() {
+    async function handleCreateTreatment(treatmentData: Omit<Treatment, 'id'>) {
+        setIsSubmitting(true);
+        try {
+            await createTreatment(treatmentData);
+
+            toaster.create({
+                type: 'success',
+                duration: 5000,
+                title: 'Tratamiento creado con éxito',
+            });
+            await refetch();
+            setModalState({
+                ...modalState,
+                isOpen: false,
+            });
+        } catch (error) {
+            console.error('Error al crear el tratamiento', error);
+            toaster.create({
+                type: 'error',
+                duration: 5000,
+                title: 'Error al crear el tratamiento',
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
+    function handleEditTreatment(treatment: Treatment) {
+        setModalState({
+            isOpen: true,
+            mode: 'edit',
+            selectTreatment: treatment,
+        });
+    }
+
+    function handleAddTreatment() {
         if (treatments) {
             setModalState({
                 isOpen: true,
                 mode: 'create',
             });
         }
-        console.log('Agregar treatment');
+        refetch();
     }
 
     return (
@@ -123,7 +161,7 @@ export default function index() {
                         _hover={{ bg: 'blue.500' }}
                         p={2}
                         backgroundColor='blue.400'
-                        onClick={addTreatment}
+                        onClick={handleAddTreatment}
                     >
                         Nuevo Tratamiento
                     </Button>
@@ -140,7 +178,17 @@ export default function index() {
             <TreatmentModal
                 isOpen={modalState.isOpen}
                 onClose={() => setModalState({ ...modalState, isOpen: false })}
+                mode={modalState.mode}
+                treatments={treatments}
+                selectedTreatment={modalState.selectTreatment}
+                onTreatmentCreated={() => {
+                    console.log('Llamando a refetch');
+                    refetch();
+                }}
+                onSubmit={handleCreateTreatment}
+                isSubmitting={isSubmitting}
             />
+            <Toaster />
         </>
     );
 }

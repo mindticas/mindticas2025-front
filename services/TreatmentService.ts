@@ -1,5 +1,8 @@
 import { Treatment } from '@/interfaces/treatment/Treatment';
 import { API_URL } from './apiConfig';
+import Cookies from 'js-cookie';
+
+const token = Cookies.get('AUTH_TOKEN')
 
 export const createTreatment = async (
     treatment: Omit<Treatment, 'id'>,
@@ -9,11 +12,12 @@ export const createTreatment = async (
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(treatment),
         });
         if (!response.ok) {
-            throw new Error('Error creating treatment');
+        throw new Error('Error to create treatment')
         }
         return await response.json();
     } catch (error) {
