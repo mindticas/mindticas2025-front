@@ -1,0 +1,303 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DateInputs component matches snapshot with default state 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-fcx4l6"
+  >
+    <p
+      class="css-1bzswz8"
+    >
+      Reportes
+    </p>
+    <div
+      class="css-39rk59"
+    >
+      <div
+        class="css-0"
+      >
+        <p
+          class="css-1hrrvn"
+        >
+          Fecha inicial
+        </p>
+        <input
+          class="chakra-input css-oyzv26"
+          name="startDate"
+          type="date"
+        />
+      </div>
+      <div
+        class="css-0"
+      >
+        <p
+          class="css-1hrrvn"
+        >
+          Fecha final
+        </p>
+        <input
+          class="chakra-input css-oyzv26"
+          name="endDate"
+          type="date"
+        />
+      </div>
+      <div
+        class="css-0"
+      >
+        <div
+          class="chakra-select__root css-3jlqt6"
+          data-part="root"
+          data-scope="select"
+          dir="ltr"
+          id="select::r0:"
+        >
+          <select
+            aria-hidden="true"
+            aria-labelledby="select::r0::label"
+            id="select::r0::select"
+            name="treatment"
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
+            tabindex="-1"
+          >
+            <option
+              value=""
+            />
+            <option
+              value=""
+            />
+            <option
+              value=""
+            />
+          </select>
+          <label
+            class="chakra-select__label css-p3rj3s"
+            data-part="label"
+            data-scope="select"
+            dir="ltr"
+            for="select::r0::select"
+            id="select::r0::label"
+          >
+            <p
+              class="css-1mv89is"
+            >
+              Selecciona un servicio
+            </p>
+          </label>
+          <div
+            class="chakra-select__control css-cmjsi3"
+            data-part="control"
+            data-scope="select"
+            data-state="closed"
+            dir="ltr"
+            id="select::r0::control"
+          >
+            <button
+              aria-controls="select::r0::content"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-labelledby="select::r0::label"
+              class="chakra-select__trigger css-12uc8un"
+              data-part="trigger"
+              data-placeholder-shown=""
+              data-scope="select"
+              data-state="closed"
+              dir="ltr"
+              id="select::r0::trigger"
+              role="combobox"
+              type="button"
+            >
+              Seleccionar servicio
+              <span
+                class="chakra-select__valueText css-176t9sc"
+                data-part="value-text"
+                data-scope="select"
+                dir="ltr"
+              />
+            </button>
+            <div
+              class="chakra-select__indicatorGroup css-1xvjckd"
+            >
+              <div
+                aria-hidden="true"
+                class="chakra-select__indicator css-1atg1ut"
+                data-part="indicator"
+                data-scope="select"
+                data-state="closed"
+                dir="ltr"
+              >
+                <svg
+                  class="css-s3mb0o"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="m6 9 6 6 6-6"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="css-18utin8"
+  />
+</DocumentFragment>
+`;
+
+exports[`DateInputs component matches snapshot with error 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-fcx4l6"
+  >
+    <p
+      class="css-1bzswz8"
+    >
+      Reportes
+    </p>
+    <div
+      class="css-39rk59"
+    >
+      <div
+        class="css-0"
+      >
+        <p
+          class="css-1hrrvn"
+        >
+          Fecha inicial
+        </p>
+        <input
+          class="chakra-input css-oyzv26"
+          name="startDate"
+          type="date"
+        />
+      </div>
+      <div
+        class="css-0"
+      >
+        <p
+          class="css-1hrrvn"
+        >
+          Fecha final
+        </p>
+        <input
+          class="chakra-input css-oyzv26"
+          name="endDate"
+          type="date"
+        />
+      </div>
+      <div
+        class="css-0"
+      >
+        <div
+          class="chakra-select__root css-3jlqt6"
+          data-part="root"
+          data-scope="select"
+          dir="ltr"
+          id="select::r1:"
+        >
+          <select
+            aria-hidden="true"
+            aria-labelledby="select::r1::label"
+            id="select::r1::select"
+            name="treatment"
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
+            tabindex="-1"
+          >
+            <option
+              value=""
+            />
+          </select>
+          <label
+            class="chakra-select__label css-p3rj3s"
+            data-part="label"
+            data-scope="select"
+            dir="ltr"
+            for="select::r1::select"
+            id="select::r1::label"
+          >
+            <p
+              class="css-1mv89is"
+            >
+              Selecciona un servicio
+            </p>
+          </label>
+          <div
+            class="chakra-select__control css-cmjsi3"
+            data-part="control"
+            data-scope="select"
+            data-state="closed"
+            dir="ltr"
+            id="select::r1::control"
+          >
+            <button
+              aria-controls="select::r1::content"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-labelledby="select::r1::label"
+              class="chakra-select__trigger css-12uc8un"
+              data-part="trigger"
+              data-placeholder-shown=""
+              data-scope="select"
+              data-state="closed"
+              dir="ltr"
+              id="select::r1::trigger"
+              role="combobox"
+              type="button"
+            >
+              Seleccionar servicio
+              <span
+                class="chakra-select__valueText css-176t9sc"
+                data-part="value-text"
+                data-scope="select"
+                dir="ltr"
+              />
+            </button>
+            <div
+              class="chakra-select__indicatorGroup css-1xvjckd"
+            >
+              <div
+                aria-hidden="true"
+                class="chakra-select__indicator css-1atg1ut"
+                data-part="indicator"
+                data-scope="select"
+                data-state="closed"
+                dir="ltr"
+              >
+                <svg
+                  class="css-s3mb0o"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="m6 9 6 6 6-6"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="css-18utin8"
+  >
+    <p
+      class="css-1nyyqq1"
+    >
+      Error al cargar tratamientos
+    </p>
+  </div>
+</DocumentFragment>
+`;
