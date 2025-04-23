@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useMemo, useEffect } from 'react';
 import {
     Badge,
@@ -17,17 +16,8 @@ import { getAppointments } from '@/services/AppointmentService';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useRef } from 'react';
-
-// Available time slots
-const timeSlots = [
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '16:00',
-    '17:00',
-];
+import { Schedule } from '@/interfaces/schedule/Schedule';
+import { getSchedule } from '@/services/ScheduleService';
 
 // Function to check if a date is Sunday
 const isSunday = (date: Date) => date.getDay() === 0;
@@ -38,17 +28,36 @@ export default function Calendar() {
     const boxRef = useRef<HTMLDivElement>(null);
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
-
     // State for selected date and time
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [bookedTimes, setBookedTimes] = useState<string[]>([]);
+    // New state for schedule from backend
+    const [scheduleData, setScheduleData] = useState<Schedule[]>([]);
+    // Available time slots from backend
+    const [availableTimeSlots, setAvailableTimeslots] = useState<string[]>([]);
     // Check if a treatment is selected
     const isTreatmentSelected = !!treatment;
-
     // Function to get the current month in Spanish
     const getMonth = () =>
         format(selectedDate ?? new Date(), 'MMMM', { locale: es });
+
+    // Fetch schedule data from backend
+    useEffect(() => {
+        const fetchScheduleData = async () => {
+            try {
+                const data = await getSchedule();
+                // Ensures that scheduleData is always an array
+                const schedules = Array.isArray(data) ? data : [data];
+                setScheduleData(schedules);
+            } catch (error) {
+                setError(
+                    'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
+                );
+            }
+        };
+        fetchScheduleData();
+    }, []);
 
     // fetch booked appointments
     useEffect(() => {
@@ -66,7 +75,6 @@ export default function Calendar() {
                     );
                 }
             };
-
             fetchAppointments();
         }
         // if dateTime is reset to null, reset selectedDate and selectedTime
@@ -75,6 +83,35 @@ export default function Calendar() {
             setSelectedTime(null);
         }
     }, [treatment, dateTime]);
+
+    useEffect(() => {
+        if (selectedDate) {
+            // Get day of the week
+            const dayOfWeek = selectedDate.getDay();
+
+            // Convert to spanish
+            const days = [
+                'Domingo',
+                'Lunes',
+                'Martes',
+                'Miércoles',
+                'Jueves',
+                'Viernes',
+                'Sábado',
+            ];
+            const dayString = days[dayOfWeek];
+
+            // Find schedule for the selected day
+            const daySchedule = scheduleData.find((s) => s.day === dayString);
+
+            // If schedule exist for this day, set the time slots
+            if (daySchedule && daySchedule.open_hours) {
+                setAvailableTimeslots(daySchedule.open_hours);
+            } else {
+                setAvailableTimeslots([]);
+            }
+        }
+    }, [selectedDate, scheduleData]);
 
     // Generate dates for the current week
     const weekDates = useMemo(() => {
@@ -311,7 +348,7 @@ export default function Calendar() {
                                 Selecciona la hora
                             </Heading>
                             <Grid templateColumns='repeat(3, 1fr)' gap={2}>
-                                {timeSlots.map((time) => (
+                                {availableTimeSlots.map((time) => (
                                     <Button
                                         key={time}
                                         p={2}
