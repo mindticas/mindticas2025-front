@@ -172,7 +172,9 @@ export default function DateInputs({
                     <Box>
                         <SelectRoot
                             collection={createListCollection({
-                                items: treatments,
+                                items: Array.isArray(treatments)
+                                    ? treatments
+                                    : [],
                             })}
                             size='md'
                             onValueChange={(e) => {
@@ -215,19 +217,24 @@ export default function DateInputs({
                                             >
                                                 Sin servicio
                                             </SelectItem>
-                                            {treatments.map(({ id, name }) => (
-                                                <SelectItem
-                                                    cursor='pointer'
-                                                    borderBlockEnd='1px solid'
-                                                    borderBlockEndColor='gray.200'
-                                                    key={id}
-                                                    item={name}
-                                                    onChange={handleInputChange}
-                                                >
-                                                    {name}
-                                                    <SelectItemIndicator />
-                                                </SelectItem>
-                                            ))}
+                                            {treatments &&
+                                                treatments.map(
+                                                    ({ id, name }) => (
+                                                        <SelectItem
+                                                            cursor='pointer'
+                                                            borderBlockEnd='1px solid'
+                                                            borderBlockEndColor='gray.200'
+                                                            key={id}
+                                                            item={name}
+                                                            onChange={
+                                                                handleInputChange
+                                                            }
+                                                        >
+                                                            {name}
+                                                            <SelectItemIndicator />
+                                                        </SelectItem>
+                                                    ),
+                                                )}
                                         </SelectContent>
                                     </Box>
                                 </SelectPositioner>
