@@ -18,6 +18,10 @@ import { es } from 'date-fns/locale';
 import { useRef } from 'react';
 import { Schedule } from '@/interfaces/schedule/Schedule';
 import { getSchedule } from '@/services/ScheduleService';
+import {
+    DAYS_OF_WEEK_ES,
+    DAYS_OF_WEEK_SHORT_ES,
+} from '@/constants/Calendar/dates';
 
 // Function to check if a date is Sunday
 const isSunday = (date: Date) => date.getDay() === 0;
@@ -88,28 +92,15 @@ export default function Calendar() {
         if (selectedDate) {
             // Get day of the week
             const dayOfWeek = selectedDate.getDay();
-
-            // Convert to spanish
-            const days = [
-                'Domingo',
-                'Lunes',
-                'Martes',
-                'Miércoles',
-                'Jueves',
-                'Viernes',
-                'Sábado',
-            ];
-            const dayString = days[dayOfWeek];
-
+            const dayString = DAYS_OF_WEEK_ES[dayOfWeek];
             // Find schedule for the selected day
             const daySchedule = scheduleData.find((s) => s.day === dayString);
-
             // If schedule exist for this day, set the time slots
-            if (daySchedule && daySchedule.open_hours) {
-                setAvailableTimeslots(daySchedule.open_hours);
-            } else {
-                setAvailableTimeslots([]);
-            }
+            const timeslots =
+                daySchedule && daySchedule.open_hours
+                    ? daySchedule.open_hours
+                    : [];
+            setAvailableTimeslots(timeslots);
         }
     }, [selectedDate, scheduleData]);
 
@@ -267,18 +258,16 @@ export default function Calendar() {
                         gap={isSmallScreen ? 1 : 2}
                         mb={2}
                     >
-                        {['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'].map(
-                            (day) => (
-                                <GridItem
-                                    key={day}
-                                    textAlign='center'
-                                    fontWeight='medium'
-                                    color='gray.500'
-                                >
-                                    {day}
-                                </GridItem>
-                            ),
-                        )}
+                        {DAYS_OF_WEEK_SHORT_ES.map((day) => (
+                            <GridItem
+                                key={day}
+                                textAlign='center'
+                                fontWeight='medium'
+                                color='gray.500'
+                            >
+                                {day}
+                            </GridItem>
+                        ))}
                     </Grid>
 
                     {/* Dates of the week */}
