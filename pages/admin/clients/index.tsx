@@ -23,7 +23,7 @@ import AdminTable from '../AdminTable';
 
 export default function ClientsPage() {
     const [customers, setCustomers] = useState<Customer[]>([]);
-    const [selectCustomer, setselectCustomer] = useState<Customer | null>(null);
+    const [selectCustomer, setSelectCustomer] = useState<Customer | null>(null);
     const [appointmentsByCustomer, setAppointmentsByCustomer] = useState<
         Appointment[]
     >([]);
@@ -67,13 +67,14 @@ export default function ClientsPage() {
 
         const selectedClient = customers.find((client) => client.id === id);
         if (selectedClient) {
-            setselectCustomer(selectedClient);
+            setSelectCustomer(selectedClient);
             setOpenModal(true);
         }
     };
 
     const handleCloseClientModal = () => {
         setOpenModal(false);
+        setSelectCustomer(null);
     };
 
     const tableColumns = [

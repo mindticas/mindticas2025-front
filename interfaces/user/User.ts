@@ -5,5 +5,7 @@ export interface User {
     name: string;
     email: string;
     phone: string;
-    appoointments: Appointment[];
+    password: string;
+    role_id: number;
+    appointments: Appointment[];
 }
