@@ -51,9 +51,7 @@ export default function Calendar() {
         const fetchScheduleData = async () => {
             try {
                 const data = await getSchedule();
-                // Ensures that scheduleData is always an array
-                const schedules = Array.isArray(data) ? data : [data];
-                setScheduleData(schedules);
+                setScheduleData(data);
             } catch (error) {
                 setError(
                     'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
