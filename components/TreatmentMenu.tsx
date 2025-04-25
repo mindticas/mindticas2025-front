@@ -12,15 +12,23 @@ import React, { useEffect, useState } from 'react';
 import { useBookingContext } from '@/context/BookingContext';
 import { getTreatments } from '@/services/TreatmentService';
 import { Treatment } from '@/interfaces/treatment/Treatment';
-import { SelectRoot, Text, createListCollection } from '@chakra-ui/react';
+import {
+    Box,
+    SelectRoot,
+    Spinner,
+    Text,
+    createListCollection,
+} from '@chakra-ui/react';
 
 export default function TreatmentMenu() {
     const { treatment, setTreatment } = useBookingContext();
     const [treatments, setTreatments] = useState<Treatment[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchTreatments = async () => {
+            setIsLoading(true);
             try {
                 const data = await getTreatments();
                 setTreatments(data);
@@ -28,6 +36,8 @@ export default function TreatmentMenu() {
                 setError(
                     'No se pudieron cargar los tratamientos. Inténtalo de nuevo más tarde.',
                 );
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchTreatments();
@@ -40,6 +50,14 @@ export default function TreatmentMenu() {
             setTreatment(selectedTreatment);
         }
     };
+
+    if (isLoading) {
+        return (
+            <Box py={4}>
+                <Spinner size='lg' />
+            </Box>
+        );
+    }
 
     return (
         <>
