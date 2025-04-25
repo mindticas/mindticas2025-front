@@ -63,6 +63,13 @@ export default function CreateUserModal({
                 title: 'Empleado creado correctamente',
             });
             onClose();
+            setFormData({
+                name: '',
+                email: '',
+                phone: '',
+                password: '',
+                role: '',
+            });
         } catch (error) {
             toaster.create({
                 type: 'error',

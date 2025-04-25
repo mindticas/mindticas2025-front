@@ -61,10 +61,11 @@ export default function TreatmentMenu() {
 
     return (
         <>
-            <Box p='10px' color='red'>
-                {error && <Text>{error}</Text>}
-            </Box>
-
+            <div>
+                {error && (
+                    <p style={{ color: 'red', padding: '10px' }}>{error}</p>
+                )}
+            </div>
             <SelectRoot
                 onValueChange={(e) => handleTreatmentSelect(e.value.toString())}
                 size='lg'
