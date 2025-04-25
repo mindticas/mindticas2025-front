@@ -76,153 +76,6 @@ exports[`Calendar Snapshot should match the snapshot 1`] = `
           disabled=""
           type="button"
         >
-          23 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          24 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          25 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          26 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          27 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          28 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          29 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          30 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          31 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          1 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          2 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          3 
-        </button>
-        <button
-          class="chakra-button css-r87ip0"
-          disabled=""
-          type="button"
-        >
-          4 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          disabled=""
-          type="button"
-        >
-          5 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          6 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          disabled=""
-          type="button"
-        >
-          7 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          disabled=""
-          type="button"
-        >
-          8 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          disabled=""
-          type="button"
-        >
-          9 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          disabled=""
-          type="button"
-        >
-          10 
-        </button>
-        <button
-          class="chakra-button css-1732jk6"
-          disabled=""
-          type="button"
-        >
-          11 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
-          12 
-        </button>
-        <button
-          class="chakra-button css-qa2o2z"
-          disabled=""
-          type="button"
-        >
           13 
         </button>
         <button
@@ -266,6 +119,153 @@ exports[`Calendar Snapshot should match the snapshot 1`] = `
           type="button"
         >
           19 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          20 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          21 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          22 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          23 
+        </button>
+        <button
+          class="chakra-button css-r87ip0"
+          disabled=""
+          type="button"
+        >
+          24 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          25 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          26 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          27 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          28 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          29 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          30 
+        </button>
+        <button
+          class="chakra-button css-1732jk6"
+          disabled=""
+          type="button"
+        >
+          1 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          2 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          3 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          4 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          5 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          6 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          7 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          8 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          9 
+        </button>
+        <button
+          class="chakra-button css-qa2o2z"
+          disabled=""
+          type="button"
+        >
+          10 
         </button>
       </div>
     </div>
