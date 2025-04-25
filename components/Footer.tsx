@@ -27,7 +27,7 @@ export default function Footer() {
                                     alt='Dynamic Image'
                                 />
                                 <Text fontSize='xl' fontWeight='bold' ml={2}>
-                                    Eleganster
+                                    Elegangster
                                 </Text>
                             </Flex>
 
@@ -49,7 +49,7 @@ export default function Footer() {
 
                         <Box textAlign={{ base: 'center', md: 'right' }}>
                             <Text>
-                                &copy; 2025 Eleganster Barbershop. Todos los
+                                &copy; 2025 Elegangster Barber Studio. Todos los
                                 derechos reservados.
                             </Text>
                         </Box>
