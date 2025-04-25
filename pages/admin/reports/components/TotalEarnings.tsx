@@ -48,30 +48,35 @@ export default function TotalEarnings({
 
     // Load appointments
     useEffect(() => {
-        if (!statistics) {
-            setAppointments([]);
-            setFilteredStats([]);
-            return;
-        }
+        let isMounted = true;
         const fetchAppointments = async () => {
             try {
                 const data = await getAppointments();
-                setAppointments(data);
+                if (isMounted) setAppointments(data);
             } catch (error) {
                 console.error('Error al cargar citas:', error);
             }
         };
         fetchAppointments();
+        return () => {
+            isMounted = false;
+        };
     }, [statistics]);
 
     useEffect(() => {
         if (!dateRange?.startDate || !dateRange.endDate) {
             setFilteredStats([]);
+            return;
         }
     }, [dateRange?.startDate, dateRange?.endDate]);
 
     useEffect(() => {
-        if (!appointments.length || !treatments.length) {
+        if (
+            !appointments.length ||
+            !treatments.length ||
+            !dateRange?.startDate ||
+            !dateRange.endDate
+        ) {
             setFilteredStats([]);
             return;
         }
@@ -151,110 +156,85 @@ export default function TotalEarnings({
             </Box>
         );
     }
-    {
-        filteredStats.length > 0;
-        return (
-            <Box
-                mx={['4', '8', '12', '16']}
-                mt={['8', '16']}
-                mb={['8', '16']}
-                borderRadius='md'
-                p='4'
-                shadow='sm'
-            >
-                <Text textAlign='center' fontSize='2xl' m='6' fontWeight='bold'>
-                    Ganancias por tratamiento
+    return (
+        <Box
+            mx={['4', '8', '12', '16']}
+            mt={['8', '16']}
+            mb={['8', '16']}
+            borderRadius='md'
+            p='4'
+            shadow='sm'
+        >
+            <Text textAlign='center' fontSize='2xl' m='6' fontWeight='bold'>
+                Ganancias por tratamiento
+            </Text>
+            {filteredStats.length === 0 ? (
+                <Text textAlign='center' color='gray.500' py={10}>
+                    {!dateRange.startDate || !dateRange.endDate
+                        ? 'No hay datos para mostrar en el período seleccionado'
+                        : appointments.length === 0
+                        ? 'Cargando datos...'
+                        : 'No hay datos para mostrar en el período seleccionado'}
                 </Text>
-
-                {filteredStats.length === 0 ? (
-                    <Text textAlign='center' color='gray.500' py={10}>
-                        {
-                            // si falta cualquiera de las dos fechas, muestro siempre “No hay datos…”
-                            !dateRange.startDate || !dateRange.endDate
-                                ? 'No hay datos para mostrar en el período seleccionado'
-                                : appointments.length === 0
-                                ? 'Cargando datos...'
-                                : 'No hay datos para mostrar en el período seleccionado'
-                        }
-                    </Text>
-                ) : (
-                    <Box
-                        height={isMobile ? '400px' : '500px'}
-                        width='100%'
-                        px={0}
-                    >
-                        <ResponsiveContainer width='100%' height='100%'>
-                            <BarChart
-                                data={filteredStats}
-                                layout='horizontal'
-                                margin={{
-                                    top: 20,
-                                    right: isMobile ? 5 : 10,
-                                    left: isMobile ? 5 : 10,
-                                    bottom: isMobile ? 50 : 60,
-                                }}
-                                barGap={isMobile ? 1 : 4}
-                            >
-                                <XAxis
-                                    dataKey='name'
-                                    height={isMobile ? 50 : 80}
-                                    tickFormatter={(value) =>
-                                        formatTreatmentName(value) || ''
-                                    }
-                                    tick={{ fontSize: isMobile ? 10 : 12 }}
-                                    angle={isMobile ? -35 : 0}
-                                />
-                                <YAxis
-                                    yAxisId='left'
-                                    allowDecimals={false}
-                                    tickFormatter={(value) =>
-                                        Math.floor(value).toString()
-                                    }
-                                />
-                                <YAxis
-                                    yAxisId='right'
-                                    orientation='right'
-                                    tickFormatter={(value) =>
-                                        `$${Math.floor(value).toLocaleString()}`
-                                    }
-                                />
-                                <Tooltip
-                                    formatter={(value, name) => [
-                                        name === 'Realizaciones'
-                                            ? `${Math.floor(Number(value))}`
-                                            : `$${Math.floor(
-                                                  Number(value),
-                                              ).toLocaleString()}`,
-                                        name,
-                                    ]}
-                                    contentStyle={{
-                                        borderRadius: '8px',
-                                        boxShadow:
-                                            '0 4px 6px rgba(0, 0, 0, 0.1)',
-                                    }}
-                                />
-                                <Legend />
-                                <Bar
-                                    yAxisId='left'
-                                    dataKey='count'
-                                    name='Realizaciones'
-                                    fill='#3182CE'
-                                    radius={[4, 4, 0, 0]}
-                                    animationDuration={1000}
-                                />
-                                <Bar
-                                    yAxisId='right'
-                                    dataKey='totalEarnings'
-                                    name='Ganancias (MXN)'
-                                    fill='#38A169'
-                                    radius={[4, 4, 0, 0]}
-                                    animationDuration={1000}
-                                />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </Box>
-                )}
-            </Box>
-        );
-    }
+            ) : (
+                <Box height={isMobile ? '400px' : '500px'} width='100%' px={0}>
+                    <ResponsiveContainer width='100%' height='100%'>
+                        <BarChart
+                            data={filteredStats}
+                            layout='horizontal'
+                            margin={{
+                                top: 20,
+                                right: isMobile ? 5 : 10,
+                                left: isMobile ? 5 : 10,
+                                bottom: isMobile ? 50 : 60,
+                            }}
+                            barGap={isMobile ? 1 : 4}
+                        >
+                            <XAxis
+                                dataKey='name'
+                                height={isMobile ? 50 : 80}
+                                tickFormatter={(value) =>
+                                    formatTreatmentName(value) || ''
+                                }
+                                tick={{ fontSize: isMobile ? 10 : 12 }}
+                                angle={isMobile ? -35 : 0}
+                            />
+                            <YAxis
+                                yAxisId='left'
+                                allowDecimals={false}
+                                tickFormatter={(value) =>
+                                    Math.floor(value).toString()
+                                }
+                            />
+                            <YAxis
+                                yAxisId='right'
+                                orientation='right'
+                                tickFormatter={(value) =>
+                                    `$${Math.floor(value).toLocaleString()}`
+                                }
+                            />
+                            <Tooltip />
+                            <Legend />
+                            <Bar
+                                yAxisId='left'
+                                dataKey='count'
+                                name='Realizaciones'
+                                fill='#3182CE'
+                                radius={[4, 4, 0, 0]}
+                                animationDuration={1000}
+                            />
+                            <Bar
+                                yAxisId='right'
+                                dataKey='totalEarnings'
+                                name='Ganancias (MXN)'
+                                fill='#38A169'
+                                radius={[4, 4, 0, 0]}
+                                animationDuration={1000}
+                            />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </Box>
+            )}
+        </Box>
+    );
 }
