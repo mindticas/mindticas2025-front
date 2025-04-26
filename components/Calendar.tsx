@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useMemo, useEffect } from 'react';
 import {
     Badge,
@@ -17,17 +16,12 @@ import { getAppointments } from '@/services/AppointmentService';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useRef } from 'react';
-
-// Available time slots
-const timeSlots = [
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '16:00',
-    '17:00',
-];
+import { Schedule } from '@/interfaces/schedule/Schedule';
+import { getSchedule } from '@/services/ScheduleService';
+import {
+    DAYS_OF_WEEK_ES,
+    DAYS_OF_WEEK_SHORT_ES,
+} from '@/constants/Calendar/dates';
 
 // Function to check if a date is Sunday
 const isSunday = (date: Date) => date.getDay() === 0;
@@ -38,17 +32,34 @@ export default function Calendar() {
     const boxRef = useRef<HTMLDivElement>(null);
     // Check if the screen is small (responsive)
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
-
     // State for selected date and time
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [bookedTimes, setBookedTimes] = useState<string[]>([]);
+    // New state for schedule from backend
+    const [scheduleData, setScheduleData] = useState<Schedule[]>([]);
+    // Available time slots from backend
+    const [availableTimeSlots, setAvailableTimeslots] = useState<string[]>([]);
     // Check if a treatment is selected
     const isTreatmentSelected = !!treatment;
-
     // Function to get the current month in Spanish
     const getMonth = () =>
         format(selectedDate ?? new Date(), 'MMMM', { locale: es });
+
+    // Fetch schedule data from backend
+    useEffect(() => {
+        const fetchScheduleData = async () => {
+            try {
+                const data = await getSchedule();
+                setScheduleData(data);
+            } catch (error) {
+                setError(
+                    'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
+                );
+            }
+        };
+        fetchScheduleData();
+    }, []);
 
     // fetch booked appointments
     useEffect(() => {
@@ -66,15 +77,30 @@ export default function Calendar() {
                     );
                 }
             };
-
-            // if dateTime is reset to null, reset selectedDate and selectedTime
-            if (!dateTime) {
-                setSelectedDate(null);
-                setSelectedTime(null);
-            }
             fetchAppointments();
         }
+        // if dateTime is reset to null, reset selectedDate and selectedTime
+        if (!dateTime) {
+            setSelectedDate(null);
+            setSelectedTime(null);
+        }
     }, [treatment, dateTime]);
+
+    useEffect(() => {
+        if (selectedDate) {
+            // Get day of the week
+            const dayOfWeek = selectedDate.getDay();
+            const dayString = DAYS_OF_WEEK_ES[dayOfWeek];
+            // Find schedule for the selected day
+            const daySchedule = scheduleData.find((s) => s.day === dayString);
+            // If schedule exist for this day, set the time slots
+            const timeslots =
+                daySchedule && daySchedule.open_hours
+                    ? daySchedule.open_hours
+                    : [];
+            setAvailableTimeslots(timeslots);
+        }
+    }, [selectedDate, scheduleData]);
 
     // Generate dates for the current week
     const weekDates = useMemo(() => {
@@ -164,11 +190,13 @@ export default function Calendar() {
             })
             .map((bookedTime) => {
                 const formattedTime = DateTime.fromISO(bookedTime, {
-                    zone: 'utc',
+                    zone: 'local',
                 }).toFormat('HH:mm');
+
                 return formattedTime;
             });
     }, [selectedDate, bookedTimes]);
+
     const isBookedTime = (time: string) => {
         return bookedTimesForDate.includes(time);
     };
@@ -182,7 +210,6 @@ export default function Calendar() {
             });
         }
     }, [treatment, selectedDate]);
-    // Check the available slots for 1 hour and 2 hour appointments
 
     return (
         <>
@@ -229,18 +256,16 @@ export default function Calendar() {
                         gap={isSmallScreen ? 1 : 2}
                         mb={2}
                     >
-                        {['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'].map(
-                            (day) => (
-                                <GridItem
-                                    key={day}
-                                    textAlign='center'
-                                    fontWeight='medium'
-                                    color='gray.500'
-                                >
-                                    {day}
-                                </GridItem>
-                            ),
-                        )}
+                        {DAYS_OF_WEEK_SHORT_ES.map((day) => (
+                            <GridItem
+                                key={day}
+                                textAlign='center'
+                                fontWeight='medium'
+                                color='gray.500'
+                            >
+                                {day}
+                            </GridItem>
+                        ))}
                     </Grid>
 
                     {/* Dates of the week */}
@@ -310,7 +335,7 @@ export default function Calendar() {
                                 Selecciona la hora
                             </Heading>
                             <Grid templateColumns='repeat(3, 1fr)' gap={2}>
-                                {timeSlots.map((time) => (
+                                {availableTimeSlots.map((time) => (
                                     <Button
                                         key={time}
                                         p={2}

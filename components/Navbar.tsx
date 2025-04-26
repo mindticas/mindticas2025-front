@@ -19,7 +19,7 @@ export default function Navbar() {
                             alt='Dynamic Image'
                         />
                         <Text fontSize='xl' fontWeight='bold' ml={2}>
-                            Eleganster
+                            Elegangster Barber Studio
                         </Text>
                     </Flex>
                 </Container>
