@@ -22,7 +22,6 @@ import {
     SelectItemIndicator,
     useBreakpointValue,
 } from '@chakra-ui/react';
-
 import { createListCollection } from '@chakra-ui/react';
 import { SelectLabel, SelectContent, SelectItem } from '@chakra-ui/react';
 import { Download } from 'lucide-react';
@@ -53,7 +52,6 @@ export default function DateInputs({
     const [selectTreatment, setSelectTreatment] = useState('');
     const [statisticsLoading, setStatisticsLoading] = useState(false);
     const [statisticsError, setStatisticsError] = useState<string | null>(null);
-
     const isMobile = useBreakpointValue({
         base: true,
         sm: true,
