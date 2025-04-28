@@ -1,4 +1,3 @@
-import TotalEarnings from '@/pages/admin/reports/components/TotalEarnings';
 import { render } from '@/utils/render-test';
 
 // Primero definimos todos los datos mock que serán usados

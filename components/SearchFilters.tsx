@@ -28,8 +28,8 @@ export interface AppointmentsFilters {
 export type SortCriteria =
     | 'SERVICE_COUNT_ASC'
     | 'SERVICE_COUNT_DESC'
-    | 'CUSTOMER_NAME_ASC'
-    | 'CUSTOMER_NAME_DESC'
+    | 'NAME_ASC'
+    | 'NAME_DESC'
     | '';
 
 interface SearchFiltersProps {
@@ -83,12 +83,12 @@ const sortOptions = [
         icon: <ArrowDown size={20} />,
     },
     {
-        value: 'CUSTOMER_NAME_ASC',
+        value: 'NAME_ASC',
         label: 'Nombre (A-Z)',
         icon: <ArrowUp size={20} />,
     },
     {
-        value: 'CUSTOMER_NAME_DESC',
+        value: 'NAME_DESC',
         label: 'Nombre (Z-A)',
         icon: <ArrowDown size={20} />,
     },
