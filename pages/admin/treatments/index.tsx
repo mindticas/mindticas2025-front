@@ -6,11 +6,22 @@ import { useTreatments } from '@/hooks/useTreatments';
 import { Pencil, Trash } from 'lucide-react';
 import TreatmentModal from './components/TreatmentModal';
 import { Treatment } from '@/interfaces/treatment/Treatment';
-import { createTreatment } from '@/services/TreatmentService';
+import {
+    createTreatment,
+    deleteTreatment,
+    updateTreatment,
+} from '@/services/TreatmentService';
 import { toaster, Toaster } from '@/components/ui/toaster';
+import {
+    hasTreatmentChanges,
+    showNoChangesToast,
+} from '@/utils/treatments/treatmentValidation';
+import TreatmentNotification from '@/utils/notifications';
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default function TreatmentsPage() {
-    const { treatments, refetch } = useTreatments();
+    // Loading only for treatments
+    const { treatments, refetch, loading } = useTreatments();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [modalState, setModalState] = useState<{
@@ -65,7 +76,7 @@ export default function TreatmentsPage() {
             render: (treatment: Treatment) => (
                 <Box display='flex' justifyContent='center' gap={2}>
                     <Tooltip
-                        content='Editar tratamiento'
+                        content='Edit treatment'
                         positioning={{ placement: 'top' }}
                         key={`edit-${treatment.id}`}
                     >
@@ -77,13 +88,13 @@ export default function TreatmentsPage() {
                         </Button>
                     </Tooltip>
                     <Tooltip
-                        content='Borrar tratamiento'
+                        content='Delete treatment'
                         positioning={{ placement: 'top' }}
                         key={`delete-${treatment.id}`}
                     >
                         <Button
                             backgroundColor='transparent'
-                            onClick={() => console.log(treatment.name)}
+                            onClick={() => handleDeleteTreatment(treatment)}
                         >
                             <Trash strokeWidth={3} color='Red' />
                         </Button>
@@ -93,28 +104,81 @@ export default function TreatmentsPage() {
         },
     ];
 
-    async function handleCreateTreatment(treatmentData: Omit<Treatment, 'id'>) {
+    async function handleCreateTreatment(
+        treatmentData?: Omit<Treatment, 'id'>,
+    ) {
+        if (!treatmentData) return;
         setIsSubmitting(true);
         try {
             await createTreatment(treatmentData);
-
-            toaster.create({
-                type: 'success',
-                duration: 5000,
-                title: 'Tratamiento creado con éxito',
-            });
+            // show succes message to user
+            TreatmentNotification.createSuccess();
             await refetch();
             setModalState({
                 ...modalState,
                 isOpen: false,
             });
         } catch (error) {
-            console.error('Error al crear el tratamiento', error);
-            toaster.create({
-                type: 'error',
-                duration: 5000,
-                title: 'Error al crear el tratamiento',
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : 'Error al crear el tratamiento';
+            // Show error message to user
+            TreatmentNotification.createError(errorMessage);
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
+    async function handleUpdateTreatment(
+        treatmentData?: Omit<Treatment, 'id'> | undefined,
+    ) {
+        if (!modalState.selectTreatment || !treatmentData) return;
+        // Check if there are changes to update
+        if (!hasTreatmentChanges(modalState.selectTreatment, treatmentData)) {
+            showNoChangesToast();
+            setModalState({
+                ...modalState,
+                isOpen: false,
             });
+            return;
+        }
+        setIsSubmitting(true);
+        try {
+            await updateTreatment(
+                modalState.selectTreatment.id.toString(),
+                treatmentData as Partial<Treatment>,
+            );
+            TreatmentNotification.updateSuccess();
+            await refetch();
+            setModalState({
+                ...modalState,
+                isOpen: false,
+            });
+        } catch (error) {
+            console.error('Error al actualizar el tratamiento', error);
+            const errorMessage =
+                error instanceof Error ? error.message : 'undefined';
+            TreatmentNotification.updateError(errorMessage);
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
+    async function handleConfirmDelete() {
+        if (!modalState.selectTreatment) return;
+        setIsSubmitting(true);
+        try {
+            await deleteTreatment(modalState.selectTreatment.id);
+            TreatmentNotification.deleteSuccess();
+            await refetch();
+            setModalState({
+                ...modalState,
+                isOpen: false,
+            });
+        } catch (error) {
+            console.error('Error al eliminar el tratamiento', error);
+            TreatmentNotification.deleteError();
         } finally {
             setIsSubmitting(false);
         }
@@ -135,7 +199,13 @@ export default function TreatmentsPage() {
                 mode: 'create',
             });
         }
-        refetch();
+    }
+    function handleDeleteTreatment(treatment: Treatment) {
+        setModalState({
+            isOpen: true,
+            mode: 'delete',
+            selectTreatment: treatment,
+        });
     }
 
     return (
@@ -166,26 +236,27 @@ export default function TreatmentsPage() {
                         Nuevo Tratamiento
                     </Button>
                 </Box>
-                <Box
-                    borderWidth='1px'
-                    borderRadius='lg'
-                    overflow='hidden'
-                    textAlign='center'
-                >
-                    <AdminTable data={treatments} columns={tableColumns} />
-                </Box>
+                <AdminTable
+                    data={treatments}
+                    columns={tableColumns}
+                    isLoading={loading}
+                />
             </Box>
             <TreatmentModal
                 isOpen={modalState.isOpen}
                 onClose={() => setModalState({ ...modalState, isOpen: false })}
                 mode={modalState.mode}
-                treatments={treatments}
                 selectedTreatment={modalState.selectTreatment}
                 onTreatmentCreated={() => {
-                    console.log('Llamando a refetch');
                     refetch();
                 }}
-                onSubmit={handleCreateTreatment}
+                onSubmit={
+                    modalState.mode === 'delete'
+                        ? handleConfirmDelete
+                        : modalState.mode === 'edit'
+                        ? handleUpdateTreatment
+                        : handleCreateTreatment
+                }
                 isSubmitting={isSubmitting}
             />
             <Toaster />

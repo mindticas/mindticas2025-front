@@ -1,6 +1,6 @@
-import { toaster, Toaster } from '@/components/ui/toaster';
+import ErrorMessage from '@/components/ErrorMessage';
 import { Treatment } from '@/interfaces/treatment/Treatment';
-import { createTreatment } from '@/services/TreatmentService';
+import { validateTreatmentFields } from '@/utils/treatments/treatmentValidation';
 import {
     Box,
     Button,
@@ -18,10 +18,9 @@ interface TreatmentModalProps {
     isOpen: boolean;
     onClose: () => void;
     mode: 'create' | 'edit' | 'cancel' | 'delete';
-    treatments: Treatment[];
     selectedTreatment?: Treatment;
     onTreatmentCreated?: () => void;
-    onSubmit: (treatmentData: Omit<Treatment, 'id'>) => Promise<void>;
+    onSubmit: (treatmentData?: Omit<Treatment, 'id'>) => Promise<void>;
     isSubmitting: boolean;
 }
 
@@ -29,9 +28,9 @@ export default function TreatmentModal({
     isOpen,
     onClose,
     mode,
-    treatments,
     selectedTreatment,
     onSubmit,
+    isSubmitting,
 }: TreatmentModalProps) {
     const [formData, setFormData] = useState({
         name: '',
@@ -39,8 +38,12 @@ export default function TreatmentModal({
         price: 0,
         duration: 0,
     });
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     useEffect(() => {
+        if (isOpen) {
+            setErrors({});
+        }
         if (isOpen && mode === 'edit' && selectedTreatment) {
             setFormData({
                 name: selectedTreatment.name,
@@ -62,6 +65,12 @@ export default function TreatmentModal({
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;
+        // clean errors
+        setErrors((prevErrors) => {
+            const newErrors = { ...prevErrors };
+            delete newErrors[name];
+            return newErrors;
+        });
         setFormData({
             ...formData,
             [name]: type === 'number' ? Number(value) : value,
@@ -70,7 +79,15 @@ export default function TreatmentModal({
 
     const handleSubmit = () => {
         if (mode === 'create' || mode === 'edit') {
+            // Field validation
+            const fieldErrors = validateTreatmentFields(formData);
+            if (Object.keys(fieldErrors).length > 0) {
+                setErrors(fieldErrors);
+                return;
+            }
             onSubmit(formData);
+        } else if (mode === 'delete') {
+            onSubmit();
         }
     };
 
@@ -104,13 +121,12 @@ export default function TreatmentModal({
                             alignContent='center'
                         >
                             <Dialog.Title>{getTitle()}</Dialog.Title>
-                            <Dialog.CloseTrigger>
+                            <Dialog.CloseTrigger asChild>
                                 <CloseButton color='black' size='sm' />
                             </Dialog.CloseTrigger>
                         </Dialog.Header>
 
                         <Dialog.Body>
-                            {/* Add validation if is a new treatment  */}
                             {mode === 'create' || mode === 'edit' ? (
                                 <form>
                                     <Box mb={4}>
@@ -126,6 +142,9 @@ export default function TreatmentModal({
                                                 onChange={handleInputChange}
                                                 required
                                             />
+                                            <ErrorMessage
+                                                message={errors.name}
+                                            />
                                         </Field.Root>
                                     </Box>
                                     <Box mb={4}>
@@ -140,6 +159,9 @@ export default function TreatmentModal({
                                                 value={formData.description}
                                                 onChange={handleInputChange}
                                                 required
+                                            />
+                                            <ErrorMessage
+                                                message={errors.description}
                                             />
                                         </Field.Root>
                                     </Box>
@@ -157,6 +179,9 @@ export default function TreatmentModal({
                                                 onChange={handleInputChange}
                                                 required
                                             />
+                                            <ErrorMessage
+                                                message={errors.price}
+                                            />
                                         </Field.Root>
                                     </Box>
                                     <Box mb={4}>
@@ -172,6 +197,9 @@ export default function TreatmentModal({
                                                 value={formData.duration}
                                                 onChange={handleInputChange}
                                                 required
+                                            />
+                                            <ErrorMessage
+                                                message={errors.duration}
                                             />
                                         </Field.Root>
                                     </Box>
@@ -193,8 +221,12 @@ export default function TreatmentModal({
                                 }
                                 p={3}
                                 color='white'
+                                onClick={() => {
+                                    onClose();
+                                    setErrors({});
+                                }}
                             >
-                                {mode === 'delete' ? 'Cancelar' : 'Volver'}
+                                {mode === 'delete' ? 'Cancelar' : 'Cancelar'}
                             </Button>
                             <Button
                                 backgroundColor={
@@ -203,8 +235,13 @@ export default function TreatmentModal({
                                 p={3}
                                 color='white'
                                 onClick={handleSubmit}
+                                loading={isSubmitting}
                             >
-                                {mode === 'create' ? 'Crear' : 'Actualizar'}
+                                {mode === 'create'
+                                    ? 'Crear'
+                                    : mode === 'edit'
+                                    ? 'Actualizar'
+                                    : 'Eliminar'}
                             </Button>
                         </Dialog.Footer>
                     </Dialog.Content>
