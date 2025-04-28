@@ -53,9 +53,8 @@ export default function Index() {
     const filteredCustomers = users.filter((user) => {
         const name = user.name || '';
         const phone = user.phone || '';
-        return (
-            name.toLowerCase().includes(filters.name.toLowerCase()) ||
-            phone.toLowerCase().includes(filters.name.toLowerCase())
+        return [name.toLowerCase(), phone.toLowerCase()].some((field) =>
+            field.includes(filters.name.toLowerCase()),
         );
     });
 
@@ -91,50 +90,6 @@ export default function Index() {
             handleCloseDeleteModal();
         }
     };
-
-    //     e.preventDefault();
-    //     setIsLoadingSubmit(true);
-    //     try {
-    //         const body: CreateUser = {
-    //             name: formData.name,
-    //             email: formData.email,
-    //             phone: formData.phone,
-    //             password: formData.password,
-    //             role_id: parseInt(formData.role),
-    //         };
-    //         const createdUser = await createUser(body);
-    //         setUsers((prev) => [...prev, createdUser]);
-
-    //         setIsLoadingSubmit(false);
-    //         setFormData({
-    //             name: '',
-    //             email: '',
-    //             phone: '',
-    //             password: '',
-    //             role: '',
-    //         });
-    //         toaster.create({
-    //             type: 'success',
-    //             duration: 5000,
-    //             title: 'Empleado creado correctamente',
-    //         });
-    //     } catch (error) {
-    //         setIsLoadingSubmit(false);
-    //         toaster.create({
-    //             type: 'error',
-    //             duration: 5000,
-    //             title: 'Error al crear el empleado, revisa que el empleado no exista o intenta más tarde',
-    //         });
-    //     }
-    // };
-
-    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value } = e.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    // };
 
     const handleUserCreated = (newUser: User) => {
         setUsers((prev) => [...prev, newUser]);

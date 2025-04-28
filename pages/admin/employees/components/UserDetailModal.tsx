@@ -154,7 +154,7 @@ export default function UserDetailModal({
                                                 color='gray.500'
                                             >
                                                 <Text fontSize='lg'>
-                                                    Aún no ha hecho citas
+                                                    Aún no ha realizado citas
                                                 </Text>
                                             </Box>
                                         )}
