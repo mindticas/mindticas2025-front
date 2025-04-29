@@ -3,7 +3,7 @@ import { Tooltip } from '@/components/ui/tooltip';
 import React, { useState } from 'react';
 import AdminTable from '../AdminTable';
 import { useTreatments } from '@/hooks/useTreatments';
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil, Plus, Trash } from 'lucide-react';
 import TreatmentModal from './components/TreatmentModal';
 import { Treatment } from '@/interfaces/treatment/Treatment';
 import {
@@ -18,6 +18,7 @@ import {
 } from '@/utils/treatments/treatmentValidation';
 import TreatmentNotification from '@/utils/notifications';
 import ErrorMessage from '@/components/ErrorMessage';
+import { SearchFilters } from '@/components/SearchFilters';
 
 export default function TreatmentsPage() {
     // Loading only for treatments
@@ -227,15 +228,18 @@ export default function TreatmentsPage() {
                         Tratamientos
                     </Text>
                     <Button
-                        shadow='sm'
                         _hover={{ bg: 'blue.500' }}
                         p={2}
-                        backgroundColor='blue.400'
+                        size='lg'
+                        fontWeight='bold'
+                        colorPalette='blue'
                         onClick={handleAddTreatment}
                     >
-                        Nuevo Tratamiento
+                        <Plus size={20} />
+                        Crear Tratamiento
                     </Button>
                 </Box>
+
                 <AdminTable
                     data={treatments}
                     columns={tableColumns}
