@@ -62,7 +62,7 @@ export const exportStatisticsToExcel = async (
         // Set the filename from the response header or use a default name
         const fileName = contentDisposition
             ? contentDisposition.split('filename=')[1]
-            : `reporte-${params.startDate}-${params.endDate}.xlsx`;
+            : `reporte-elegangsters-${params.startDate}-al-${params.endDate}.xlsx`;
         link.download = fileName;
         document.body.appendChild(link);
         link.click(); // Run the dowload
