@@ -7,7 +7,6 @@ const token = Cookies.get('AUTH_TOKEN');
 
 export const getStatistics = async (
     params: StatisticsData,
-    options?: { exportExcel: boolean} // optional to export 
 ): Promise<StatisticsDataResponse> => {
     try {
         // Get token
@@ -20,10 +19,7 @@ export const getStatistics = async (
         if (params.treatment) {
             url += `&treatment=${params.treatment}`;
         }
-        // ad export if exist
-        if(options?.exportExcel){
-            url += `&export=excel`
-        }
+
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -33,20 +29,6 @@ export const getStatistics = async (
         });
         if (!response.ok) {
             throw new Error('Error al obtener las estadísticas');
-        }
-
-        // If export to excel, handle the blob response
-        if(options?.exportExcel){
-            const blob = await response.blob();
-            const dowloadUrl = window.URL.createObjectURL(blob)
-            const a = document.createElement('a')
-            a.href = dowloadUrl
-            a.download = `estadisticas_${params.startDate}_${params.endDate}.xlsx`;
-            document.body.appendChild(a)
-            a.click()
-            window.URL.revokeObjectURL(dowloadUrl)
-            document.body.removeChild(a)
-            return getStatistics(params)// Return void after handling the download
         }
 
         const data = await response.json();
