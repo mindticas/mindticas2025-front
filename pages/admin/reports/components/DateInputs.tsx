@@ -1,7 +1,10 @@
 import { StatisticsData } from '@/interfaces/statistics/StatisticsData';
 import { StatisticsDataResponse } from '@/interfaces/statistics/StatisticsDataResponse';
 import { Treatment } from '@/interfaces/treatment/Treatment';
-import { getStatistics } from '@/services/StatisticsService';
+import {
+    getStatistics,
+    exportStatisticsToExcel,
+} from '@/services/StatisticsService';
 import {
     Text,
     Box,
@@ -17,10 +20,12 @@ import {
     SelectPositioner,
     SelectValueText,
     SelectItemIndicator,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 
 import { createListCollection } from '@chakra-ui/react';
 import { SelectLabel, SelectContent, SelectItem } from '@chakra-ui/react';
+import { Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface DateInputsProps {
@@ -48,6 +53,13 @@ export default function DateInputs({
     const [selectTreatment, setSelectTreatment] = useState('');
     const [statisticsLoading, setStatisticsLoading] = useState(false);
     const [statisticsError, setStatisticsError] = useState<string | null>(null);
+
+    const isMobile = useBreakpointValue({
+        base: true,
+        sm: true,
+        md: false,
+        lg: false,
+    });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -111,6 +123,27 @@ export default function DateInputs({
         setSelectTreatment('');
         setFormData((prev) => ({ ...prev, treatment: '' }));
         onTreatmentSelect('');
+    };
+
+    const handleDownloadExcel = async () => {
+        if (!formData.startDate || !formData.endDate) {
+            setStatisticsError('Selecciona fechas de inicio y fin');
+            return;
+        }
+        if (formData.treatment) {
+            setStatisticsError(
+                'La exportación solo está disponible con fechas. Intente nuevamente sin seleccionar un servicio',
+            );
+            return;
+        }
+        try {
+            setStatisticsLoading(true);
+            await exportStatisticsToExcel(formData);
+        } catch (error) {
+            setStatisticsError('Error al descargar el archivo');
+        } finally {
+            setStatisticsLoading(false);
+        }
     };
 
     return (
@@ -241,6 +274,29 @@ export default function DateInputs({
                             </Portal>
                         </SelectRoot>
                     </Box>
+                    {isMobile ? (
+                        <Flex
+                            gap={2}
+                            mt={2}
+                            border='1px solid'
+                            p='2'
+                            borderRadius='sm'
+                            justifyContent='space-between'
+                            cursor='pointer'
+                            fontSize='md'
+                            onClick={handleDownloadExcel}
+                        >
+                            <Text>Descargar excel</Text>
+                            <Download />
+                        </Flex>
+                    ) : (
+                        <Box position='relative' p={2} mt='6'>
+                            <Download
+                                cursor='pointer'
+                                onClick={handleDownloadExcel}
+                            />
+                        </Box>
+                    )}
                 </Flex>
             </Flex>
             <Box textAlign='center' mx={['4', '8', '12', '14']} mt='6'>
