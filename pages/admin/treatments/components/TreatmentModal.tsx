@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import ErrorMessage from '@/components/ErrorMessage';
 import { Treatment } from '@/interfaces/treatment/Treatment';
 import { validateTreatmentFields } from '@/utils/treatments/treatmentValidation';
@@ -14,34 +13,20 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-=======
-import {
-    Box,
-    CloseButton,
-    Dialog,
-    DialogCloseTrigger,
-    DialogPositioner,
-    Portal,
-} from '@chakra-ui/react';
->>>>>>> 5f99e1c (first changes)
 
 interface TreatmentModalProps {
     isOpen: boolean;
     onClose: () => void;
-<<<<<<< HEAD
     mode: 'create' | 'edit' | 'cancel' | 'delete';
     selectedTreatment?: Treatment;
     onTreatmentCreated?: () => void;
     onSubmit: (treatmentData?: Omit<Treatment, 'id'>) => Promise<void>;
     isSubmitting: boolean;
-=======
->>>>>>> 5f99e1c (first changes)
 }
 
 export default function TreatmentModal({
     isOpen,
     onClose,
-<<<<<<< HEAD
     mode,
     selectedTreatment,
     onSubmit,
@@ -119,9 +104,6 @@ export default function TreatmentModal({
         }
     };
 
-=======
-}: TreatmentModalProps) {
->>>>>>> 5f99e1c (first changes)
     return (
         <Dialog.Root
             open={isOpen}
@@ -138,19 +120,13 @@ export default function TreatmentModal({
                             justifyContent='space-between'
                             alignContent='center'
                         >
-<<<<<<< HEAD
                             <Dialog.Title>{getTitle()}</Dialog.Title>
                             <Dialog.CloseTrigger asChild>
-=======
-                            <Dialog.Title>Nuevo treatment</Dialog.Title>
-                            <Dialog.CloseTrigger>
->>>>>>> 5f99e1c (first changes)
                                 <CloseButton color='black' size='sm' />
                             </Dialog.CloseTrigger>
                         </Dialog.Header>
 
                         <Dialog.Body>
-<<<<<<< HEAD
                             {mode === 'create' || mode === 'edit' ? (
                                 <form>
                                     <Box mb={4}>
@@ -268,10 +244,6 @@ export default function TreatmentModal({
                                     : 'Eliminar'}
                             </Button>
                         </Dialog.Footer>
-=======
-                            <Box>Hola, wait a moment</Box>
-                        </Dialog.Body>
->>>>>>> 5f99e1c (first changes)
                     </Dialog.Content>
                 </DialogPositioner>
             </Portal>
