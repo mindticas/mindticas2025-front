@@ -11,18 +11,17 @@ import {
     deleteTreatment,
     updateTreatment,
 } from '@/services/TreatmentService';
-import { toaster, Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/toaster';
 import {
     hasTreatmentChanges,
     showNoChangesToast,
 } from '@/utils/treatments/treatmentValidation';
 import TreatmentNotification from '@/utils/notifications';
-import ErrorMessage from '@/components/ErrorMessage';
+import { useFilters } from '@/hooks/useFilters';
 import { SearchFilters } from '@/components/SearchFilters';
 
 export default function TreatmentsPage() {
     // Loading only for treatments
-    const { treatments, refetch, loading } = useTreatments();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [modalState, setModalState] = useState<{
@@ -33,6 +32,17 @@ export default function TreatmentsPage() {
         isOpen: false,
         mode: 'create',
     });
+    const { filters, handleFilterChange, handleSortChange } = useFilters({
+        name: '',
+        sort: '',
+    });
+    const { treatments, refetch, loading } = useTreatments(filters.sort);
+    const filteredTreatments =
+        treatments?.filter((treatment) => {
+            const name = treatment.name || '';
+            return name.toLowerCase().includes(filters.name.toLowerCase());
+        }) || [];
+
     const tableColumns = [
         {
             key: 'name',
@@ -240,8 +250,15 @@ export default function TreatmentsPage() {
                     </Button>
                 </Box>
 
+                <SearchFilters
+                    filters={filters}
+                    onFilterChange={handleFilterChange}
+                    onSortChange={handleSortChange}
+                    showSort={true}
+                />
+
                 <AdminTable
-                    data={treatments}
+                    data={filteredTreatments}
                     columns={tableColumns}
                     isLoading={loading}
                 />

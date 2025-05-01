@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from 'react';
 import { getAppointments } from '@/services/AppointmentService';
 import { Appointment } from '@/interfaces/appointment/Appointment';
-import { splitDateTimeFromISO } from '@/utils/dateUtils';
+import { isDateInRange } from '@/utils/dateUtils';
 import {
     TotalEarningsProps,
     TreatmentStats,
@@ -80,11 +80,6 @@ export default function TotalEarnings({
             setFilteredStats([]);
             return;
         }
-        // Selected date range
-        const { date: startISO } = splitDateTimeFromISO(
-            dateRange?.startDate || '',
-        );
-        const { date: endISO } = splitDateTimeFromISO(dateRange?.endDate || '');
 
         // Initialize map to count all treatments
         const statsMap = treatments.reduce(
@@ -103,12 +98,15 @@ export default function TotalEarnings({
         appointments.forEach((appointment) => {
             if (appointment.status !== 'completed') return;
 
-            const { date: appDate } = splitDateTimeFromISO(
+            // the isDateInRange helper function is used to check only the date
+            // without considering the time or time zones.
+            const isInRange = isDateInRange(
                 appointment.scheduled_start,
+                dateRange.startDate,
+                dateRange.endDate,
             );
 
-            // Filtered by dates
-            if (dateRange && (appDate < startISO || appDate > endISO)) return;
+            if (!isInRange) return;
 
             // Unique treatments are counted per appointment
             const uniqueTreatments = new Map<string, number>();

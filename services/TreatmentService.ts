@@ -8,7 +8,7 @@ export const createTreatment = async (
     treatment: Omit<Treatment, 'id'>,
 ): Promise<Treatment> => {
     try {
-        const response = await fetch(`${API_URL}/treatment`, {
+        const response = await fetch(`${API_URL}/treatments`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,9 +32,13 @@ export const createTreatment = async (
     }
 };
 
-export const getTreatments = async (): Promise<Treatment[]> => {
+export const getTreatments = async (sort?: string): Promise<Treatment[]> => {
     try {
-        const response = await fetch(`${API_URL}/treatment`);
+        const url = new URL(`${API_URL}/treatments`);
+        if (sort) {
+            url.searchParams.append('param', sort);
+        }
+        const response = await fetch(url.toString());
         if (!response.ok) {
             throw new Error('Error to get treatments');
         }
@@ -46,7 +50,7 @@ export const getTreatments = async (): Promise<Treatment[]> => {
 
 export const getTreatmentById = async (id: string): Promise<Treatment> => {
     try {
-        const response = await fetch(`${API_URL}/treatment/${id}`);
+        const response = await fetch(`${API_URL}/treatments/${id}`);
         if (!response.ok) {
             throw new Error('Error to get treatment');
         }
@@ -64,7 +68,7 @@ export const updateTreatment = async (
         if (treatment.price) {
             treatment.price = Number(treatment.price);
         }
-        const response = await fetch(`${API_URL}/treatment/${id}`, {
+        const response = await fetch(`${API_URL}/treatments/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -86,7 +90,7 @@ export const updateTreatment = async (
 
 export const deleteTreatment = async (id: string | number): Promise<void> => {
     try {
-        const response = await fetch(`${API_URL}/treatment/${id}`, {
+        const response = await fetch(`${API_URL}/treatments/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

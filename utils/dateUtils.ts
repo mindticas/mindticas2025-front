@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 interface DateTimeParts {
     date: string;
@@ -20,7 +20,7 @@ export const splitDateTimeFromISO = (
 
     // format date (YYYY-MM-DD)
     const date = DateTime.fromJSDate(dateObj)
-       .setZone('local')
+        .setZone('local')
         .toFormat('yyyy-MM-dd');
 
     // format time (HH:MM)
@@ -33,4 +33,22 @@ export const splitDateTimeFromISO = (
         .replace(/\./g, '');
 
     return { date, time };
+};
+// Extract only the date in ISO format.
+export const extractDateOnly = (isoDate: string | null | undefined): string => {
+    if (!isoDate) return '';
+    return isoDate.split('T')[0];
+};
+// Check if a specific date is within the date range
+export const isDateInRange = (
+    dateToCheck: string | null | undefined,
+    startDate: string | null | undefined,
+    endDate: string | null | undefined,
+): boolean => {
+    if (!dateToCheck || !startDate || !endDate) return false;
+    const dateOnly = extractDateOnly(dateToCheck);
+    const startOnly = extractDateOnly(startDate);
+    const endOnly = extractDateOnly(endDate);
+
+    return dateOnly >= startOnly && dateOnly <= endOnly;
 };
