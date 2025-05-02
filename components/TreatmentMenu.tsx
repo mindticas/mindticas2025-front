@@ -34,7 +34,7 @@ export default function TreatmentMenu() {
                 setTreatments(data);
             } catch (error) {
                 setError(
-                    'Error al cargar los tratamientos. Inténtalo de nuevo más tarde.',
+                    'No se pudieron cargar los tratamientos. Inténtalo de nuevo más tarde.',
                 );
             } finally {
                 setIsLoading(false);
@@ -61,11 +61,7 @@ export default function TreatmentMenu() {
 
     return (
         <>
-            <div>
-                {error && (
-                    <p style={{ color: 'red', padding: '10px' }}>{error}</p>
-                )}
-            </div>
+            <div>{error && <p style={{ color: 'red' }}>{error}</p>}</div>
             <SelectRoot
                 onValueChange={(e) => handleTreatmentSelect(e.value.toString())}
                 size='lg'
