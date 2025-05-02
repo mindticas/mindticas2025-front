@@ -32,6 +32,8 @@ export default function TotalEarnings({
         md: true,
         lg: false,
     });
+    const startDate = dateRange?.startDate;
+    const endDate = dateRange?.endDate;
 
     const formatTreatmentName = (name: string) => {
         if (!name) return '';
@@ -61,21 +63,14 @@ export default function TotalEarnings({
         return () => {
             isMounted = false;
         };
-    }, [statistics]);
-
-    useEffect(() => {
-        if (!dateRange?.startDate || !dateRange.endDate) {
-            setFilteredStats([]);
-            return;
-        }
-    }, [dateRange?.startDate, dateRange?.endDate]);
+    }, []);
 
     useEffect(() => {
         if (
             !appointments.length ||
             !treatments.length ||
-            !dateRange?.startDate ||
-            !dateRange.endDate
+            !startDate ||
+            !endDate
         ) {
             setFilteredStats([]);
             return;
@@ -102,8 +97,8 @@ export default function TotalEarnings({
             // without considering the time or time zones.
             const isInRange = isDateInRange(
                 appointment.scheduled_start,
-                dateRange.startDate,
-                dateRange.endDate,
+                startDate,
+                endDate,
             );
 
             if (!isInRange) return;
@@ -124,8 +119,10 @@ export default function TotalEarnings({
             uniqueTreatments.forEach((price, id) => {
                 // If there is a treatment selected, only count that one
                 if (!selectedTreatmentId || id === selectedTreatmentId) {
-                    statsMap[id].count += 1;
-                    statsMap[id].totalEarnings += price;
+                    if (statsMap[id]) {
+                        statsMap[id].count += 1;
+                        statsMap[id].totalEarnings += price;
+                    }
                 }
             });
         });
@@ -134,9 +131,9 @@ export default function TotalEarnings({
         // Filter according to the selected treatment
         result = result.filter((stat) => stat.count > 0);
         setFilteredStats(result);
-    }, [appointments, treatments, dateRange, selectedTreatmentId]);
+    }, [appointments, treatments, startDate, endDate, selectedTreatmentId]);
 
-    if (!dateRange?.startDate) {
+    if (!startDate) {
         return (
             <Box
                 mx={isMobile ? '2' : '4'}
@@ -168,7 +165,7 @@ export default function TotalEarnings({
             </Text>
             {filteredStats.length === 0 ? (
                 <Text textAlign='center' color='gray.500' py={10}>
-                    {!dateRange.startDate || !dateRange.endDate
+                    {startDate || endDate
                         ? 'No hay datos para mostrar en el período seleccionado'
                         : appointments.length === 0
                         ? 'Cargando datos...'
