@@ -154,11 +154,7 @@ export default function UserDetailModal({
                                                 color='gray.500'
                                             >
                                                 <Text fontSize='lg'>
-<<<<<<< HEAD
                                                     Aún no ha realizado citas
-=======
-                                                    Aún no ha hecho citas
->>>>>>> 95e50ef86 (feature: add UserDetailModal and CreateUserModal)
                                                 </Text>
                                             </Box>
                                         )}
