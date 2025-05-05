@@ -16,17 +16,14 @@ export const createTreatment = async (
             },
             body: JSON.stringify(treatment),
         });
-        if (!response.ok) {
-            // show specific error message to user
-            const errorResponse = await response.json();
-            const errorMessage =
-                errorResponse.statusCode === 409
-                    ? 'El tratamiento ya existe'
-                    : 'Error al crear el tratamient';
-            console.log(errorMessage);
-            throw new Error(errorMessage);
-        }
-        return await response.json();
+        if (response.ok) return await response.json();
+        // show specific error message to user
+        const errorResponse = await response.json();
+        const errorMessage =
+            errorResponse.statusCode === 409
+                ? 'El tratamiento ya existe'
+                : 'Error al crear el tratamient';
+        throw new Error(errorMessage);
     } catch (error) {
         throw error;
     }

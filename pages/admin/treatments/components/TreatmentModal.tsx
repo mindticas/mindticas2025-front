@@ -11,14 +11,21 @@ import {
 import { useEffect, useState } from 'react';
 import TreatmentForm from './TreatmentForm';
 
+export type ModalMode = 'create' | 'edit' | 'cancel' | 'delete';
+export type TreatmentModalEvent = {
+    type: 'create' | 'update' | 'delete' | 'cancel';
+    treatment?: Omit<Treatment, 'id'>;
+    treatmentId?: string | number;
+};
+
 interface TreatmentModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    mode: 'create' | 'edit' | 'cancel' | 'delete';
-    selectedTreatment?: Treatment;
-    onTreatmentCreated?: () => void;
-    onSubmit: (treatmentData?: Omit<Treatment, 'id'>) => Promise<void>;
+    onEvent: (e: TreatmentModalEvent) => Promise<void>;
     isSubmitting: boolean;
+    trigger?: {
+        action: 'open' | 'close';
+        mode?: ModalMode;
+        treatment?: Treatment;
+    };
 }
 
 const MODE_TITLES = {
@@ -29,13 +36,16 @@ const MODE_TITLES = {
 };
 
 export default function TreatmentModal({
-    isOpen,
-    onClose,
-    mode,
-    selectedTreatment,
-    onSubmit,
+    onEvent,
     isSubmitting,
+    trigger,
 }: TreatmentModalProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [mode, setMode] = useState<ModalMode>('create');
+    const [selectedTreatment, setSelectedTreatment] = useState<
+        Treatment | undefined
+    >();
+
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -43,6 +53,18 @@ export default function TreatmentModal({
         duration: 0,
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
+
+    // Update internal state when props change
+    useEffect(() => {
+        if (!trigger) return;
+        if (trigger.action === 'open') {
+            setIsOpen(true);
+            setMode(trigger.mode ?? 'create');
+            setSelectedTreatment(trigger.treatment);
+        } else {
+            setIsOpen(false);
+        }
+    }, [trigger]);
 
     useEffect(() => {
         if (isOpen) {
@@ -81,7 +103,7 @@ export default function TreatmentModal({
         });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (mode === 'create' || mode === 'edit') {
             // Field validation
             const fieldErrors = validateTreatmentFields(formData);
@@ -89,16 +111,36 @@ export default function TreatmentModal({
                 setErrors(fieldErrors);
                 return;
             }
-            onSubmit(formData);
-        } else if (mode === 'delete') {
-            onSubmit();
+            if (mode === 'create') {
+                await onEvent({ type: 'create', treatment: formData });
+            } else if (mode === 'edit' && selectedTreatment) {
+                await onEvent({
+                    type: 'update',
+                    treatment: formData,
+                    treatmentId: selectedTreatment.id,
+                });
+            }
+        } else if (mode === 'delete' && selectedTreatment) {
+            await onEvent({
+                type: 'delete',
+                treatmentId: selectedTreatment.id,
+            });
         }
+        if (!isSubmitting) {
+            setIsOpen(false);
+        }
+    };
+
+    const handleClose = () => {
+        setIsOpen(false);
+        setErrors({});
+        onEvent({ type: 'cancel' });
     };
 
     return (
         <Dialog.Root
             open={isOpen}
-            onOpenChange={({ open }) => !open && onClose()}
+            onOpenChange={({ open }) => !open && handleClose()}
             placement='center'
         >
             <Portal>
@@ -143,10 +185,7 @@ export default function TreatmentModal({
                                 }
                                 p={3}
                                 color='white'
-                                onClick={() => {
-                                    onClose();
-                                    setErrors({});
-                                }}
+                                onClick={handleClose}
                             >
                                 {mode === 'delete' ? 'Cancelar' : 'Cancelar'}
                             </Button>

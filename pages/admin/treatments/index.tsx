@@ -4,7 +4,10 @@ import React, { useState } from 'react';
 import AdminTable from '../AdminTable';
 import { useTreatments } from '@/hooks/useTreatments';
 import { Pencil, Plus, Trash } from 'lucide-react';
-import TreatmentModal from './components/TreatmentModal';
+import TreatmentModal, {
+    ModalMode,
+    TreatmentModalEvent,
+} from './components/TreatmentModal';
 import { Treatment } from '@/interfaces/treatment/Treatment';
 import {
     createTreatment,
@@ -24,14 +27,12 @@ export default function TreatmentsPage() {
     // Loading only for treatments
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [modalState, setModalState] = useState<{
-        isOpen: boolean;
-        mode: 'create' | 'edit' | 'cancel' | 'delete';
-        selectTreatment?: Treatment;
-    }>({
-        isOpen: false,
-        mode: 'create',
-    });
+    const [modalTrigger, setModalTrigger] = useState<{
+        action: 'open' | 'close';
+        mode?: ModalMode;
+        treatment?: Treatment;
+    } | null>(null);
+
     const { filters, handleFilterChange, handleSortChange } = useFilters({
         name: '',
         sort: '',
@@ -125,10 +126,6 @@ export default function TreatmentsPage() {
             // show succes message to user
             TreatmentNotification.createSuccess();
             await refetch();
-            setModalState({
-                ...modalState,
-                isOpen: false,
-            });
         } catch (error) {
             const errorMessage =
                 error instanceof Error
@@ -142,30 +139,24 @@ export default function TreatmentsPage() {
     }
 
     async function handleUpdateTreatment(
-        treatmentData?: Omit<Treatment, 'id'> | undefined,
+        treatmentData: Omit<Treatment, 'id'>,
+        treatmentId: string | number,
     ) {
-        if (!modalState.selectTreatment || !treatmentData) return;
+        const originalTreatment = treatments?.find((t) => t.id === treatmentId);
+        if (!originalTreatment) return;
         // Check if there are changes to update
-        if (!hasTreatmentChanges(modalState.selectTreatment, treatmentData)) {
+        if (!hasTreatmentChanges(originalTreatment, treatmentData)) {
             showNoChangesToast();
-            setModalState({
-                ...modalState,
-                isOpen: false,
-            });
             return;
         }
         setIsSubmitting(true);
         try {
             await updateTreatment(
-                modalState.selectTreatment.id.toString(),
+                treatmentId.toString(),
                 treatmentData as Partial<Treatment>,
             );
             TreatmentNotification.updateSuccess();
             await refetch();
-            setModalState({
-                ...modalState,
-                isOpen: false,
-            });
         } catch (error) {
             console.error('Error al actualizar el tratamiento', error);
             const errorMessage =
@@ -176,17 +167,12 @@ export default function TreatmentsPage() {
         }
     }
 
-    async function handleConfirmDelete() {
-        if (!modalState.selectTreatment) return;
+    async function handleConfirmDelete(treatmentId: string | number) {
         setIsSubmitting(true);
         try {
-            await deleteTreatment(modalState.selectTreatment.id);
+            await deleteTreatment(treatmentId);
             TreatmentNotification.deleteSuccess();
             await refetch();
-            setModalState({
-                ...modalState,
-                isOpen: false,
-            });
         } catch (error) {
             console.error('Error al eliminar el tratamiento', error);
             TreatmentNotification.deleteError();
@@ -196,41 +182,51 @@ export default function TreatmentsPage() {
     }
 
     function handleEditTreatment(treatment: Treatment) {
-        setModalState({
-            isOpen: true,
+        setModalTrigger({
+            action: 'open',
             mode: 'edit',
-            selectTreatment: treatment,
+            treatment,
         });
     }
 
     function handleAddTreatment() {
         if (!treatments) return;
-        setModalState({
-            isOpen: true,
+        setModalTrigger({
+            action: 'open',
             mode: 'create',
         });
     }
     function handleDeleteTreatment(treatment: Treatment) {
-        setModalState({
-            isOpen: true,
+        setModalTrigger({
+            action: 'open',
             mode: 'delete',
-            selectTreatment: treatment,
+            treatment,
         });
     }
 
-    const handleOnSubmit = async (
-        treatment?: Omit<Treatment, 'id'>,
-    ): Promise<void> => {
-        if (modalState.mode === 'delete') {
-            await handleConfirmDelete();
-            return;
-        }
-        if (modalState.mode === 'edit') {
-            await handleUpdateTreatment(treatment);
-            return;
-        }
-        await handleCreateTreatment(treatment);
+    const eventHandlers = {
+        create: async (event: TreatmentModalEvent & { type: 'create' }) => {
+            if (event.treatment) {
+                await handleCreateTreatment(event.treatment);
+            }
+        },
+        update: async (event: TreatmentModalEvent & { type: 'update' }) => {
+            if (event.treatment && event.treatmentId) {
+                await handleUpdateTreatment(event.treatment, event.treatmentId);
+            }
+        },
+        delete: async (event: TreatmentModalEvent & { type: 'delete' }) => {
+            if (event.treatmentId) {
+                await handleConfirmDelete(event.treatmentId);
+            }
+        },
+        cancel: async () => {},
     };
+
+    async function handleModalEvent(event: TreatmentModalEvent): Promise<void> {
+        const handler = eventHandlers[event.type];
+        await handler(event as never);
+    }
 
     return (
         <>
@@ -277,14 +273,8 @@ export default function TreatmentsPage() {
                 />
             </Box>
             <TreatmentModal
-                isOpen={modalState.isOpen}
-                onClose={() => setModalState({ ...modalState, isOpen: false })}
-                mode={modalState.mode}
-                selectedTreatment={modalState.selectTreatment}
-                onTreatmentCreated={() => {
-                    refetch();
-                }}
-                onSubmit={handleOnSubmit}
+                trigger={modalTrigger || undefined}
+                onEvent={handleModalEvent}
                 isSubmitting={isSubmitting}
             />
             <Toaster />

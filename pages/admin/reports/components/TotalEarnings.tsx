@@ -19,7 +19,6 @@ import {
 import parseTreatmentPrice from '@/utils/priceUtils';
 
 export default function TotalEarnings({
-    statistics,
     dateRange,
     selectedTreatmentId,
     treatments = [],
@@ -32,8 +31,7 @@ export default function TotalEarnings({
         md: true,
         lg: false,
     });
-    const startDate = dateRange?.startDate;
-    const endDate = dateRange?.endDate;
+    const { startDate, endDate } = dateRange || {};
 
     const formatTreatmentName = (name: string) => {
         if (!name) return '';
