@@ -197,7 +197,7 @@ export default function UserForm({
                     loading={isLoading}
                     loadingText='Guardando...'
                 >
-                    Guardar
+                    Crear empleado
                 </Button>
             </Box>
         </form>

@@ -18,6 +18,7 @@ import { CloseButton } from '@/components/ui/close-button';
 import { Toaster, toaster } from '@/components/ui/toaster';
 import UserDetailModal from './components/UserDetailModal';
 import CreateUserModal from './components/CreateUserModal';
+import CreateRoleModal from './components/CreateRoleModal';
 
 export default function Index() {
     const [loading, setLoading] = useState(true);
@@ -27,6 +28,7 @@ export default function Index() {
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [userToDelete, setUserToDelete] = useState<number | null>(null);
     const [openModalCreate, setOpenModalCreate] = useState(false);
+    const [openRoleModal, setOpenRoleModal] = useState(false);
     const { filters, handleFilterChange, handleSortChange } = useFilters({
         name: '',
         sort: '',
@@ -155,22 +157,37 @@ export default function Index() {
                 justifyContent={'space-between'}
                 gap={6}
                 mb={4}
-                flexDirection={isSmallScreen ? 'column' : 'row'}
+                flexDirection={isMediumScreen ? 'column' : 'row'}
             >
                 <Text fontSize='2xl' fontWeight='bold' mb={4}>
                     Empleados
                 </Text>
-
-                <Button
-                    p={2}
-                    fontWeight='bold'
-                    size='lg'
-                    colorPalette='blue'
-                    onClick={() => setOpenModalCreate(true)}
+                <Box
+                    display='flex'
+                    gap={6}
+                    flexDirection={isSmallScreen ? 'column' : 'row'}
                 >
-                    <Plus size={20} />
-                    Crear Empleado
-                </Button>
+                    <Button
+                        p={2}
+                        fontWeight='bold'
+                        size='lg'
+                        colorPalette='gray'
+                        onClick={() => setOpenRoleModal(true)}
+                    >
+                        <Plus size={20} />
+                        Crear Rol
+                    </Button>
+                    <Button
+                        p={2}
+                        fontWeight='bold'
+                        size='lg'
+                        colorPalette='blue'
+                        onClick={() => setOpenModalCreate(true)}
+                    >
+                        <Plus size={20} />
+                        Crear Empleado
+                    </Button>
+                </Box>
             </Box>
 
             <div>
@@ -266,6 +283,12 @@ export default function Index() {
                     </Dialog.Positioner>
                 </Portal>
             </Dialog.Root>
+
+            {/* modal create rol */}
+            <CreateRoleModal
+                isOpen={openRoleModal}
+                onClose={() => setOpenRoleModal(false)}
+            />
             <Toaster />
         </Box>
     );
