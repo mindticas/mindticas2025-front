@@ -1,4 +1,3 @@
-import { toaster } from '@/components/ui/toaster';
 import TreatmentNotification from '../notifications';
 
 export interface TreatmentFormData {

@@ -19,6 +19,7 @@ import {
     Text,
     createListCollection,
 } from '@chakra-ui/react';
+import ErrorMessage from './ErrorMessage';
 
 export default function TreatmentMenu() {
     const { treatment, setTreatment } = useBookingContext();
@@ -61,7 +62,7 @@ export default function TreatmentMenu() {
 
     return (
         <>
-            <div>{error && <p style={{ color: 'red' }}>{error}</p>}</div>
+            {error && <ErrorMessage message={error} />}
             <SelectRoot
                 onValueChange={(e) => handleTreatmentSelect(e.value.toString())}
                 size='lg'

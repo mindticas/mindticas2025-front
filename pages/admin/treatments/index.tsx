@@ -204,12 +204,11 @@ export default function TreatmentsPage() {
     }
 
     function handleAddTreatment() {
-        if (treatments) {
-            setModalState({
-                isOpen: true,
-                mode: 'create',
-            });
-        }
+        if (!treatments) return;
+        setModalState({
+            isOpen: true,
+            mode: 'create',
+        });
     }
     function handleDeleteTreatment(treatment: Treatment) {
         setModalState({
@@ -218,6 +217,20 @@ export default function TreatmentsPage() {
             selectTreatment: treatment,
         });
     }
+
+    const handleOnSubmit = async (
+        treatment?: Omit<Treatment, 'id'>,
+    ): Promise<void> => {
+        if (modalState.mode === 'delete') {
+            await handleConfirmDelete();
+            return;
+        }
+        if (modalState.mode === 'edit') {
+            await handleUpdateTreatment(treatment);
+            return;
+        }
+        await handleCreateTreatment(treatment);
+    };
 
     return (
         <>
@@ -271,13 +284,7 @@ export default function TreatmentsPage() {
                 onTreatmentCreated={() => {
                     refetch();
                 }}
-                onSubmit={
-                    modalState.mode === 'delete'
-                        ? handleConfirmDelete
-                        : modalState.mode === 'edit'
-                        ? handleUpdateTreatment
-                        : handleCreateTreatment
-                }
+                onSubmit={handleOnSubmit}
                 isSubmitting={isSubmitting}
             />
             <Toaster />

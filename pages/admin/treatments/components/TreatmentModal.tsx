@@ -1,18 +1,15 @@
-import ErrorMessage from '@/components/ErrorMessage';
 import { Treatment } from '@/interfaces/treatment/Treatment';
 import { validateTreatmentFields } from '@/utils/treatments/treatmentValidation';
 import {
-    Box,
     Button,
     CloseButton,
     Dialog,
     DialogPositioner,
-    Field,
-    Input,
     Portal,
     Text,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import TreatmentForm from './TreatmentForm';
 
 interface TreatmentModalProps {
     isOpen: boolean;
@@ -23,6 +20,13 @@ interface TreatmentModalProps {
     onSubmit: (treatmentData?: Omit<Treatment, 'id'>) => Promise<void>;
     isSubmitting: boolean;
 }
+
+const MODE_TITLES = {
+    create: 'Nuevo tratamiento',
+    edit: 'Editar tratamiento',
+    delete: 'Eliminar tratamiento',
+    cancel: 'Tratamiento',
+};
 
 export default function TreatmentModal({
     isOpen,
@@ -91,19 +95,6 @@ export default function TreatmentModal({
         }
     };
 
-    const getTitle = () => {
-        switch (mode) {
-            case 'create':
-                return 'Nuevo tratamiento';
-            case 'edit':
-                return 'Editar tratamiento';
-            case 'delete':
-                return 'Eliminar tratamiento';
-            default:
-                return 'Tratamiento';
-        }
-    };
-
     return (
         <Dialog.Root
             open={isOpen}
@@ -120,7 +111,9 @@ export default function TreatmentModal({
                             justifyContent='space-between'
                             alignContent='center'
                         >
-                            <Dialog.Title>{getTitle()}</Dialog.Title>
+                            <Dialog.Title>
+                                {MODE_TITLES[mode] ?? 'Tratamiento'}
+                            </Dialog.Title>
                             <Dialog.CloseTrigger asChild>
                                 <CloseButton color='black' size='sm' />
                             </Dialog.CloseTrigger>
@@ -128,82 +121,11 @@ export default function TreatmentModal({
 
                         <Dialog.Body>
                             {mode === 'create' || mode === 'edit' ? (
-                                <form>
-                                    <Box mb={4}>
-                                        <Field.Root>
-                                            <Field.Label fontWeight='semibold'>
-                                                Nombre
-                                            </Field.Label>
-                                            <Input
-                                                p={2}
-                                                name='name'
-                                                placeholder='Nombre del tratamiento'
-                                                value={formData.name}
-                                                onChange={handleInputChange}
-                                                required
-                                            />
-                                            <ErrorMessage
-                                                message={errors.name}
-                                            />
-                                        </Field.Root>
-                                    </Box>
-                                    <Box mb={4}>
-                                        <Field.Root>
-                                            <Field.Label fontWeight='semibold'>
-                                                Descripción
-                                            </Field.Label>
-                                            <Input
-                                                p={2}
-                                                name='description'
-                                                placeholder='Descripción'
-                                                value={formData.description}
-                                                onChange={handleInputChange}
-                                                required
-                                            />
-                                            <ErrorMessage
-                                                message={errors.description}
-                                            />
-                                        </Field.Root>
-                                    </Box>
-                                    <Box mb={4}>
-                                        <Field.Root>
-                                            <Field.Label fontWeight='semibold'>
-                                                Precio
-                                            </Field.Label>
-                                            <Input
-                                                type='number'
-                                                p={2}
-                                                name='price'
-                                                placeholder='Precio'
-                                                value={formData.price}
-                                                onChange={handleInputChange}
-                                                required
-                                            />
-                                            <ErrorMessage
-                                                message={errors.price}
-                                            />
-                                        </Field.Root>
-                                    </Box>
-                                    <Box mb={4}>
-                                        <Field.Root>
-                                            <Field.Label fontWeight='semibold'>
-                                                Duración
-                                            </Field.Label>
-                                            <Input
-                                                type='number'
-                                                p={2}
-                                                name='duration'
-                                                placeholder='Duración'
-                                                value={formData.duration}
-                                                onChange={handleInputChange}
-                                                required
-                                            />
-                                            <ErrorMessage
-                                                message={errors.duration}
-                                            />
-                                        </Field.Root>
-                                    </Box>
-                                </form>
+                                <TreatmentForm
+                                    formData={formData}
+                                    errors={errors}
+                                    onInputChange={handleInputChange}
+                                />
                             ) : mode === 'delete' ? (
                                 <Text>
                                     ¿Estás seguro que deseas eliminar el

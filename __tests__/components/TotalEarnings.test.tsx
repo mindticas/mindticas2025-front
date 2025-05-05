@@ -74,7 +74,7 @@ describe('TotalEarnings Component', () => {
     });
 
     it('shows loading state when appointments are loading', async () => {
-        // Simular una carga más lenta
+        // Simulate slower load
         (getAppointments as jest.Mock).mockImplementation(
             () => new Promise((resolve) => setTimeout(() => resolve([]), 100)),
         );

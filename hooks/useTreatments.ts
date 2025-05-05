@@ -7,10 +7,10 @@ export const useTreatments = (sort?: string) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchTreatments = useCallback(async () => {
+    const fetchTreatments = useCallback(async (currentSort?: string) => {
         setLoading(true);
         try {
-            const data = await getTreatments(sort);
+            const data = await getTreatments(currentSort);
             setTreatments(data);
             setError(null);
         } catch (error) {
@@ -20,10 +20,10 @@ export const useTreatments = (sort?: string) => {
         } finally {
             setLoading(false);
         }
-    }, [sort]);
+    }, []);
 
     useEffect(() => {
-        fetchTreatments();
-    }, [fetchTreatments]);
-    return { treatments, loading, error, refetch: fetchTreatments };
+        fetchTreatments(sort);
+    }, [sort, fetchTreatments]);
+    return { treatments, loading, error, refetch: () => fetchTreatments(sort) };
 };
