@@ -1,6 +1,6 @@
 import { Treatment } from '@/interfaces/treatment/Treatment';
-import { validateTreatmentFields } from '@/utils/treatments/treatmentValidation';
 import {
+    Box,
     Button,
     CloseButton,
     Dialog,
@@ -46,14 +46,6 @@ export default function TreatmentModal({
         Treatment | undefined
     >();
 
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        price: 0,
-        duration: 0,
-    });
-    const [errors, setErrors] = useState<Record<string, string>>({});
-
     // Update internal state when props change
     useEffect(() => {
         if (!trigger) return;
@@ -66,61 +58,27 @@ export default function TreatmentModal({
         }
     }, [trigger]);
 
-    useEffect(() => {
-        if (isOpen) {
-            setErrors({});
-        }
-        if (isOpen && mode === 'edit' && selectedTreatment) {
-            setFormData({
-                name: selectedTreatment.name,
-                description: selectedTreatment.description,
-                price: selectedTreatment.price,
-                duration: selectedTreatment.duration,
-            });
-            return;
-        }
+    const handleFormSubmit = async (formData: Omit<Treatment, 'id'>) => {
         if (mode === 'create') {
-            setFormData({
-                name: '',
-                description: '',
-                price: 0,
-                duration: 0,
+            await onEvent({ type: 'create', treatment: formData });
+        } else if (mode === 'edit' && selectedTreatment) {
+            await onEvent({
+                type: 'update',
+                treatment: formData,
+                treatmentId: selectedTreatment.id,
             });
         }
-    }, [isOpen, mode, selectedTreatment]);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, type } = e.target;
-        // clean errors
-        setErrors((prevErrors) => {
-            const newErrors = { ...prevErrors };
-            delete newErrors[name];
-            return newErrors;
-        });
-        setFormData({
-            ...formData,
-            [name]: type === 'number' ? Number(value) : value,
-        });
+        if (!isSubmitting) {
+            setIsOpen(false);
+        }
+    };
+    const handleClose = () => {
+        setIsOpen(false);
+        onEvent({ type: 'cancel' });
     };
 
-    const handleSubmit = async () => {
-        if (mode === 'create' || mode === 'edit') {
-            // Field validation
-            const fieldErrors = validateTreatmentFields(formData);
-            if (Object.keys(fieldErrors).length > 0) {
-                setErrors(fieldErrors);
-                return;
-            }
-            if (mode === 'create') {
-                await onEvent({ type: 'create', treatment: formData });
-            } else if (mode === 'edit' && selectedTreatment) {
-                await onEvent({
-                    type: 'update',
-                    treatment: formData,
-                    treatmentId: selectedTreatment.id,
-                });
-            }
-        } else if (mode === 'delete' && selectedTreatment) {
+    const handleDelete = async () => {
+        if (mode === 'delete' && selectedTreatment) {
             await onEvent({
                 type: 'delete',
                 treatmentId: selectedTreatment.id,
@@ -130,11 +88,12 @@ export default function TreatmentModal({
             setIsOpen(false);
         }
     };
-
-    const handleClose = () => {
-        setIsOpen(false);
-        setErrors({});
-        onEvent({ type: 'cancel' });
+    const getFormInitialData = (
+        treatment?: Treatment,
+    ): Omit<Treatment, 'id'> | undefined => {
+        if (!treatment) return undefined;
+        const { id, ...rest } = treatment;
+        return rest;
     };
 
     return (
@@ -164,47 +123,50 @@ export default function TreatmentModal({
                         <Dialog.Body>
                             {mode === 'create' || mode === 'edit' ? (
                                 <TreatmentForm
-                                    formData={formData}
-                                    errors={errors}
-                                    onInputChange={handleInputChange}
+                                    initialData={getFormInitialData(
+                                        selectedTreatment,
+                                    )}
+                                    onSubmit={handleFormSubmit}
+                                    isSubmitting={isSubmitting}
+                                    onCancel={handleClose}
+                                    mode={mode}
                                 />
                             ) : mode === 'delete' ? (
-                                <Text>
-                                    ¿Estás seguro que deseas eliminar el
-                                    tratamiento "{selectedTreatment?.name}" Esta
-                                    acción no se puede deshacer.
-                                </Text>
+                                <>
+                                    <Text>
+                                        ¿Estás seguro que deseas eliminar el
+                                        tratamiento "{selectedTreatment?.name}"
+                                        Esta acción no se puede deshacer.
+                                    </Text>
+                                    <Box
+                                        display='flex'
+                                        justifyContent='flex-end'
+                                        gap={3}
+                                    >
+                                        <Button
+                                            backgroundColor='gray.200'
+                                            p={3}
+                                            color='black'
+                                            onClick={handleClose}
+                                            disabled={isSubmitting}
+                                        >
+                                            Cancelar
+                                        </Button>
+                                        <Button
+                                            backgroundColor='red'
+                                            p={3}
+                                            color='white'
+                                            onClick={handleDelete}
+                                            loading={isSubmitting}
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    </Box>
+                                </>
                             ) : (
                                 <></>
                             )}
                         </Dialog.Body>
-                        <Dialog.Footer p={4}>
-                            <Button
-                                backgroundColor={
-                                    mode === 'delete' ? 'black' : 'red'
-                                }
-                                p={3}
-                                color='white'
-                                onClick={handleClose}
-                            >
-                                {mode === 'delete' ? 'Cancelar' : 'Cancelar'}
-                            </Button>
-                            <Button
-                                backgroundColor={
-                                    mode === 'delete' ? 'red' : '#1C4ED8'
-                                }
-                                p={3}
-                                color='white'
-                                onClick={handleSubmit}
-                                loading={isSubmitting}
-                            >
-                                {mode === 'create'
-                                    ? 'Crear'
-                                    : mode === 'edit'
-                                    ? 'Actualizar'
-                                    : 'Eliminar'}
-                            </Button>
-                        </Dialog.Footer>
                     </Dialog.Content>
                 </DialogPositioner>
             </Portal>

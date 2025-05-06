@@ -1,25 +1,74 @@
 import ErrorMessage from '@/components/ErrorMessage';
-import { Box, Field, Input } from '@chakra-ui/react';
-import React, { ChangeEvent } from 'react';
+import { Treatment } from '@/interfaces/treatment/Treatment';
+import { validateTreatmentFields } from '@/utils/treatments/treatmentValidation';
+import { Box, Button, Field, Input } from '@chakra-ui/react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 interface TreatmentFormProps {
-    formData: {
-        name: string;
-        description: string;
-        price: number;
-        duration: number;
-    };
-    errors: Record<string, string>;
-    onInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    initialData?: Omit<Treatment, 'id'>;
+    onSubmit: (data: Omit<Treatment, 'id'>) => Promise<void>;
+    isSubmitting: boolean;
+    onCancel: () => void;
+    mode: 'create' | 'edit';
 }
 
 export default function TreatmentForm({
-    formData,
-    errors,
-    onInputChange,
+    initialData,
+    onSubmit,
+    isSubmitting,
+    onCancel,
+    mode,
 }: TreatmentFormProps) {
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        price: 0,
+        duration: 0,
+    });
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
+    // Initialize form with initial data
+    useEffect(() => {
+        if (initialData) {
+            setFormData(initialData);
+        } else {
+            setFormData({
+                name: '',
+                description: '',
+                price: 0,
+                duration: 0,
+            });
+        }
+    }, [initialData]);
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value, type } = e.target;
+        // clean errors
+        setErrors((prevErrors) => {
+            const newErrors = { ...prevErrors };
+            delete newErrors[name];
+            return newErrors;
+        });
+        setFormData({
+            ...formData,
+            [name]: type === 'number' ? Number(value) : value,
+        });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        // Field validation
+        const fieldErrors = validateTreatmentFields(formData);
+        if (Object.keys(fieldErrors).length > 0) {
+            setErrors(fieldErrors);
+            return;
+        }
+
+        await onSubmit(formData);
+    };
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <Box mb={4}>
                 <Field.Root>
                     <Field.Label fontWeight='semibold'>Nombre</Field.Label>
@@ -28,8 +77,7 @@ export default function TreatmentForm({
                         name='name'
                         placeholder='Nombre del tratamiento'
                         value={formData.name}
-                        onChange={onInputChange}
-                        required
+                        onChange={handleInputChange}
                     />
                     <ErrorMessage message={errors.name} />
                 </Field.Root>
@@ -42,8 +90,7 @@ export default function TreatmentForm({
                         name='description'
                         placeholder='Descripción'
                         value={formData.description}
-                        onChange={onInputChange}
-                        required
+                        onChange={handleInputChange}
                     />
                     <ErrorMessage message={errors.description} />
                 </Field.Root>
@@ -57,8 +104,7 @@ export default function TreatmentForm({
                         name='price'
                         placeholder='Precio'
                         value={formData.price}
-                        onChange={onInputChange}
-                        required
+                        onChange={handleInputChange}
                     />
                     <ErrorMessage message={errors.price} />
                 </Field.Root>
@@ -72,11 +118,30 @@ export default function TreatmentForm({
                         name='duration'
                         placeholder='Duración'
                         value={formData.duration}
-                        onChange={onInputChange}
-                        required
+                        onChange={handleInputChange}
                     />
                     <ErrorMessage message={errors.duration} />
                 </Field.Root>
+            </Box>
+            <Box display='flex' justifyContent='flex-end' gap={3} mt={6}>
+                <Button
+                    backgroundColor='gray.200'
+                    p={3}
+                    color='black'
+                    onClick={onCancel}
+                    disabled={isSubmitting}
+                >
+                    Cancelar
+                </Button>
+                <Button
+                    backgroundColor='#1C4ED8'
+                    p={3}
+                    color='white'
+                    type='submit'
+                    loading={isSubmitting}
+                >
+                    {mode === 'create' ? 'Crear' : 'Actualizar'}
+                </Button>
             </Box>
         </form>
     );
