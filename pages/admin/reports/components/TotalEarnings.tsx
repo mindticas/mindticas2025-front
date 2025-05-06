@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from 'react';
 import { getAppointments } from '@/services/AppointmentService';
 import { Appointment } from '@/interfaces/appointment/Appointment';
-import { splitDateTimeFromISO } from '@/utils/dateUtils';
+import { isDateInRange } from '@/utils/dateUtils';
 import {
     TotalEarningsProps,
     TreatmentStats,
@@ -19,10 +19,9 @@ import {
 import parseTreatmentPrice from '@/utils/priceUtils';
 
 export default function TotalEarnings({
-    statistics,
     dateRange,
     selectedTreatmentId,
-    treatments,
+    treatments = [],
 }: TotalEarningsProps) {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [filteredStats, setFilteredStats] = useState<TreatmentStats[]>([]);
@@ -32,6 +31,7 @@ export default function TotalEarnings({
         md: true,
         lg: false,
     });
+    const { startDate, endDate } = dateRange || {};
 
     const formatTreatmentName = (name: string) => {
         if (!name) return '';
@@ -61,30 +61,18 @@ export default function TotalEarnings({
         return () => {
             isMounted = false;
         };
-    }, [statistics]);
-
-    useEffect(() => {
-        if (!dateRange?.startDate || !dateRange.endDate) {
-            setFilteredStats([]);
-            return;
-        }
-    }, [dateRange?.startDate, dateRange?.endDate]);
+    }, []);
 
     useEffect(() => {
         if (
             !appointments.length ||
             !treatments.length ||
-            !dateRange?.startDate ||
-            !dateRange.endDate
+            !startDate ||
+            !endDate
         ) {
             setFilteredStats([]);
             return;
         }
-        // Selected date range
-        const { date: startISO } = splitDateTimeFromISO(
-            dateRange?.startDate || '',
-        );
-        const { date: endISO } = splitDateTimeFromISO(dateRange?.endDate || '');
 
         // Initialize map to count all treatments
         const statsMap = treatments.reduce(
@@ -103,12 +91,15 @@ export default function TotalEarnings({
         appointments.forEach((appointment) => {
             if (appointment.status !== 'completed') return;
 
-            const { date: appDate } = splitDateTimeFromISO(
+            // the isDateInRange helper function is used to check only the date
+            // without considering the time or time zones.
+            const isInRange = isDateInRange(
                 appointment.scheduled_start,
+                startDate,
+                endDate,
             );
 
-            // Filtered by dates
-            if (dateRange && (appDate < startISO || appDate > endISO)) return;
+            if (!isInRange) return;
 
             // Unique treatments are counted per appointment
             const uniqueTreatments = new Map<string, number>();
@@ -126,8 +117,10 @@ export default function TotalEarnings({
             uniqueTreatments.forEach((price, id) => {
                 // If there is a treatment selected, only count that one
                 if (!selectedTreatmentId || id === selectedTreatmentId) {
-                    statsMap[id].count += 1;
-                    statsMap[id].totalEarnings += price;
+                    if (statsMap[id]) {
+                        statsMap[id].count += 1;
+                        statsMap[id].totalEarnings += price;
+                    }
                 }
             });
         });
@@ -136,9 +129,9 @@ export default function TotalEarnings({
         // Filter according to the selected treatment
         result = result.filter((stat) => stat.count > 0);
         setFilteredStats(result);
-    }, [appointments, treatments, dateRange, selectedTreatmentId]);
+    }, [appointments, treatments, startDate, endDate, selectedTreatmentId]);
 
-    if (!dateRange?.startDate) {
+    if (!startDate) {
         return (
             <Box
                 mx={isMobile ? '2' : '4'}
@@ -170,7 +163,7 @@ export default function TotalEarnings({
             </Text>
             {filteredStats.length === 0 ? (
                 <Text textAlign='center' color='gray.500' py={10}>
-                    {!dateRange.startDate || !dateRange.endDate
+                    {startDate || endDate
                         ? 'No hay datos para mostrar en el período seleccionado'
                         : appointments.length === 0
                         ? 'Cargando datos...'

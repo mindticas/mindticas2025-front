@@ -8,7 +8,7 @@ export interface TotalEarningsProps {
         endDate: string;
     };
     selectedTreatmentId?: string;
-    treatments: Treatment[]
+    treatments?: Treatment[];
 }
 export interface TreatmentStats {
     name: string;

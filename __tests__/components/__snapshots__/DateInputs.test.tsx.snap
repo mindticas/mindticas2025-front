@@ -8,137 +8,175 @@ exports[`DateInputs component matches snapshot with default state 1`] = `
     ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
   </script>
   <div
-    class="css-fcx4l6"
+    class="css-13xxlns"
   >
-    <p
-      class="css-1bzswz8"
-    >
-      Reportes
-    </p>
     <div
-      class="css-39rk59"
+      class="css-psxw11"
     >
-      <div
-        class="css-0"
+      <p
+        class="css-1bzswz8"
       >
-        <p
-          class="css-1hrrvn"
-        >
-          Fecha inicial
-        </p>
-        <input
-          class="chakra-input css-oyzv26"
-          name="startDate"
-          type="date"
-          value=""
-        />
-      </div>
+        Reportes
+      </p>
       <div
-        class="css-0"
-      >
-        <p
-          class="css-1hrrvn"
-        >
-          Fecha final
-        </p>
-        <input
-          class="chakra-input css-oyzv26"
-          name="endDate"
-          type="date"
-          value=""
-        />
-      </div>
-      <div
-        class="css-0"
+        class="css-39rk59"
       >
         <div
-          class="chakra-select__root css-3jlqt6"
-          data-part="root"
-          data-scope="select"
-          dir="ltr"
-          id="select::r0:"
+          class="css-0"
         >
-          <select
-            aria-hidden="true"
-            aria-labelledby="select::r0::label"
-            id="select::r0::select"
-            name="treatment"
-            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
-            tabindex="-1"
+          <p
+            class="css-1hrrvn"
+          >
+            Fecha inicial
+          </p>
+          <input
+            class="chakra-input css-oyzv26"
+            name="startDate"
+            type="date"
+            value=""
           />
-          <label
-            class="chakra-select__label css-p3rj3s"
-            data-part="label"
-            data-scope="select"
-            dir="ltr"
-            for="select::r0::select"
-            id="select::r0::label"
+        </div>
+        <div
+          class="css-0"
+        >
+          <p
+            class="css-1hrrvn"
           >
-            <p
-              class="css-1mv89is"
-            >
-              Selecciona un servicio
-            </p>
-          </label>
+            Fecha final
+          </p>
+          <input
+            class="chakra-input css-oyzv26"
+            name="endDate"
+            type="date"
+            value=""
+          />
+        </div>
+        <div
+          class="css-0"
+        >
           <div
-            class="chakra-select__control css-cmjsi3"
-            data-part="control"
+            class="chakra-select__root css-3jlqt6"
+            data-part="root"
             data-scope="select"
-            data-state="closed"
             dir="ltr"
-            id="select::r0::control"
+            id="select::r0:"
           >
-            <button
-              aria-controls="select::r0::content"
-              aria-expanded="false"
-              aria-haspopup="listbox"
+            <select
+              aria-hidden="true"
               aria-labelledby="select::r0::label"
-              class="chakra-select__trigger css-12uc8un"
-              data-part="trigger"
+              id="select::r0::select"
+              name="treatment"
+              style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
+              tabindex="-1"
+            />
+            <label
+              class="chakra-select__label css-p3rj3s"
+              data-part="label"
+              data-scope="select"
+              dir="ltr"
+              for="select::r0::select"
+              id="select::r0::label"
+            >
+              <p
+                class="css-1mv89is"
+              >
+                Selecciona un servicio
+              </p>
+            </label>
+            <div
+              class="chakra-select__control css-cmjsi3"
+              data-part="control"
               data-scope="select"
               data-state="closed"
               dir="ltr"
-              id="select::r0::trigger"
-              role="combobox"
-              type="button"
+              id="select::r0::control"
             >
-              Seleccionar servicio
-              <span
-                class="chakra-select__valueText css-176t9sc"
-                data-part="value-text"
-                data-scope="select"
-                dir="ltr"
-              />
-            </button>
-            <div
-              class="chakra-select__indicatorGroup css-1xvjckd"
-            >
-              <div
-                aria-hidden="true"
-                class="chakra-select__indicator css-1atg1ut"
-                data-part="indicator"
+              <button
+                aria-controls="select::r0::content"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-labelledby="select::r0::label"
+                class="chakra-select__trigger css-12uc8un"
+                data-part="trigger"
                 data-scope="select"
                 data-state="closed"
                 dir="ltr"
+                id="select::r0::trigger"
+                role="combobox"
+                type="button"
               >
-                <svg
-                  class="css-s3mb0o"
-                  viewBox="0 0 24 24"
+                Seleccionar servicio
+                <span
+                  class="chakra-select__valueText css-176t9sc"
+                  data-part="value-text"
+                  data-scope="select"
+                  dir="ltr"
+                />
+              </button>
+              <div
+                class="chakra-select__indicatorGroup css-1xvjckd"
+              >
+                <div
+                  aria-hidden="true"
+                  class="chakra-select__indicator css-1atg1ut"
+                  data-part="indicator"
+                  data-scope="select"
+                  data-state="closed"
+                  dir="ltr"
                 >
-                  <path
-                    d="m6 9 6 6 6-6"
-                  />
-                </svg>
+                  <svg
+                    class="css-s3mb0o"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div
+          class="css-158vdcs"
+        >
+          <p
+            class="css-0"
+          >
+            Descargar excel
+          </p>
+          <svg
+            class="lucide lucide-download"
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+            />
+            <polyline
+              points="7 10 12 15 17 10"
+            />
+            <line
+              x1="12"
+              x2="12"
+              y1="15"
+              y2="3"
+            />
+          </svg>
+        </div>
       </div>
     </div>
+    <div
+      class="css-18utin8"
+    />
   </div>
-  <div
-    class="css-18utin8"
-  />
 </DocumentFragment>
 `;
 
@@ -150,136 +188,174 @@ exports[`DateInputs component matches snapshot with error 1`] = `
     ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
   </script>
   <div
-    class="css-fcx4l6"
+    class="css-13xxlns"
   >
-    <p
-      class="css-1bzswz8"
-    >
-      Reportes
-    </p>
     <div
-      class="css-39rk59"
+      class="css-psxw11"
     >
-      <div
-        class="css-0"
+      <p
+        class="css-1bzswz8"
       >
-        <p
-          class="css-1hrrvn"
-        >
-          Fecha inicial
-        </p>
-        <input
-          class="chakra-input css-oyzv26"
-          name="startDate"
-          type="date"
-          value=""
-        />
-      </div>
+        Reportes
+      </p>
       <div
-        class="css-0"
-      >
-        <p
-          class="css-1hrrvn"
-        >
-          Fecha final
-        </p>
-        <input
-          class="chakra-input css-oyzv26"
-          name="endDate"
-          type="date"
-          value=""
-        />
-      </div>
-      <div
-        class="css-0"
+        class="css-39rk59"
       >
         <div
-          class="chakra-select__root css-3jlqt6"
-          data-part="root"
-          data-scope="select"
-          dir="ltr"
-          id="select::r1:"
+          class="css-0"
         >
-          <select
-            aria-hidden="true"
-            aria-labelledby="select::r1::label"
-            id="select::r1::select"
-            name="treatment"
-            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
-            tabindex="-1"
+          <p
+            class="css-1hrrvn"
+          >
+            Fecha inicial
+          </p>
+          <input
+            class="chakra-input css-oyzv26"
+            name="startDate"
+            type="date"
+            value=""
           />
-          <label
-            class="chakra-select__label css-p3rj3s"
-            data-part="label"
-            data-scope="select"
-            dir="ltr"
-            for="select::r1::select"
-            id="select::r1::label"
+        </div>
+        <div
+          class="css-0"
+        >
+          <p
+            class="css-1hrrvn"
           >
-            <p
-              class="css-1mv89is"
-            >
-              Selecciona un servicio
-            </p>
-          </label>
+            Fecha final
+          </p>
+          <input
+            class="chakra-input css-oyzv26"
+            name="endDate"
+            type="date"
+            value=""
+          />
+        </div>
+        <div
+          class="css-0"
+        >
           <div
-            class="chakra-select__control css-cmjsi3"
-            data-part="control"
+            class="chakra-select__root css-3jlqt6"
+            data-part="root"
             data-scope="select"
-            data-state="closed"
             dir="ltr"
-            id="select::r1::control"
+            id="select::r1:"
           >
-            <button
-              aria-controls="select::r1::content"
-              aria-expanded="false"
-              aria-haspopup="listbox"
+            <select
+              aria-hidden="true"
               aria-labelledby="select::r1::label"
-              class="chakra-select__trigger css-12uc8un"
-              data-part="trigger"
+              id="select::r1::select"
+              name="treatment"
+              style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; word-wrap: normal;"
+              tabindex="-1"
+            />
+            <label
+              class="chakra-select__label css-p3rj3s"
+              data-part="label"
+              data-scope="select"
+              dir="ltr"
+              for="select::r1::select"
+              id="select::r1::label"
+            >
+              <p
+                class="css-1mv89is"
+              >
+                Selecciona un servicio
+              </p>
+            </label>
+            <div
+              class="chakra-select__control css-cmjsi3"
+              data-part="control"
               data-scope="select"
               data-state="closed"
               dir="ltr"
-              id="select::r1::trigger"
-              role="combobox"
-              type="button"
+              id="select::r1::control"
             >
-              Seleccionar servicio
-              <span
-                class="chakra-select__valueText css-176t9sc"
-                data-part="value-text"
-                data-scope="select"
-                dir="ltr"
-              />
-            </button>
-            <div
-              class="chakra-select__indicatorGroup css-1xvjckd"
-            >
-              <div
-                aria-hidden="true"
-                class="chakra-select__indicator css-1atg1ut"
-                data-part="indicator"
+              <button
+                aria-controls="select::r1::content"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-labelledby="select::r1::label"
+                class="chakra-select__trigger css-12uc8un"
+                data-part="trigger"
                 data-scope="select"
                 data-state="closed"
                 dir="ltr"
+                id="select::r1::trigger"
+                role="combobox"
+                type="button"
               >
-                <svg
-                  class="css-s3mb0o"
-                  viewBox="0 0 24 24"
+                Seleccionar servicio
+                <span
+                  class="chakra-select__valueText css-176t9sc"
+                  data-part="value-text"
+                  data-scope="select"
+                  dir="ltr"
+                />
+              </button>
+              <div
+                class="chakra-select__indicatorGroup css-1xvjckd"
+              >
+                <div
+                  aria-hidden="true"
+                  class="chakra-select__indicator css-1atg1ut"
+                  data-part="indicator"
+                  data-scope="select"
+                  data-state="closed"
+                  dir="ltr"
                 >
-                  <path
-                    d="m6 9 6 6 6-6"
-                  />
-                </svg>
+                  <svg
+                    class="css-s3mb0o"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div
+          class="css-158vdcs"
+        >
+          <p
+            class="css-0"
+          >
+            Descargar excel
+          </p>
+          <svg
+            class="lucide lucide-download"
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+            />
+            <polyline
+              points="7 10 12 15 17 10"
+            />
+            <line
+              x1="12"
+              x2="12"
+              y1="15"
+              y2="3"
+            />
+          </svg>
+        </div>
       </div>
     </div>
+    <div
+      class="css-18utin8"
+    />
   </div>
-  <div
-    class="css-18utin8"
-  />
 </DocumentFragment>
 `;

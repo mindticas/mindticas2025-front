@@ -7,6 +7,7 @@ const token = Cookies.get('AUTH_TOKEN');
 
 export const getStatistics = async (
     params: StatisticsData,
+    options?: { exportExcel: boolean} // optional to export 
 ): Promise<StatisticsDataResponse> => {
     try {
         // Get token
@@ -29,6 +30,7 @@ export const getStatistics = async (
         if (!response.ok) {
             throw new Error('Error al obtener las estadísticas');
         }
+
         const data = await response.json();
         return data;
     } catch (error) {
