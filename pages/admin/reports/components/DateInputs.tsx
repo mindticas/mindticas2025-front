@@ -22,7 +22,6 @@ import {
     SelectItemIndicator,
     useBreakpointValue,
 } from '@chakra-ui/react';
-
 import { createListCollection } from '@chakra-ui/react';
 import { SelectLabel, SelectContent, SelectItem } from '@chakra-ui/react';
 import { Download } from 'lucide-react';
@@ -53,7 +52,6 @@ export default function DateInputs({
     const [selectTreatment, setSelectTreatment] = useState('');
     const [statisticsLoading, setStatisticsLoading] = useState(false);
     const [statisticsError, setStatisticsError] = useState<string | null>(null);
-
     const isMobile = useBreakpointValue({
         base: true,
         sm: true,
@@ -147,15 +145,13 @@ export default function DateInputs({
     };
 
     return (
-        <>
+        <Box px={{ base: 4, sm: 6, md: 8, lg: 10 }} py={6}>
             <Flex
-                mx={['4', '8', '12', '14']}
-                p='4'
                 mt='10'
-                gap={['4', '6', '0', '0']}
+                gap={{ base: '4', md: '0' }}
                 justifyContent='space-between'
-                direction={['column', 'colum', 'row', 'row']}
-                alignItems='center'
+                direction={{ base: 'column', md: 'row' }}
+                align={{ base: 'flex-start', md: 'center' }}
             >
                 <Text fontSize='3xl' fontWeight='bold'>
                     Reportes
@@ -309,6 +305,6 @@ export default function DateInputs({
                     </Text>
                 )}
             </Box>
-        </>
+        </Box>
     );
 }

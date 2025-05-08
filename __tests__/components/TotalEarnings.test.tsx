@@ -1,6 +1,13 @@
+import TotalEarnings from '@/pages/admin/reports/components/TotalEarnings';
+import { getAppointments } from '@/services/AppointmentService';
 import { render } from '@/utils/render-test';
+import { screen, waitFor } from '@testing-library/dom';
 
-// Primero definimos todos los datos mock que serán usados
+// Full module mockup
+jest.mock('@/services/AppointmentService', () => ({
+    getAppointments: jest.fn(),
+}));
+// First we define all the mock data that will be used
 const MOCK_DATA = {
     statistics: {
         totalEarnings: 300,
@@ -29,42 +36,55 @@ const MOCK_DATA = {
         { id: '2', name: 'Tinte', price: '200' },
     ],
 };
-
-// Mock de servicios usando una función factory
-jest.mock('@/services/AppointmentService', () => ({
-    getAppointments: jest.fn(() => Promise.resolve(MOCK_DATA.appointments)),
-}));
-
-// Mock de hooks
-jest.mock('@/hooks/useTreatments', () => ({
-    useTreatments: () => ({
-        treatments: MOCK_DATA.treatments,
-        error: null,
-    }),
-}));
-
+// Configure the mock with default values
 beforeEach(() => {
     jest.clearAllMocks();
+    (getAppointments as jest.Mock).mockResolvedValue(MOCK_DATA.appointments);
 });
 
 describe('TotalEarnings Component', () => {
     it('renders correctly with statistics and date range', async () => {
-        const { asFragment, findByText } = render(
+        const { asFragment } = render(
             <TotalEarnings
                 statistics={MOCK_DATA.statistics}
                 dateRange={MOCK_DATA.dateRange}
+                treatments={[]}
             />,
         );
+        // Wait for the component to fully render
+        await waitFor(() => {
+            expect(
+                screen.getByText(/ganancias por tratamiento/i),
+            ).toBeInTheDocument();
+        });
 
-        await findByText(/ganancias por tratamiento/i);
         expect(asFragment()).toMatchSnapshot();
     });
 
     it('renders message when no dateRange is provided', () => {
         const { getByText } = render(
-            <TotalEarnings statistics={undefined} dateRange={undefined} />,
+            <TotalEarnings
+                statistics={undefined}
+                dateRange={undefined}
+                treatments={[]}
+            />,
         );
 
         expect(getByText(/selecciona un rango de fechas/i)).toBeInTheDocument();
+    });
+
+    it('shows loading state when appointments are loading', async () => {
+        // Simulate slower load
+        (getAppointments as jest.Mock).mockImplementation(
+            () => new Promise((resolve) => setTimeout(() => resolve([]), 100)),
+        );
+
+        const { getByText } = render(
+            <TotalEarnings dateRange={MOCK_DATA.dateRange} treatments={[]} />,
+        );
+
+        expect(
+            getByText(/No hay datos para mostrar en el período seleccionado/i),
+        ).toBeInTheDocument();
     });
 });
