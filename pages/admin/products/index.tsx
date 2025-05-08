@@ -2,10 +2,21 @@ import { Product } from '@/interfaces/product/Product';
 import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import AdminTable from '../AdminTable';
-import { Eye, Plus, Trash } from 'lucide-react';
+import { FilePenLine, Plus, Trash } from 'lucide-react';
 import { useFilters } from '@/hooks/useFilters';
-import { getProducts } from '@/services/ProductService';
+import {
+    createProduct,
+    deleteProduct,
+    getProducts,
+    updateProduct,
+} from '@/services/ProductService';
 import { Tooltip } from '@/components/ui/tooltip';
+import { SearchFilters } from '@/components/SearchFilters';
+import { DeleteProductModal } from './components/DeleteProductModal';
+import { toaster, Toaster } from '@/components/ui/toaster';
+import { CreateEditProductModal } from './components/CreateEditProductModal';
+import { CreateProduct } from '@/interfaces/product/ CreateProduct';
+import { UpdateProduct } from '@/interfaces/product/UpdateProduct';
 
 export default function Index() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -13,7 +24,13 @@ export default function Index() {
     const [error, setError] = useState<string | null>(null);
     const isSmallScreen = useBreakpointValue({ base: true, sm: false });
     const isMediumScreen = useBreakpointValue({ base: true, md: false });
-    const { filters } = useFilters({
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isCreateEditModalOpen, setIsCreateEditModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(
+        null,
+    );
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const { filters, handleFilterChange } = useFilters({
         name: '',
     });
 
@@ -32,6 +49,102 @@ export default function Index() {
         };
         fetchData();
     }, []);
+
+    const handleCreate = async (productData: CreateProduct) => {
+        setIsSubmitting(true);
+        try {
+            const newProduct = await createProduct(productData);
+            setProducts((prev) => [...prev, newProduct]);
+            setIsCreateEditModalOpen(false);
+            toaster.create({
+                type: 'success',
+                title: 'Producto creado exitosamente',
+            });
+        } catch (error) {
+            toaster.create({
+                type: 'error',
+                title: 'Error al crear el producto',
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleUpdate = async (productData: UpdateProduct) => {
+        if (!selectedProduct) return;
+
+        setIsSubmitting(true);
+        try {
+            const updatedProduct = await updateProduct(
+                selectedProduct.id.toString(),
+                productData,
+            );
+            setProducts((prev) =>
+                prev.map((p) =>
+                    p.id === updatedProduct.id ? updatedProduct : p,
+                ),
+            );
+            setSelectedProduct(null);
+            setIsCreateEditModalOpen(false);
+            toaster.create({
+                type: 'success',
+                title: 'Producto actualizado exitosamente',
+            });
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : 'Error al actualizar el producto';
+            toaster.create({
+                type: 'error',
+                title: errorMessage,
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!selectedProduct) return;
+
+        setIsSubmitting(true);
+        try {
+            await deleteProduct(selectedProduct.id.toString());
+            setProducts((prev) =>
+                prev.filter((p) => p.id !== selectedProduct.id),
+            );
+            setIsDeleteModalOpen(false);
+            toaster.create({
+                type: 'success',
+                title: 'Producto eliminado exitosamente',
+            });
+        } catch (error) {
+            toaster.create({
+                type: 'error',
+                title: 'Error al eliminar el producto',
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleEditClick = (product: Product) => {
+        setSelectedProduct(product);
+        setIsCreateEditModalOpen(true);
+    };
+
+    const handleCreateClick = () => {
+        setSelectedProduct(null);
+        setIsCreateEditModalOpen(true);
+    };
+
+    const handleFormSubmit = async (data: CreateProduct | UpdateProduct) => {
+        if (!selectedProduct) {
+            await handleCreate(data as CreateProduct);
+        } else {
+            await handleUpdate(data as UpdateProduct);
+        }
+    };
 
     const tableColumns = [
         {
@@ -66,16 +179,16 @@ export default function Index() {
             render: (product: Product) => (
                 <Box display='flex' gap={2} justifyContent='center'>
                     <Tooltip
-                        content='Ver detalle'
+                        content='Editar producto'
                         positioning={{ placement: 'top' }}
                     >
                         <Button
                             backgroundColor='transparent'
-                            // onClick={() => {
-                            //     setSelectedproductId(product.id);
-                            // }}
+                            onClick={() => {
+                                handleEditClick(product);
+                            }}
                         >
-                            <Eye strokeWidth={3} color='Blue' />
+                            <FilePenLine strokeWidth={3} color='Blue' />
                         </Button>
                     </Tooltip>
                     <Tooltip
@@ -84,7 +197,10 @@ export default function Index() {
                     >
                         <Button
                             backgroundColor='transparent'
-                            // onClick={() => handleOpenDeleteModal(product.id)}
+                            onClick={() => {
+                                setSelectedProduct(product);
+                                setIsDeleteModalOpen(true);
+                            }}
                         >
                             <Trash strokeWidth={3} color='red' />
                         </Button>
@@ -125,7 +241,7 @@ export default function Index() {
                     fontWeight='bold'
                     size='lg'
                     colorPalette='blue'
-                    // onClick={() => setOpenModalCreate(true)}
+                    onClick={handleCreateClick}
                 >
                     <Plus size={20} />
                     Crear Producto
@@ -146,11 +262,34 @@ export default function Index() {
                 )}
             </Box>
 
+            <SearchFilters
+                filters={filters}
+                onFilterChange={handleFilterChange}
+            />
+
             <AdminTable
                 isLoading={loading}
                 data={filteredCustomers}
                 columns={tableColumns}
             />
+
+            <DeleteProductModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                productName={selectedProduct?.name}
+                onConfirm={handleDelete}
+                isLoading={isSubmitting}
+            />
+
+            <CreateEditProductModal
+                isOpen={isCreateEditModalOpen}
+                onClose={() => setIsCreateEditModalOpen(false)}
+                product={selectedProduct}
+                onSubmit={handleFormSubmit}
+                isLoading={isSubmitting}
+            />
+
+            <Toaster />
         </Box>
     );
 }
