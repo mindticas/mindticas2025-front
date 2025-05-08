@@ -37,8 +37,8 @@ export default function DesktopViewAdmin({
                         color='white'
                     >
                         <Scissors size={32} />
-                        <Text ml='2' fontSize='xl' fontWeight='bold'>
-                            Elegangster Admin
+                        <Text ml='2' fontSize='lg' fontWeight='bold'>
+                            Elegangster
                         </Text>
                     </ChakraLink>
                     <Flex ml='10' align='center' gap='4'>

@@ -1,4 +1,4 @@
-import { BarChart, Calendar, Scissors, UserCog, Users } from 'lucide-react';
+import { BarChart, Calendar, Scissors, ShoppingBasket, UserCog, Users } from 'lucide-react';
 
 export const navItems = [
     { name: 'Citas', href: '/admin/', icon: Calendar },
@@ -6,4 +6,5 @@ export const navItems = [
     { name: 'Empleados', href: '/admin/employees', icon: UserCog },
     { name: 'Tratamientos', href: '/admin/treatments', icon: Scissors },
     { name: 'Reportes', href: '/admin/reports', icon: BarChart },
+    { name: 'Productos', href: '/admin/products', icon: ShoppingBasket },
 ];

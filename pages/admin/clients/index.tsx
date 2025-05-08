@@ -16,7 +16,7 @@ import {
 import { Calendar, Eye } from 'lucide-react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { CloseButton } from '@/components/ui/close-button';
-import StatusBadge from '../appointments/components/ui/StatusBadge';
+import StatusBadge from '../appointments/components/StatusBadge';
 import { Appointment } from '@/interfaces/appointment/Appointment';
 import { DateTime } from 'luxon';
 import AdminTable from '../AdminTable';

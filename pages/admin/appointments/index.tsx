@@ -20,9 +20,9 @@ import {
     AppointmentUpdate,
     FormDataType,
 } from '@/interfaces/appointment/AppointmentUpdate';
-import StatusBadge from './components/ui/StatusBadge';
-import AppointmentActions from './components/ui/ActionButtons';
-import AppointmentModal from './components/ui/AppointmentModal';
+import StatusBadge from './components/StatusBadge';
+import AppointmentActions from './components/ActionButtons';
+import AppointmentModal from './components/AppointmentModal';
 
 import { DateTime } from 'luxon';
 import AdminTable from '../AdminTable';

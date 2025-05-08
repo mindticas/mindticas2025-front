@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 
 import { Appointment } from '@/interfaces/appointment/Appointment';
 import { getUserById } from '@/services/UserService';
-import StatusBadge from '../../appointments/components/ui/StatusBadge';
+import StatusBadge from '../../appointments/components/StatusBadge';
 
 interface UserDetailModalProps {
     userId: number | null;
