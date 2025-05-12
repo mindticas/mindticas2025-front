@@ -9,7 +9,7 @@ interface DeleteProductModalProps {
     isLoading: boolean;
 }
 
-export function DeleteProductModal({
+export default function DeleteProductModal({
     isOpen,
     onClose,
     productName,

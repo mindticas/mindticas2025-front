@@ -12,11 +12,11 @@ import {
 } from '@/services/ProductService';
 import { Tooltip } from '@/components/ui/tooltip';
 import { SearchFilters } from '@/components/SearchFilters';
-import { DeleteProductModal } from './components/DeleteProductModal';
 import { toaster, Toaster } from '@/components/ui/toaster';
-import { CreateEditProductModal } from './components/CreateEditProductModal';
 import { CreateProduct } from '@/interfaces/product/ CreateProduct';
 import { UpdateProduct } from '@/interfaces/product/UpdateProduct';
+import DeleteProductModal from './components/DeleteProductModal';
+import CreateEditProductModal from './components/CreateEditProductModal';
 
 export default function Index() {
     const [products, setProducts] = useState<Product[]>([]);

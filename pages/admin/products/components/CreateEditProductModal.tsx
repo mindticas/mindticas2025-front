@@ -14,7 +14,7 @@ interface CreateEditProductModalProps {
     isLoading: boolean;
 }
 
-export function CreateEditProductModal({
+export default function CreateEditProductModal({
     isOpen,
     onClose,
     product,
