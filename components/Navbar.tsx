@@ -1,8 +1,9 @@
-import React from 'react';
-
-import { Box, Flex, Text, Container } from '@chakra-ui/react';
+import { Box, Flex, Text, Container, Spinner } from '@chakra-ui/react';
+import { useBusiness } from '@/context/BusinessContext';
 
 export default function Navbar() {
+    const { businessInfo, isLoading } = useBusiness();
+
     return (
         <nav>
             <Box as='nav' bg='black' color='white'>
@@ -18,9 +19,14 @@ export default function Navbar() {
                             height={80}
                             alt='Dynamic Image'
                         />
-                        <Text fontSize='xl' fontWeight='bold' ml={2}>
-                            Elegangster Barber Studio
-                        </Text>
+
+                        {isLoading ? (
+                            <Spinner size='md' color='white' />
+                        ) : (
+                            <Text fontSize='xl' fontWeight='bold' ml={2}>
+                                {businessInfo.name}
+                            </Text>
+                        )}
                     </Flex>
                 </Container>
             </Box>

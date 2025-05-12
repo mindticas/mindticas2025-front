@@ -12,6 +12,7 @@ import {
 export const toaster = createToaster({
     placement: 'bottom-end',
     pauseOnPageIdle: true,
+    max: 1,
 });
 
 export const Toaster = () => {

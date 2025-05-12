@@ -61,6 +61,7 @@ export default function AdminNavbarMobile({
                         {navItems.map((item) => {
                             const Icon = item.icon;
                             const active = pathname === item.href;
+                            const name = item.name || 'Configuración';
                             return (
                                 <ChakraLink
                                     key={item.name}
@@ -86,7 +87,7 @@ export default function AdminNavbarMobile({
                                         height={20}
                                         style={{ marginRight: '8px' }}
                                     />
-                                    {item.name}
+                                    {name}
                                 </ChakraLink>
                             );
                         })}

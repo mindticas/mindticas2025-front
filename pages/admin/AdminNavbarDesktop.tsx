@@ -46,6 +46,7 @@ export default function DesktopViewAdmin({
                             navItems.map((item) => {
                                 const Icon = item.icon;
                                 const active = pathname === item.href;
+                                const hasName = !!item.name;
                                 return (
                                     <ChakraLink
                                         key={item.name}
@@ -68,7 +69,11 @@ export default function DesktopViewAdmin({
                                         <Icon
                                             width={24}
                                             height={24}
-                                            style={{ marginRight: '8px' }}
+                                            style={{
+                                                marginRight: hasName
+                                                    ? '8px'
+                                                    : '0px',
+                                            }}
                                         />
                                         {item.name}
                                     </ChakraLink>
@@ -76,7 +81,7 @@ export default function DesktopViewAdmin({
                             })}
                     </Flex>
                 </Flex>
-                <Flex align='center' gap='4'>
+                <Flex align='center' gap='4' ml={4}>
                     {/* Logout button section for desktop */}
                     <Button
                         py='2'
