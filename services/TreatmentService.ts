@@ -22,7 +22,7 @@ export const createTreatment = async (
         const errorMessage =
             errorResponse.statusCode === 409
                 ? 'El tratamiento ya existe'
-                : 'Error al crear el tratamient';
+                : 'Error al crear el tratamiento';
         throw new Error(errorMessage);
     } catch (error) {
         throw error;
