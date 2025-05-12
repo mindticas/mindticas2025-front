@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, Flex, Text, Container, Icon } from '@chakra-ui/react';
+import { Box, Flex, Text, Container, Icon, Spinner } from '@chakra-ui/react';
 import { MapPin, Phone } from 'lucide-react';
 import { useBusiness } from '@/context/BusinessContext';
 import formatPhone from '@/utils/formatPhone';
 import Link from 'next/link';
 
 export default function Footer() {
-    const { businessInfo } = useBusiness();
+    const { businessInfo, isLoading } = useBusiness();
     const getDate = new Date();
     const currentYear = getDate.getFullYear();
     return (
@@ -35,41 +35,67 @@ export default function Footer() {
                                 <Text fontSize='xl' fontWeight='bold' ml={2}>
                                     Elegangster
                                 </Text>
-                                <Box ml={2}>
-                                    <Link
-                                        target='_blank'
-                                        href={`${businessInfo.instagram}`}
-                                        passHref
-                                    >
-                                        <img
-                                            src='/instagram.png'
-                                            width={30}
-                                            height={90}
-                                            alt='Instagram'
-                                        />
-                                    </Link>
-                                </Box>
+                                {!isLoading && businessInfo.instagram && (
+                                    <Box ml={2}>
+                                        <Link
+                                            target='_blank'
+                                            href={businessInfo.instagram}
+                                            passHref
+                                        >
+                                            <img
+                                                src='/instagram.png'
+                                                width={30}
+                                                height={90}
+                                                alt='Instagram'
+                                            />
+                                        </Link>
+                                    </Box>
+                                )}
                             </Flex>
 
                             <Flex align='center'>
                                 <Icon as={MapPin} h={4} w={4} />
-                                <Text fontSize='sm' ml={2}>
-                                    {businessInfo.address}
-                                </Text>
+                                {isLoading ? (
+                                    <Spinner
+                                        size='xs'
+                                        color='gray.300'
+                                        ml={2}
+                                    />
+                                ) : (
+                                    <Text fontSize='sm' ml={2}>
+                                        {businessInfo.address}
+                                    </Text>
+                                )}
                             </Flex>
 
                             <Flex align='center' mt={1}>
                                 <Icon as={Phone} h={4} w={4} />
-                                <Text fontSize='sm' ml={2}>
-                                    {formatPhone(businessInfo.phone)}
-                                </Text>
+                                {isLoading ? (
+                                    <Spinner
+                                        size='xs'
+                                        color='gray.300'
+                                        ml={2}
+                                    />
+                                ) : (
+                                    <Text fontSize='sm' ml={2}>
+                                        {formatPhone(businessInfo.phone)}
+                                    </Text>
+                                )}
                             </Flex>
                         </Flex>
-
                         <Box textAlign={{ base: 'center', md: 'right' }}>
                             <Text>
-                                &copy; {currentYear} {businessInfo.name}. Todos
-                                los derechos reservados.
+                                &copy; {currentYear}{' '}
+                                {isLoading ? (
+                                    <Spinner
+                                        size='xs'
+                                        color='gray.300'
+                                        ml={2}
+                                    />
+                                ) : (
+                                    businessInfo.name
+                                )}
+                                . Todos los derechos reservados.
                             </Text>
                         </Box>
                     </Flex>

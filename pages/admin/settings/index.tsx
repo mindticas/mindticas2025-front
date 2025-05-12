@@ -6,7 +6,6 @@ import BusinessForm from './components/BusinessForm';
 export default function Settings() {
     const isSmallScreen =
         useBreakpointValue({ base: true, md: false }) ?? false;
-    const { businessInfo, setBusinessInfo, isLoading } = useBusiness();
 
     return (
         <>
@@ -30,12 +29,7 @@ export default function Settings() {
                     Información del negocio
                 </Heading>
                 <Flex justifyContent='center' width='100%' mb={6}>
-                    <BusinessForm
-                        businessInfo={businessInfo}
-                        setBusinessInfo={setBusinessInfo}
-                        isSmallScreen={isSmallScreen}
-                        isLoading={isLoading}
-                    />
+                    <BusinessForm isSmallScreen={isSmallScreen} />
                 </Flex>
             </Box>
             <Toaster />

@@ -36,3 +36,40 @@ exports[`BusinessForm debe coincidir con el snapshot cuando está cargando 1`] =
   </div>
 </DocumentFragment>
 `;
+
+exports[`BusinessForm must match the snapshot when loading 1`] = `
+<DocumentFragment>
+  <script
+    nonce=""
+  >
+    ((e,s,n,m,o,l,u,h)=&gt;{let a=document.documentElement,v=["light","dark"];function p(c){(Array.isArray(e)?e:[e]).forEach(y=&gt;{let k=y==="class",S=k&&l?o.map(f=&gt;l[f]||f):o;k?(a.classList.remove(...S),a.classList.add(c)):a.setAttribute(y,c)}),C(c)}function C(c){h&&v.includes(c)&&(a.style.colorScheme=c)}function d(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(m)p(m);else try{let c=localStorage.getItem(s)||n,y=u&&c==="system"?d():c;p(y)}catch(c){}})("class","theme","system",null,["light","dark"],null,true,true)
+  </script>
+  <div
+    class="css-xg2euz"
+  >
+    <div
+      class="chakra-stack css-1l03m6c"
+    >
+      <div
+        class="chakra-skeleton css-k1m867"
+      />
+      <div
+        class="chakra-skeleton css-k1m867"
+      />
+      <div
+        class="chakra-skeleton css-k1m867"
+      />
+      <div
+        class="chakra-skeleton css-k1m867"
+      />
+      <div
+        class="css-sh031d"
+      >
+        <span
+          class="chakra-spinner css-1eysjmw"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

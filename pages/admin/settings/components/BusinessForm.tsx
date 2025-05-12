@@ -17,44 +17,70 @@ import {
     showBusinessNotification,
     validateBusinessFields,
 } from '@/utils/userProfile/userProfileValidation';
-import { BusinessInfo } from '@/context/BusinessContext';
+import { useBusiness } from '@/context/BusinessContext';
 
 interface BusinessFormProps {
-    businessInfo: BusinessInfo;
-    setBusinessInfo: (info: BusinessInfo) => void;
     isSmallScreen: boolean;
-    isLoading: boolean;
 }
 
-export default function BusinessForm({
-    businessInfo,
-    setBusinessInfo,
-    isSmallScreen,
-    isLoading,
-}: BusinessFormProps) {
-    const [name, setName] = useState('');
-    const [address, setAddress] = useState('');
-    const [phone, setPhone] = useState('');
-    const [instagram, setInstagram] = useState('');
+export default function BusinessForm({ isSmallScreen }: BusinessFormProps) {
+    const { businessInfo, setBusinessInfo, isLoading } = useBusiness();
+    const [formData, setFormData] = useState<BusinessFormData>({
+        name: '',
+        contactDetails: {
+            address: '',
+            phone: '',
+        },
+        socialLinks: {
+            instagram: '',
+        },
+    });
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        setName(businessInfo.name);
-        setAddress(businessInfo.address);
-        setPhone(businessInfo.phone);
-        setInstagram(businessInfo.instagram || '');
+        setFormData({
+            name: businessInfo.name,
+            contactDetails: {
+                address: businessInfo.address,
+                phone: businessInfo.phone,
+            },
+            socialLinks: {
+                instagram: businessInfo.instagram || '',
+            },
+        });
     }, [businessInfo]);
+
+    const handleChange = (field: keyof BusinessFormData, value: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
+
+    const handleNestedChange = (
+        group: 'contactDetails' | 'socialLinks',
+        key: string,
+        value: string,
+    ) => {
+        setFormData((prev) => ({
+            ...prev,
+            [group]: {
+                ...prev[group],
+                [key]: value,
+            },
+        }));
+    };
 
     const handleSave = async () => {
         setIsSaving(true);
         const trimmedData: BusinessFormData = {
-            name: name.trim(),
+            name: formData.name.trim(),
             contactDetails: {
-                address: address.trim(),
-                phone: phone.trim(),
+                address: formData.contactDetails.address.trim(),
+                phone: formData.contactDetails.phone.trim(),
             },
             socialLinks: {
-                instagram: instagram.trim(),
+                instagram: formData.socialLinks.instagram.trim(),
             },
         };
         // Validation: empty fields
@@ -113,8 +139,10 @@ export default function BusinessForm({
                             Nombre del negocio
                         </Text>
                         <Input
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={formData.name}
+                            onChange={(e) =>
+                                handleChange('name', e.target.value)
+                            }
                             p={3}
                             borderRadius='md'
                             borderColor='gray.300'
@@ -126,8 +154,14 @@ export default function BusinessForm({
                             Dirección
                         </Text>
                         <Input
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
+                            value={formData.contactDetails.address}
+                            onChange={(e) =>
+                                handleNestedChange(
+                                    'contactDetails',
+                                    'address',
+                                    e.target.value,
+                                )
+                            }
                             p={3}
                             borderRadius='md'
                             borderColor='gray.300'
@@ -139,8 +173,14 @@ export default function BusinessForm({
                             Teléfono
                         </Text>
                         <Input
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            value={formData.contactDetails.phone}
+                            onChange={(e) =>
+                                handleNestedChange(
+                                    'contactDetails',
+                                    'phone',
+                                    e.target.value,
+                                )
+                            }
                             type='number'
                             p={3}
                             borderRadius='md'
@@ -153,8 +193,14 @@ export default function BusinessForm({
                             Instagram
                         </Text>
                         <Input
-                            value={instagram}
-                            onChange={(e) => setInstagram(e.target.value)}
+                            value={formData.socialLinks.instagram}
+                            onChange={(e) =>
+                                handleNestedChange(
+                                    'socialLinks',
+                                    'instagram',
+                                    e.target.value,
+                                )
+                            }
                             p={3}
                             borderRadius='md'
                             borderColor='gray.300'

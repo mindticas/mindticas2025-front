@@ -2,6 +2,7 @@ import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { BusinessInfo } from '@/context/BusinessContext';
 import { updateUserProfile } from '@/services/userProfileService';
+import { BusinessContext } from '@/context/BusinessContext';
 import {
     validateBusinessFields,
     showBusinessNotification,
@@ -31,43 +32,41 @@ jest.mock('@/utils/userProfile/userProfileValidation', () => ({
     },
 }));
 
+const mockBusinessInfo: BusinessInfo = {
+    name: 'Mi Negocio',
+    address: 'Calle Principal 123',
+    phone: '123456789',
+    instagram: '@minegocio',
+};
+
+const mockSetBusinessInfo = jest.fn();
+
+const renderWithContext = (isLoading = false) => {
+    return render(
+        <BusinessContext.Provider
+            value={{
+                businessInfo: mockBusinessInfo,
+                setBusinessInfo: mockSetBusinessInfo,
+                isLoading,
+            }}
+        >
+            <BusinessForm isSmallScreen={false} />
+        </BusinessContext.Provider>,
+    );
+};
 describe('BusinessForm', () => {
-    const mockBusinessInfo: BusinessInfo = {
-        name: 'Mi Negocio',
-        address: 'Calle Principal 123',
-        phone: '123456789',
-        instagram: '@minegocio',
-    };
-
-    const mockSetBusinessInfo = jest.fn();
-
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    // Tests de snapshot (se mantienen igual)
     it('must match the snapshot when loading', () => {
-        const { asFragment } = render(
-            <BusinessForm
-                businessInfo={mockBusinessInfo}
-                setBusinessInfo={mockSetBusinessInfo}
-                isSmallScreen={false}
-                isLoading={true}
-            />,
-        );
+        const { asFragment } = renderWithContext(true);
         expect(asFragment()).toMatchSnapshot();
     });
 
     describe('Interactions', () => {
-        it('You must update the form fields', async () => {
-            render(
-                <BusinessForm
-                    businessInfo={mockBusinessInfo}
-                    setBusinessInfo={mockSetBusinessInfo}
-                    isSmallScreen={false}
-                    isLoading={false}
-                />,
-            );
+        it('should update the form fields', async () => {
+            renderWithContext();
 
             const nameInput = screen.getByDisplayValue('Mi Negocio');
             fireEvent.change(nameInput, { target: { value: 'Nuevo Nombre' } });
@@ -75,14 +74,7 @@ describe('BusinessForm', () => {
         });
 
         it('must call handleSave when the button is clicked', async () => {
-            render(
-                <BusinessForm
-                    businessInfo={mockBusinessInfo}
-                    setBusinessInfo={mockSetBusinessInfo}
-                    isSmallScreen={false}
-                    isLoading={false}
-                />,
-            );
+            renderWithContext();
 
             const saveButton = screen.getByText('Guardar cambios');
             fireEvent.click(saveButton);
@@ -96,18 +88,10 @@ describe('BusinessForm', () => {
         it('should display error when validation fails', async () => {
             (validateBusinessFields as jest.Mock).mockReturnValueOnce({
                 isValid: false,
-                error: 'Validation error',
+                error: 'Error de validación',
             });
 
-            render(
-                <BusinessForm
-                    businessInfo={mockBusinessInfo}
-                    setBusinessInfo={mockSetBusinessInfo}
-                    isSmallScreen={false}
-                    isLoading={false}
-                />,
-            );
-
+            renderWithContext();
             fireEvent.click(screen.getByText('Guardar cambios'));
 
             await waitFor(() => {

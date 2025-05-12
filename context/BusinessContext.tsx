@@ -23,7 +23,7 @@ interface BusinessContextType {
     isLoading: boolean;
 }
 
-const BusinessContext = createContext<BusinessContextType | undefined>(
+export const BusinessContext = createContext<BusinessContextType | undefined>(
     undefined,
 );
 
