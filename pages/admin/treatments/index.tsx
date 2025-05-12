@@ -3,7 +3,7 @@ import { Tooltip } from '@/components/ui/tooltip';
 import React, { useState } from 'react';
 import AdminTable from '../AdminTable';
 import { useTreatments } from '@/hooks/useTreatments';
-import { Pencil, Plus, Trash } from 'lucide-react';
+import { FilePenLine, Plus, Trash } from 'lucide-react';
 import TreatmentModal, {
     ModalMode,
     TreatmentModalEvent,
@@ -96,7 +96,7 @@ export default function TreatmentsPage() {
                             backgroundColor='transparent'
                             onClick={() => handleEditTreatment(treatment)}
                         >
-                            <Pencil strokeWidth={3} color='Blue' />
+                            <FilePenLine strokeWidth={3} color='Blue' />
                         </Button>
                     </Tooltip>
                     <Tooltip

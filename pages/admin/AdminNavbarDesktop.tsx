@@ -46,6 +46,7 @@ export default function DesktopViewAdmin({
                             navItems.map((item) => {
                                 const Icon = item.icon;
                                 const active = pathname === item.href;
+                                const hasName = !!item.name;
                                 return (
                                     <ChakraLink
                                         key={item.name}
@@ -68,7 +69,11 @@ export default function DesktopViewAdmin({
                                         <Icon
                                             width={24}
                                             height={24}
-                                            style={{ marginRight: '8px' }}
+                                            style={{
+                                                marginRight: hasName
+                                                    ? '8px'
+                                                    : '0px',
+                                            }}
                                         />
                                         {item.name}
                                     </ChakraLink>

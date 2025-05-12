@@ -1,8 +1,14 @@
 import React from 'react';
 import { Box, Flex, Text, Container, Icon } from '@chakra-ui/react';
 import { MapPin, Phone } from 'lucide-react';
+import { useBusiness } from '@/context/BusinessContext';
+import formatPhone from '@/utils/formatPhone';
+import Link from 'next/link';
 
 export default function Footer() {
+    const { businessInfo } = useBusiness();
+    const getDate = new Date();
+    const currentYear = getDate.getFullYear();
     return (
         <footer>
             <Box as='footer' bg='black' color='white' py={8} mt={6}>
@@ -29,28 +35,41 @@ export default function Footer() {
                                 <Text fontSize='xl' fontWeight='bold' ml={2}>
                                     Elegangster
                                 </Text>
+                                <Box ml={2}>
+                                    <Link
+                                        target='_blank'
+                                        href={`${businessInfo.instagram}`}
+                                        passHref
+                                    >
+                                        <img
+                                            src='/instagram.png'
+                                            width={30}
+                                            height={90}
+                                            alt='Instagram'
+                                        />
+                                    </Link>
+                                </Box>
                             </Flex>
 
                             <Flex align='center'>
                                 <Icon as={MapPin} h={4} w={4} />
                                 <Text fontSize='sm' ml={2}>
-                                    Av. Real Bugambilias 286, Lomas de la
-                                    Higuera
+                                    {businessInfo.address}
                                 </Text>
                             </Flex>
 
                             <Flex align='center' mt={1}>
                                 <Icon as={Phone} h={4} w={4} />
                                 <Text fontSize='sm' ml={2}>
-                                    (312) 291-3365
+                                    {formatPhone(businessInfo.phone)}
                                 </Text>
                             </Flex>
                         </Flex>
 
                         <Box textAlign={{ base: 'center', md: 'right' }}>
                             <Text>
-                                &copy; 2025 Elegangster Barber Studio. Todos los
-                                derechos reservados.
+                                &copy; {currentYear} {businessInfo.name}. Todos
+                                los derechos reservados.
                             </Text>
                         </Box>
                     </Flex>
