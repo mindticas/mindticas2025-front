@@ -81,7 +81,7 @@ export default function DesktopViewAdmin({
                             })}
                     </Flex>
                 </Flex>
-                <Flex align='center' gap='4'>
+                <Flex align='center' gap='4' ml={4}>
                     {/* Logout button section for desktop */}
                     <Button
                         py='2'
