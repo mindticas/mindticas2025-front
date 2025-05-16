@@ -43,7 +43,7 @@ export default function Footer() {
                                             passHref
                                         >
                                             <img
-                                                src='/instagram.png'
+                                                src='/instagram-w.png'
                                                 width={30}
                                                 height={90}
                                                 alt='Instagram'
