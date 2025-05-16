@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 
 export interface NavItem {
-    name: string;
+    name?: string;
     href: string;
     icon: ComponentType<React.SVGProps<SVGSVGElement>>;
 }

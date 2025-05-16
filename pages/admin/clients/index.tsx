@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Customer } from '@/interfaces/customer/Customer';
 import { getCustomerById, getCustomers } from '@/services/CustomerService';
-import { SearchFilters, SortCriteria } from '@/components/SearchFilters';
+import { SearchFilters } from '@/components/SearchFilters';
 import { useFilters } from '@/hooks/useFilters';
 import {
     Box,
@@ -16,19 +16,19 @@ import {
 import { Calendar, Eye } from 'lucide-react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { CloseButton } from '@/components/ui/close-button';
-import StatusBadge from '../appointments/components/ui/StatusBadge';
+import StatusBadge from '../appointments/components/StatusBadge';
 import { Appointment } from '@/interfaces/appointment/Appointment';
 import { DateTime } from 'luxon';
 import AdminTable from '../AdminTable';
 
 export default function ClientsPage() {
     const [customers, setCustomers] = useState<Customer[]>([]);
-    const [selectCustomer, setselectCustomer] = useState<Customer | null>(null);
+    const [selectCustomer, setSelectCustomer] = useState<Customer | null>(null);
     const [appointmentsByCustomer, setAppointmentsByCustomer] = useState<
         Appointment[]
     >([]);
     const [loading, setLoading] = useState(true);
-    const { filters, handleFilterChange, setFilters } = useFilters({
+    const { filters, handleFilterChange, handleSortChange } = useFilters({
         name: '',
         sort: '',
     });
@@ -67,17 +67,14 @@ export default function ClientsPage() {
 
         const selectedClient = customers.find((client) => client.id === id);
         if (selectedClient) {
-            setselectCustomer(selectedClient);
+            setSelectCustomer(selectedClient);
             setOpenModal(true);
         }
     };
 
     const handleCloseClientModal = () => {
         setOpenModal(false);
-    };
-
-    const handleSortChange = (sort: SortCriteria) => {
-        setFilters({ ...filters, sort });
+        setSelectCustomer(null);
     };
 
     const tableColumns = [
