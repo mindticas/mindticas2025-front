@@ -25,32 +25,23 @@ export default function Footer() {
                             align={{ base: 'center', md: 'flex-start' }}
                             mb={{ base: 4, md: 0 }}
                         >
-                            <Flex align='center' mb={2}>
-                                <img
-                                    src='/logo.png'
-                                    width={30}
-                                    height={90}
-                                    alt='Dynamic Image'
-                                />
-                                <Text fontSize='xl' fontWeight='bold' ml={2}>
-                                    Elegangster
-                                </Text>
-                                {!isLoading && businessInfo.instagram && (
-                                    <Box ml={2}>
-                                        <Link
-                                            target='_blank'
-                                            href={businessInfo.instagram}
-                                            passHref
-                                        >
-                                            <img
-                                                src='/instagram.png'
-                                                width={30}
-                                                height={90}
-                                                alt='Instagram'
-                                            />
-                                        </Link>
-                                    </Box>
-                                )}
+                            <Flex
+                                align='center'
+                                mb={2}
+                                w='100%'
+                                justifyContent='space-between'
+                            >
+                                <Flex>
+                                    <img
+                                        src='/logo.png'
+                                        width={30}
+                                        height={90}
+                                        alt='Dynamic Image'
+                                    />
+                                    <Text fontSize='xl' fontWeight='bold'>
+                                        Elegangster
+                                    </Text>
+                                </Flex>
                             </Flex>
 
                             <Flex align='center'>
@@ -83,21 +74,40 @@ export default function Footer() {
                                 )}
                             </Flex>
                         </Flex>
-                        <Box textAlign={{ base: 'center', md: 'right' }}>
-                            <Text>
-                                &copy; {currentYear}{' '}
-                                {isLoading ? (
-                                    <Spinner
-                                        size='xs'
-                                        color='gray.300'
-                                        ml={2}
-                                    />
-                                ) : (
-                                    businessInfo.name
-                                )}
-                                . Todos los derechos reservados.
-                            </Text>
-                        </Box>
+                        <Flex direction='column' gap={4}>
+                            {!isLoading && businessInfo.instagram && (
+                                <Flex align='center' gap={4}>
+                                    <Text>Redes sociales: </Text>
+                                    <Link
+                                        target='_blank'
+                                        href={businessInfo.instagram}
+                                        passHref
+                                    >
+                                        <img
+                                            src='/instagram-w.png'
+                                            width={25}
+                                            height={85}
+                                            alt='Instagram'
+                                        />
+                                    </Link>
+                                </Flex>
+                            )}
+                            <Box textAlign={{ base: 'center', md: 'right' }}>
+                                <Text>
+                                    &copy; {currentYear}{' '}
+                                    {isLoading ? (
+                                        <Spinner
+                                            size='xs'
+                                            color='gray.300'
+                                            ml={2}
+                                        />
+                                    ) : (
+                                        businessInfo.name
+                                    )}
+                                    . Todos los derechos reservados.
+                                </Text>
+                            </Box>
+                        </Flex>
                     </Flex>
                 </Container>
             </Box>
