@@ -35,22 +35,6 @@ export default function Footer() {
                                 <Text fontSize='xl' fontWeight='bold' ml={2}>
                                     Elegangster
                                 </Text>
-                                {!isLoading && businessInfo.instagram && (
-                                    <Box ml={2}>
-                                        <Link
-                                            target='_blank'
-                                            href={businessInfo.instagram}
-                                            passHref
-                                        >
-                                            <img
-                                                src='/instagram-w.png'
-                                                width={30}
-                                                height={90}
-                                                alt='Instagram'
-                                            />
-                                        </Link>
-                                    </Box>
-                                )}
                             </Flex>
 
                             <Flex align='center'>
@@ -99,6 +83,22 @@ export default function Footer() {
                             </Text>
                         </Box>
                     </Flex>
+                    {!isLoading && businessInfo.instagram && (
+                        <Flex mr={8} justifyContent='end'>
+                            <Link
+                                target='_blank'
+                                href={businessInfo.instagram}
+                                passHref
+                            >
+                                <img
+                                    src='/instagram-w.png'
+                                    width={25}
+                                    height={85}
+                                    alt='Instagram'
+                                />
+                            </Link>
+                        </Flex>
+                    )}
                 </Container>
             </Box>
         </footer>
