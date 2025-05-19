@@ -10,14 +10,12 @@ interface UserFormProps {
         email: string;
         phone: string;
         password: string;
-        role: string;
     }) => void;
     initialValues?: {
         name: string;
         email: string;
         phone: string;
         password: string;
-        role: string;
     };
 }
 
@@ -30,7 +28,6 @@ export default function UserForm({
         email: '',
         phone: '',
         password: '',
-        role: '',
     },
 }: UserFormProps) {
     const [showPassword, setShowPassword] = useState(false);
