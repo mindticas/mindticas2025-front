@@ -1,9 +1,9 @@
 'use client';
 
-import adminTableMessages from '@/constraints/adminMessages';
 import { Table, Box, Spinner } from '@chakra-ui/react';
 import { ReactNode, useEffect, useState } from 'react';
 import Pagination from './Pagination';
+import adminTableMessages from '@/constants/Admin/adminMessages';
 
 interface ColumnDef<T> {
     key: string;

@@ -19,6 +19,7 @@ import {
     Text,
     createListCollection,
 } from '@chakra-ui/react';
+import ErrorMessage from './ErrorMessage';
 
 export default function TreatmentMenu() {
     const { treatment, setTreatment } = useBookingContext();
@@ -34,7 +35,7 @@ export default function TreatmentMenu() {
                 setTreatments(data);
             } catch (error) {
                 setError(
-                    'Error al cargar los tratamientos. Inténtalo de nuevo más tarde.',
+                    'No se pudieron cargar los tratamientos. Inténtalo de nuevo más tarde.',
                 );
             } finally {
                 setIsLoading(false);
@@ -61,10 +62,7 @@ export default function TreatmentMenu() {
 
     return (
         <>
-            <Box p='10px' color='red'>
-                {error && <Text>{error}</Text>}
-            </Box>
-
+            {error && <ErrorMessage message={error} />}
             <SelectRoot
                 onValueChange={(e) => handleTreatmentSelect(e.value.toString())}
                 size='lg'

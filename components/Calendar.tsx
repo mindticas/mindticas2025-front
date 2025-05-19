@@ -22,6 +22,7 @@ import {
     DAYS_OF_WEEK_ES,
     DAYS_OF_WEEK_SHORT_ES,
 } from '@/constants/Calendar/dates';
+import { Appointment } from '@/interfaces/appointment/Appointment';
 
 // Function to check if a date is Sunday
 const isSunday = (date: Date) => date.getDay() === 0;
@@ -35,7 +36,7 @@ export default function Calendar() {
     // State for selected date and time
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
-    const [bookedTimes, setBookedTimes] = useState<string[]>([]);
+    const [bookedTimes, setBookedTimes] = useState<Appointment[]>([]);
     // New state for schedule from backend
     const [scheduleData, setScheduleData] = useState<Schedule[]>([]);
     // Available time slots from backend
@@ -67,10 +68,7 @@ export default function Calendar() {
             const fetchAppointments = async () => {
                 try {
                     const data = await getAppointments();
-                    const bookedTimes = data
-                        .map((appointment) => appointment.scheduled_start)
-                        .filter(Boolean) as string[];
-                    setBookedTimes(bookedTimes);
+                    setBookedTimes(data);
                 } catch (error) {
                     setError(
                         'No se pueden cargar los horarios ocupados. Inténtalo de nuevo más tarde.',
@@ -177,28 +175,30 @@ export default function Calendar() {
         return timeDate < new Date(); // Compare with the current time
     };
 
-    // Load all reserved times
-    const bookedTimesForDate = useMemo(() => {
-        if (!selectedDate) return [];
-        // Format the selected date in ISO format (without time)
-        const selectedDateISO = DateTime.fromJSDate(selectedDate).toISODate();
-        // Filter booked appointments for the selected date
-        return bookedTimes
-            .filter((bookedTime) => {
-                const bookedDateISO = DateTime.fromISO(bookedTime).toISODate();
-                return bookedDateISO === selectedDateISO;
-            })
-            .map((bookedTime) => {
-                const formattedTime = DateTime.fromISO(bookedTime, {
-                    zone: 'local',
-                }).toFormat('HH:mm');
-
-                return formattedTime;
-            });
-    }, [selectedDate, bookedTimes]);
-
     const isBookedTime = (time: string) => {
-        return bookedTimesForDate.includes(time);
+        if (!selectedDate) return false;
+
+        const selectedDateISO = DateTime.fromJSDate(selectedDate).toISODate();
+
+        return bookedTimes.some((appointment) => {
+            const bookedDateISO = DateTime.fromISO(
+                appointment.scheduled_start,
+            ).toISODate();
+            const bookedStatus = appointment.status;
+            const formattedTime = DateTime.fromISO(
+                appointment.scheduled_start,
+                {
+                    zone: 'local',
+                },
+            ).toFormat('HH:mm');
+
+            // only check if the booked time is in the same date and not canceled
+            return (
+                bookedDateISO === selectedDateISO &&
+                formattedTime === time &&
+                bookedStatus !== 'canceled'
+            );
+        });
     };
 
     // Scroll to the schedules when the treatment and day are selected

@@ -1,5 +1,6 @@
 import { Provider } from '@/components/ui/provider';
 import { BookingProvider } from '@/context/BookingContext';
+import { BusinessProvider } from '@/context/BusinessContext';
 import '@/styles/globals.css';
 import { AdminRoute } from '@/utils/AdminRoute';
 import type { AppProps } from 'next/app';
@@ -13,11 +14,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return (
         <BookingProvider>
-            <Provider>
-                <LayoutAdmin>
-                    <Component {...pageProps} />
-                </LayoutAdmin>
-            </Provider>
+            <BusinessProvider>
+                <Provider>
+                    <LayoutAdmin>
+                        <Component {...pageProps} />
+                    </LayoutAdmin>
+                </Provider>
+            </BusinessProvider>
         </BookingProvider>
     );
 }
