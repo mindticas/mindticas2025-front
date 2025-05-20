@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, Portal } from '@chakra-ui/react';
 import { CloseButton } from '@/components/ui/close-button';
-import { getRoles } from '@/services/RoleService';
 import { createUser } from '@/services/UserService';
 import { toaster } from '@/components/ui/toaster';
 import { User } from '@/interfaces/user/User';
-import { Role } from '@/interfaces/role/Role';
 import UserForm from './UserForm';
 
 interface CreateUserModalProps {
@@ -20,30 +18,12 @@ export default function CreateUserModal({
     onUserCreated,
 }: CreateUserModalProps) {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [roles, setRoles] = useState<Role[]>([]);
-
-    useEffect(() => {
-        if (!isOpen) return;
-
-        const loadRoles = async () => {
-            try {
-                const rolesData = await getRoles();
-                setRoles(rolesData);
-            } catch (error) {
-                setError('Error al cargar los roles');
-            }
-        };
-
-        loadRoles();
-    }, [isOpen]);
 
     const handleSubmit = async (formData: {
         name: string;
         email: string;
         phone: string;
         password: string;
-        role: string;
     }) => {
         setIsLoading(true);
 
@@ -53,7 +33,6 @@ export default function CreateUserModal({
                 email: formData.email,
                 phone: formData.phone,
                 password: formData.password,
-                role_id: parseInt(formData.role),
             });
 
             onUserCreated(createdUser);
@@ -94,9 +73,7 @@ export default function CreateUserModal({
 
                         <Dialog.Body>
                             <UserForm
-                                roles={roles}
                                 isLoading={isLoading}
-                                error={error}
                                 onSubmit={handleSubmit}
                             />
                         </Dialog.Body>

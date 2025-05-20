@@ -1,21 +1,8 @@
 import React, { useState } from 'react';
-import {
-    Box,
-    Field,
-    Input,
-    Button,
-    SelectContent,
-    SelectItem,
-    SelectLabel,
-    SelectRoot,
-    SelectTrigger,
-} from '@chakra-ui/react';
+import { Box, Field, Input, Button } from '@chakra-ui/react';
 import { Eye, EyeOff } from 'lucide-react';
-import { createListCollection } from '@chakra-ui/react';
-import { Role } from '@/interfaces/role/Role';
 
 interface UserFormProps {
-    roles: Role[];
     isLoading: boolean;
     error?: string | null;
     onSubmit: (formData: {
@@ -23,19 +10,16 @@ interface UserFormProps {
         email: string;
         phone: string;
         password: string;
-        role: string;
     }) => void;
     initialValues?: {
         name: string;
         email: string;
         phone: string;
         password: string;
-        role: string;
     };
 }
 
 export default function UserForm({
-    roles,
     isLoading,
     error,
     onSubmit,
@@ -44,7 +28,6 @@ export default function UserForm({
         email: '',
         phone: '',
         password: '',
-        role: '',
     },
 }: UserFormProps) {
     const [showPassword, setShowPassword] = useState(false);
@@ -81,52 +64,6 @@ export default function UserForm({
                     {error}
                 </Box>
             )}
-
-            <Box mb={4}>
-                <SelectRoot
-                    name='role'
-                    collection={createListCollection({
-                        items: Array.isArray(roles) ? roles : [],
-                    })}
-                    onValueChange={(e) => {
-                        const selectedRole = roles.find(
-                            (role) => role.name === e.value.toString(),
-                        );
-                        setFormData({
-                            ...formData,
-                            role: selectedRole
-                                ? selectedRole.id.toString()
-                                : '',
-                        });
-                    }}
-                    required
-                >
-                    <SelectLabel fontWeight='semibold'>
-                        Rol del empleado
-                    </SelectLabel>
-                    <SelectTrigger>
-                        {(roles &&
-                            roles.find((t) => t.id.toString() === formData.role)
-                                ?.name) ||
-                            'Seleccionar rol'}
-                    </SelectTrigger>
-                    <SelectContent backgroundColor='white'>
-                        {roles &&
-                            roles.map(({ id, name }) => (
-                                <SelectItem
-                                    key={id}
-                                    cursor='pointer'
-                                    _hover={{ backgroundColor: 'gray.100' }}
-                                    backgroundColor='white'
-                                    item={name}
-                                    p={2}
-                                >
-                                    {name}
-                                </SelectItem>
-                            ))}
-                    </SelectContent>
-                </SelectRoot>
-            </Box>
 
             <Box mb={4}>
                 <Field.Root>
