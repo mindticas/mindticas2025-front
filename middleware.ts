@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
+import { authConfigRoutes } from './utils/routeAccess';
 
 const SECRET_KEY = process.env.SESSION_SECRET;
 
@@ -10,6 +11,7 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get('AUTH_TOKEN')?.value;
     const loginUrl = new URL('/login', request.url);
     const forbiddenUrl = new URL('/forbidden', request.url);
+    const { basePath, employeeAllowedRoutes } = authConfigRoutes.adminRoutes;
 
     if (path.startsWith('/admin')) {
         if (!token) {
@@ -23,17 +25,15 @@ export async function middleware(request: NextRequest) {
             const userRole = payload.role as string;
 
             if (userRole === 'Employee') {
-                const allowedRoutes = ['/admin/appointments', '/admin/clients'];
-                const isAllowed = allowedRoutes.some(
+                const isAllowed = employeeAllowedRoutes.some(
                     (allowedPath) =>
-                        path.startsWith(allowedPath) || path === '/admin',
+                        path.startsWith(allowedPath) || path === basePath,
                 );
 
                 if (!isAllowed) {
                     return NextResponse.redirect(forbiddenUrl);
                 }
             }
-
             await jwtVerify(token, secretKey);
             return NextResponse.next();
         } catch (error) {
