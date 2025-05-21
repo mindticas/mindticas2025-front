@@ -113,6 +113,8 @@ export default function CitasPage() {
         treatment: string;
         date: string;
         time: string;
+        tipAmount?: number;
+        products?: number[];
     }) => {
         try {
             if (modalState.mode === 'edit' && data.id) {
@@ -193,6 +195,24 @@ export default function CitasPage() {
                 .setZone('utc')
                 .toFormat("yyyy-MM-dd'T'HH:mm");
             updatedFields.scheduled_start = adjustedScheduledStart;
+        }
+        if (
+            typeof formData.tipAmount !== 'undefined' &&
+            Number(formData.tipAmount) !== Number(originalAppointment.tipAmount)
+        ) {
+            updatedFields.tipAmount = Number(formData.tipAmount);
+        }
+
+        if (
+            Array.isArray(formData.products) &&
+            JSON.stringify(formData.products.sort()) !==
+                JSON.stringify(
+                    (originalAppointment.products ?? [])
+                        .map((p) => p.id)
+                        .sort(),
+                )
+        ) {
+            updatedFields.products = formData.products;
         }
         return updatedFields;
     };
@@ -432,6 +452,12 @@ export default function CitasPage() {
                                   time: splitDateTimeFromISO(
                                       modalState.appointment.scheduled_start,
                                   ).time,
+                                  tipAmmount:
+                                      modalState.appointment.tipAmount ?? '',
+                                  products:
+                                      modalState.appointment.products?.map(
+                                          (p) => p.id,
+                                      ) ?? [],
                               }
                             : undefined
                     }

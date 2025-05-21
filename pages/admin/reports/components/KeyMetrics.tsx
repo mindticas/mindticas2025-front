@@ -1,8 +1,14 @@
 import { Flex } from '@chakra-ui/react';
 import StatsCard from './StatsCard';
-import { CheckCircle, DollarSign, XCircle, Scissors } from 'lucide-react';
+import {
+    CheckCircle,
+    DollarSign,
+    XCircle,
+    Scissors,
+    HandCoins,
+    Store,
+} from 'lucide-react';
 import { StatisticsDataResponse } from '@/interfaces/statistics/StatisticsDataResponse';
-
 interface KeyMetricsProps {
     statistics: StatisticsDataResponse | null;
     isLoading?: boolean;
@@ -14,7 +20,7 @@ export default function KeyMetrics({
 }: KeyMetricsProps) {
     const statsItems = [
         {
-            title: 'Ganancias',
+            title: 'Ganancias en servicios',
             value: statistics?.totalEarnings ?? 0,
             icon: DollarSign,
             color: 'green.500',
@@ -37,6 +43,18 @@ export default function KeyMetrics({
             icon: XCircle,
             color: 'red.500',
         },
+        {
+            title: 'Ventas de productos',
+            value: statistics?.totalSalesAmount ?? 0,
+            icon: Store,
+            color: 'green.500',
+        },
+        {
+            title: 'Propinas',
+            value: statistics?.totalTips ?? 0,
+            icon: HandCoins,
+            color: 'yellow.500',
+        },
     ];
 
     return (
@@ -46,7 +64,7 @@ export default function KeyMetrics({
                 mx={['4', '6', '8', '12']}
                 p='4'
                 mt={['6', '14']}
-                direction={['column', 'row', 'row', 'row']}
+                direction={['column', 'column', 'column', 'row']}
             >
                 {statsItems.map((item, index) => (
                     <StatsCard

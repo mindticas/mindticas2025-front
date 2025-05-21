@@ -49,7 +49,7 @@ export default function DesktopViewAdmin({
                                 const hasName = !!item.name;
                                 return (
                                     <ChakraLink
-                                        key={item.name}
+                                        key={item.href}
                                         as={NextLink}
                                         px='3'
                                         py='2'
