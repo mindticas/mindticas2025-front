@@ -16,9 +16,13 @@ import {
     SelectTrigger,
     SelectLabel,
     CloseButton,
+    Icon,
 } from '@chakra-ui/react';
 import { Treatment } from '@/interfaces/treatment/Treatment';
 import { createListCollection } from '@chakra-ui/react';
+import { getProducts } from '@/services/ProductService';
+import { Product } from '@/interfaces/product/Product';
+import { Check } from 'lucide-react';
 
 interface AppointmentModalProps {
     isOpen: boolean;
@@ -31,6 +35,8 @@ interface AppointmentModalProps {
         treatment: string;
         date: string;
         time: string;
+        products: number[];
+        tipAmmount: number;
     };
     onConfirm: (data: {
         id?: number;
@@ -52,6 +58,8 @@ export default function AppointmentModal({
         treatment: '',
         date: '',
         time: '',
+        products: [],
+        tipAmmount: 0,
     },
     onConfirm,
     onCancel,
@@ -61,7 +69,22 @@ export default function AppointmentModal({
         treatment: initialData.treatment,
         date: initialData.date,
         time: initialData.time,
+        tipAmount: initialData?.tipAmmount,
+        products: initialData?.products ?? [],
     });
+    const [products, setProducts] = useState<Product[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getProducts();
+                setProducts(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
 
     useEffect(() => {
         if (isOpen) {
@@ -70,6 +93,8 @@ export default function AppointmentModal({
                 treatment: initialData.treatment,
                 date: initialData.date,
                 time: initialData.time,
+                tipAmount: initialData.tipAmmount,
+                products: initialData.products,
             });
         }
     }, [
@@ -85,7 +110,10 @@ export default function AppointmentModal({
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({
+            ...prev,
+            [name]: name === 'tipAmount' ? Number(value) : value,
+        }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -274,6 +302,131 @@ export default function AppointmentModal({
                                                 required
                                             />
                                         </Field.Root>
+                                    </Box>
+
+                                    <Box mb={4}>
+                                        <Field.Root>
+                                            <Field.Label fontWeight='semibold'>
+                                                Propina
+                                            </Field.Label>
+                                            <Input
+                                                p={2}
+                                                type='number'
+                                                name='tipAmount'
+                                                value={formData.tipAmount}
+                                                onChange={handleInputChange}
+                                            />
+                                        </Field.Root>
+                                    </Box>
+
+                                    <Box mb={4}>
+                                        {products && (
+                                            <SelectRoot
+                                                name='products'
+                                                collection={createListCollection(
+                                                    {
+                                                        items: products,
+                                                    },
+                                                )}
+                                                onValueChange={(e) => {
+                                                    const selectedProduct =
+                                                        products.find(
+                                                            (product) =>
+                                                                product.name ===
+                                                                e.value.toString(),
+                                                        );
+                                                    if (!selectedProduct)
+                                                        return;
+                                                    const isSelected =
+                                                        formData.products.includes(
+                                                            selectedProduct.id,
+                                                        );
+                                                    console.log(
+                                                        selectedProduct,
+                                                    );
+                                                    setFormData({
+                                                        ...formData,
+                                                        products: isSelected
+                                                            ? formData.products.filter(
+                                                                  (id) =>
+                                                                      id !==
+                                                                      selectedProduct.id,
+                                                              )
+                                                            : [
+                                                                  ...formData.products,
+                                                                  selectedProduct.id,
+                                                              ],
+                                                    });
+                                                }}
+                                                required
+                                            >
+                                                <SelectLabel fontWeight='semibold'>
+                                                    Seleccionar producto
+                                                </SelectLabel>
+                                                <SelectTrigger>
+                                                    {formData.products.length >
+                                                    0
+                                                        ? products
+                                                              .filter((p) =>
+                                                                  formData.products.includes(
+                                                                      p.id,
+                                                                  ),
+                                                              )
+                                                              .map(
+                                                                  (p) => p.name,
+                                                              )
+                                                              .join(', ')
+                                                        : 'Seleccionar producto'}
+                                                </SelectTrigger>
+                                                <SelectContent
+                                                    className='select-content-admin-edit'
+                                                    backgroundColor='white'
+                                                >
+                                                    {products &&
+                                                        products.map(
+                                                            ({ id, name }) => (
+                                                                <SelectItem
+                                                                    cursor='pointer'
+                                                                    _hover={{
+                                                                        backgroundColor:
+                                                                            'gray.100',
+                                                                    }}
+                                                                    backgroundColor='white'
+                                                                    item={name}
+                                                                    key={id}
+                                                                    p={2}
+                                                                >
+                                                                    <Box
+                                                                        display='flex'
+                                                                        justifyContent='space-between'
+                                                                        alignItems='center'
+                                                                        width='100%'
+                                                                    >
+                                                                        <Text>
+                                                                            {
+                                                                                name
+                                                                            }
+                                                                        </Text>
+                                                                        {formData.products.includes(
+                                                                            id,
+                                                                        ) && (
+                                                                            <Icon
+                                                                                as={
+                                                                                    Check
+                                                                                }
+                                                                                color='green.700'
+                                                                                boxSize={
+                                                                                    4
+                                                                                }
+                                                                            />
+                                                                        )}
+                                                                    </Box>
+                                                                </SelectItem>
+                                                            ),
+                                                        )}
+                                                </SelectContent>
+                                            </SelectRoot>
+                                        )}
                                     </Box>
                                 </form>
                             ) : (
