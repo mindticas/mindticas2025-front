@@ -64,7 +64,7 @@ export default function AdminNavbarMobile({
                             const name = item.name || 'Configuración';
                             return (
                                 <ChakraLink
-                                    key={item.name}
+                                    key={item.href}
                                     as={NextLink}
                                     href={item.href}
                                     px='3'

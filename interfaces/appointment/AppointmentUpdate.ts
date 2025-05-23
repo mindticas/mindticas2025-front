@@ -3,6 +3,8 @@ export interface AppointmentUpdate {
     scheduled_start?: string;
     status?: string;
     treatments_id?: number[];
+    tipAmount?: number;
+    products?: number[];
 }
 
 export interface FormDataType {
@@ -10,4 +12,6 @@ export interface FormDataType {
     treatment: string;
     date: string;
     time: string;
+    tipAmount?: number;
+    products?: number[];
 }
